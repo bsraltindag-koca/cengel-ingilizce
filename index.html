@@ -301,6 +301,59 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* words & stats & settings */
 .search { height: 52px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); padding: 0 16px; font: 600 16px var(--f-ui); color: var(--ink); width: 100%; }
+/* words page */
+.wsum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.wsum .stat { padding: 12px 14px; }
+.wsum .stat b { font-size: 26px; }
+.wsum .stat.due b { color: var(--coral-ink); }
+.review-cta { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 16px 18px; border-radius: 22px; background: var(--primary); color: var(--on-primary); }
+.review-cta .ic { width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, .16); display: grid; place-items: center; flex: none; }
+.review-cta b { display: block; font-size: 18px; font-weight: 800; }
+.review-cta small { opacity: .85; font-weight: 600; }
+.review-cta .chev { margin-left: auto; flex: none; }
+.review-cta:disabled { background: var(--soft); color: var(--muted); cursor: default; }
+.review-cta:disabled .ic { background: var(--surface); }
+.wfilters { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fchips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1 1 auto; padding: 2px; }
+.fchips::-webkit-scrollbar { display: none; }
+.fchips button { flex: none; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--surface); font-weight: 800; font-size: 13px; color: var(--muted); box-shadow: var(--shadow); white-space: nowrap; }
+.fchips button span { opacity: .7; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.fchips button[aria-checked="true"] { background: var(--primary); color: var(--on-primary); }
+.wrows { background: var(--surface); border-radius: 22px; padding: 4px 18px; box-shadow: var(--shadow); }
+.wrow { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.wrow:last-child { border-bottom: 0; }
+.wrow .tx { min-width: 0; flex: 1; }
+.wrow .en { font-weight: 800; font-size: 18px; display: block; }
+.wrow .trw { color: var(--muted); font-weight: 600; font-size: 14px; display: block; }
+.wrow .tags { display: flex; gap: 6px; flex: none; }
+.tagc { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
+.tagc.hard { background: color-mix(in srgb, var(--coral) 16%, var(--surface)); color: var(--coral-ink); }
+.wrow .say { width: 38px; height: 38px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; flex: none; }
+.wrow .say.on { background: var(--primary); color: var(--on-primary); }
+.wrow .ok { margin-left: auto; font-weight: 800; color: var(--good); letter-spacing: .02em; }
+/* quiz */
+.qbar { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; }
+.qbar i { height: 6px; border-radius: 9px; background: var(--soft); }
+.qbar i.ok { background: var(--good); }
+.qbar i.bad { background: var(--coral); }
+.qbar i.cur { background: var(--primary); }
+#qAsk, #qDone { display: grid; gap: 14px; }
+.qcard { background: var(--surface); border-radius: 24px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow); display: grid; gap: 8px; }
+.qcard .eyebrow { color: var(--muted); }
+.qcard h2 { font-size: clamp(32px, 9vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+.qopts { display: grid; gap: 10px; }
+.qopt { height: 58px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-size: 19px; display: flex; align-items: center; gap: 12px; padding: 0 18px; text-align: left; border: 2px solid transparent; }
+.qopt kbd { font: 700 12px var(--f-ui); width: 24px; height: 24px; border-radius: 7px; background: var(--soft); color: var(--muted); display: grid; place-items: center; flex: none; }
+.qopt.ok { background: var(--good-bg); color: var(--good); border-color: var(--good); }
+.qopt.bad { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
+.qopt:disabled { cursor: default; }
+.qfoot { display: grid; gap: 10px; min-height: 24px; }
+.qfoot p { margin: 0; text-align: center; font-weight: 700; color: var(--muted); }
+.qresult { background: var(--primary); color: var(--on-primary); border-radius: 24px; padding: 26px 20px; text-align: center; display: grid; gap: 6px; }
+.qresult .eyebrow { opacity: .8; }
+.qresult .big { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.qresult p { margin: 0; opacity: .9; font-weight: 600; }
+@media (min-width: 960px) { .qopts { grid-template-columns: 1fr 1fr; } }
 .empty { padding: 28px 20px; text-align: center; color: var(--muted); font-weight: 600; line-height: 1.5; }
 .statgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .statgrid .stat b { font-size: 30px; }
@@ -649,8 +702,38 @@ button, .cell { touch-action: manipulation; }
   <!-- WORDS -->
   <main class="screen" id="s-words" hidden>
     <div class="hello"><div><small id="wCount">0 kelime</small><h1>Kelimelerim</h1></div></div>
+    <div class="wsum">
+      <div class="stat"><small>Toplam</small><b id="sumAll">0</b></div>
+      <div class="stat"><small>Bu hafta</small><b id="sumWeek">0</b></div>
+      <div class="stat due"><small>Tekrar gereken</small><b id="sumDue">0</b></div>
+    </div>
+    <button class="review-cta" id="reviewGo"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg></span><span><b>Tekrar et</b><small id="reviewSub">10 soru · zorlandıkların önce</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
     <input class="search" id="wSearch" type="search" placeholder="Türkçe ya da İngilizce ara" autocomplete="off">
-    <div class="wordlist" id="wList"></div>
+    <div class="wfilters">
+      <div class="fchips" id="wChips" role="radiogroup" aria-label="Filtre"></div>
+      <div class="seg" role="radiogroup" aria-label="Sıralama" id="wSort"><button role="radio" data-s="new">En yeni</button><button role="radio" data-s="az">A–Z</button></div>
+    </div>
+    <div class="wrows" id="wList"></div>
+  </main>
+
+  <!-- QUIZ -->
+  <main class="screen" id="s-quiz" hidden>
+    <div class="back-head">
+      <button class="circle-back" data-go="words" aria-label="Kelimelerime dön"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div><h1>Tekrar et</h1><p id="qSub">1 / 10</p></div>
+    </div>
+    <div class="qbar" id="qBar"></div>
+    <section id="qAsk">
+      <div class="qcard"><div class="eyebrow">Bu kelimenin İngilizcesi ne?</div><h2 id="qWord">Kedi</h2></div>
+      <div class="qopts" id="qOpts"></div>
+      <div class="qfoot"><p id="qFeedback" aria-live="polite"></p><button class="bigbtn dark" id="qNext" hidden>Devam et</button></div>
+    </section>
+    <section id="qDone" hidden>
+      <div class="qresult"><div class="eyebrow">Sonuç</div><div class="big" id="qScore">8 / 10</div><p id="qMsg"></p></div>
+      <div class="sec-head" id="qMissHead"><h2>Tekrar bakman gerekenler</h2></div>
+      <div class="wrows" id="qMiss"></div>
+      <div class="done-actions"><button class="bigbtn dark" id="qAgain">Yeniden başla</button><button class="bigbtn light" data-go="words">Kelimelerime dön</button></div>
+    </section>
   </main>
 
   <!-- STATS -->
@@ -713,7 +796,7 @@ button, .cell { touch-action: manipulation; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.15", "date": "11 Eki 2026, 20:07"};
+const VERSION = {"n": "1.16", "date": "11 Eki 2026, 20:13"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
@@ -732,6 +815,9 @@ const KEY = 'cengel-app-v2';
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { S = {}; }
 S = Object.assign({ games: {}, done: {}, learned: {}, streak: { last: null, count: 0 }, cur: null, opts: { skip: true, jump: true } }, S);
+// older saves stored learned words as 1; give them the same shape as new ones
+for (const k of Object.keys(S.learned)) if (typeof S.learned[k] !== 'object') S.learned[k] = { at: null, lv: null, hard: false };
+S.review = S.review || {};
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
 /* ---------- helpers ---------- */
@@ -784,7 +870,7 @@ function streakNow() {
 }
 
 /* ---------- routing ---------- */
-const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings', 'signup', 'login'];
+const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings', 'signup', 'login', 'quiz'];
 let prevScreen = 'home';
 let screen = 'home';
 function show(name) {
@@ -794,9 +880,9 @@ function show(name) {
   if (screen === 'game' && name !== 'game') leaveGame();
   screen = name;
   SCREENS.forEach(s => $('s-' + s).hidden = s !== name);
-  const tab = { home: 'home', level: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings', signup: 'account', login: 'account' }[name];
+  const tab = { home: 'home', level: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings', signup: 'account', login: 'account', quiz: 'words' }[name];
   document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
-  $('bottomnav').hidden = ['game', 'done', 'signup', 'login'].includes(name);
+  $('bottomnav').hidden = ['game', 'done', 'signup', 'login', 'quiz'].includes(name);
   if (name === 'signup' || name === 'login') resetAuth(name);
   $('dTimerWrap').hidden = $('dPause').hidden = name !== 'game';
   if (name === 'home') renderHome();
@@ -861,18 +947,20 @@ $('wDots').addEventListener('click', e => { const b = e.target.closest('[data-i]
 })();
 // speech is optional: the button only shows where the browser can read English aloud
 if (!('speechSynthesis' in window)) $('wSay').hidden = true;
-$('wSay').addEventListener('click', () => {
+const CAN_SPEAK = 'speechSynthesis' in window;
+function speak(text, btn) {
   try {
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance($('wWord').textContent);
+    document.querySelectorAll('.say.on').forEach(b => b.classList.remove('on'));
+    const u = new SpeechSynthesisUtterance(text);
     u.lang = 'en-US'; u.rate = .85;
     const v = speechSynthesis.getVoices().find(v => /^en[-_]US/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
     if (v) u.voice = v;
-    u.onend = u.onerror = () => $('wSay').classList.remove('on');
-    $('wSay').classList.add('on');
+    if (btn) { btn.classList.add('on'); u.onend = u.onerror = () => btn.classList.remove('on'); }
     speechSynthesis.speak(u);
-  } catch (e) { $('wSay').classList.remove('on'); toast('Bu cihaz sesli okumayı desteklemiyor.'); }
-});
+  } catch (e) { if (btn) btn.classList.remove('on'); toast('Bu cihaz sesli okumayı desteklemiyor.'); }
+}
+$('wSay').addEventListener('click', () => speak($('wWord').textContent, $('wSay')));
 
 /* ---------- home ---------- */
 function renderHome() {
@@ -1091,7 +1179,8 @@ function solve(w) {
   const usedHint = w.cells.some(([r, c]) => hinted(r, c));
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
-  S.learned[w.answer] = 1;
+  const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
+  S.learned[w.answer] = { at: (prev && prev.at) || dayKey(), lv: (prev && prev.lv) || (G.meta.lv === 'D' ? null : G.meta.lv), hard: !!(prev && prev.hard) || usedHint || G.st.m[w.i] > 0 };
   bumpStreak();
 }
 
@@ -1360,15 +1449,114 @@ function resetAuth(name) {
 }
 
 /* words / stats / settings */
+/* words page: what you learned, filters, and a 10-question review */
+const SPK_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+let wFilter = 'all', wSort = 'new';
+const learnedList = () => Object.keys(S.learned);
+const reviewOf = w => S.review[w] || { ok: 0, bad: 0 };
+// a word needs review if it was hard and has not been answered right twice since, or if it is missed more than it is known
+const needsReview = w => { const r = reviewOf(w); return (S.learned[w].hard && r.ok < 2) || r.bad > r.ok; };
+const weekAgo = () => { const d = new Date(); d.setDate(d.getDate() - 6); return dayKey(d); };
+const lowerEn = w => w.toLowerCase();
+function wordRow(w, extra) {
+  const L = S.learned[w] || {};
+  const row = document.createElement('div'); row.className = 'wrow';
+  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
+  row.querySelector('.en').textContent = lowerEn(w);
+  row.querySelector('.trw').textContent = clue(w);
+  const b = row.querySelector('.say'); if (b) b.addEventListener('click', () => speak(lowerEn(w), b));
+  return row;
+}
 function renderWords() {
-  const all = Object.keys(S.learned).sort((a, b) => clue(a).localeCompare(clue(b), 'tr'));
-  $('wCount').textContent = `${all.length} kelime öğrendin`;
+  const all = learnedList();
+  const due = all.filter(needsReview), wk = weekAgo();
+  $('wCount').textContent = all.length ? `${all.length} kelime öğrendin` : 'Henüz kelime yok';
+  $('sumAll').textContent = all.length;
+  $('sumWeek').textContent = all.filter(w => S.learned[w].at && S.learned[w].at >= wk).length;
+  $('sumDue').textContent = due.length;
+  $('reviewGo').disabled = all.length < 4;
+  $('reviewSub').textContent = all.length < 4 ? `En az 4 kelime öğrenince açılır (${all.length}/4)` : `${Math.min(10, all.length)} soru · ${due.length ? 'zorlandıkların önce' : 'karışık'}`;
+  const levels = LEVELS.map(L => L.k).filter(k => all.some(w => S.learned[w].lv === k));
+  const chips = [['all', 'Tümü', all.length], ['due', 'Tekrar gereken', due.length], ...levels.map(k => [k, k, all.filter(w => S.learned[w].lv === k).length])];
+  if (!chips.some(c => c[0] === wFilter)) wFilter = 'all';
+  $('wChips').innerHTML = chips.map(([k, t, n]) => `<button role="radio" aria-checked="${k === wFilter}" data-f="${k}">${t}<span>${n}</span></button>`).join('');
+  $('wSort').querySelectorAll('[data-s]').forEach(b => b.setAttribute('aria-checked', b.dataset.s === wSort));
   const q = $('wSearch').value.trim().toLocaleLowerCase('tr');
-  const list = all.filter(w => !q || w.toLowerCase().includes(q.replace(/ı/g, 'i')) || clue(w).toLocaleLowerCase('tr').includes(q));
-  $('wList').innerHTML = list.length ? '' : `<p class="empty">${all.length ? 'Aramana uyan kelime yok.' : 'Henüz kelime yok. Bir bulmacada doğru bulduğun her kelime buraya eklenir.'}</p>`;
-  list.forEach(w => { const row = document.createElement('div'); row.innerHTML = `<span></span><b>${w}</b>`; row.firstChild.textContent = clue(w); $('wList').appendChild(row); });
+  let list = all.filter(w => wFilter === 'all' || (wFilter === 'due' ? needsReview(w) : S.learned[w].lv === wFilter));
+  if (q) list = list.filter(w => w.toLowerCase().includes(q.replace(/ı/g, 'i')) || clue(w).toLocaleLowerCase('tr').includes(q));
+  list.sort(wSort === 'az' ? (x, y) => x.localeCompare(y) : (x, y) => (S.learned[y].at || '').localeCompare(S.learned[x].at || '') || x.localeCompare(y));
+  $('wList').innerHTML = '';
+  if (!list.length) {
+    $('wList').innerHTML = `<p class="empty">${!all.length ? 'Bir bulmacada doğru bulduğun her kelime buraya eklenir. İlk bulmacanı çözünce burası dolmaya başlar.' : q ? 'Aramana uyan kelime yok.' : wFilter === 'due' ? 'Tekrar etmen gereken kelime yok. Harika!' : 'Bu filtrede kelime yok.'}</p>`;
+    return;
+  }
+  list.forEach(w => $('wList').appendChild(wordRow(w)));
 }
 $('wSearch').addEventListener('input', renderWords);
+$('wChips').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (b) { wFilter = b.dataset.f; renderWords(); } });
+$('wSort').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (b) { wSort = b.dataset.s; renderWords(); } });
+
+/* review quiz */
+let Q = null;
+function startQuiz() {
+  const all = learnedList();
+  if (all.length < 4) return;
+  const n = Math.min(10, all.length);
+  const picks = all.map(w => ({ w, k: (needsReview(w) ? 2 : 0) + Math.random() })).sort((x, y) => y.k - x.k).slice(0, n).map(x => x.w);
+  const pool = [...new Set([...all, ...Object.keys(DATA.clues)])];
+  Q = { items: picks.map(w => {
+    const wrong = pool.filter(x => x !== w && clue(x) !== clue(w)).sort(() => Math.random() - .5).slice(0, 3);
+    return { w, opts: [w, ...wrong].sort(() => Math.random() - .5), res: null };
+  }), i: 0 };
+  $('qBar').innerHTML = '<i></i>'.repeat(n);
+  $('qAsk').hidden = false; $('qDone').hidden = true;
+  show('quiz'); renderQuiz();
+}
+function renderQuiz() {
+  const it = Q.items[Q.i];
+  $('qSub').textContent = `${Q.i + 1} / ${Q.items.length}`;
+  [...$('qBar').children].forEach((b, k) => b.className = Q.items[k].res || (k === Q.i ? 'cur' : ''));
+  $('qWord').textContent = clue(it.w);
+  $('qOpts').innerHTML = it.opts.map((o, k) => `<button class="qopt" data-o="${o}" lang="en"><kbd>${k + 1}</kbd>${lowerEn(o)}</button>`).join('');
+  $('qFeedback').textContent = ''; $('qNext').hidden = true;
+}
+function answer(o) {
+  const it = Q.items[Q.i];
+  if (it.res) return;
+  const right = o === it.w;
+  it.res = right ? 'ok' : 'bad';
+  const r = S.review[it.w] = { ...reviewOf(it.w), last: dayKey() };
+  right ? r.ok++ : r.bad++;
+  persist();
+  $('qOpts').querySelectorAll('.qopt').forEach(b => { b.disabled = true; if (b.dataset.o === it.w) b.classList.add('ok'); else if (b.dataset.o === o) b.classList.add('bad'); });
+  $('qFeedback').textContent = right ? 'Doğru!' : `Doğrusu: ${lowerEn(it.w)}`;
+  [...$('qBar').children][Q.i].className = it.res;
+  $('qNext').hidden = false;
+  $('qNext').textContent = Q.i + 1 < Q.items.length ? 'Devam et' : 'Sonucu gör';
+  if (right && CAN_SPEAK) speak(lowerEn(it.w));
+}
+function nextQuestion() {
+  if (Q.i + 1 < Q.items.length) { Q.i++; renderQuiz(); return; }
+  const ok = Q.items.filter(x => x.res === 'ok').length, n = Q.items.length;
+  $('qAsk').hidden = true; $('qDone').hidden = false;
+  $('qSub').textContent = 'Bitti';
+  $('qScore').textContent = `${ok} / ${n}`;
+  $('qMsg').textContent = ok === n ? 'Hepsini bildin, harika!' : ok >= n * .7 ? 'Çok iyi gidiyorsun.' : 'Biraz daha tekrar iyi gelecek.';
+  const miss = Q.items.filter(x => x.res === 'bad');
+  $('qMissHead').hidden = $('qMiss').hidden = !miss.length;
+  $('qMiss').innerHTML = ''; miss.forEach(x => $('qMiss').appendChild(wordRow(x.w)));
+  if (ok === n) confetti();
+}
+$('reviewGo').addEventListener('click', startQuiz);
+$('qAgain').addEventListener('click', startQuiz);
+$('qOpts').addEventListener('click', e => { const b = e.target.closest('.qopt'); if (b) answer(b.dataset.o); });
+$('qNext').addEventListener('click', nextQuestion);
+document.addEventListener('keydown', e => {
+  if (screen !== 'quiz' || !Q || $('qAsk').hidden) return;
+  const k = +e.key;
+  if (k >= 1 && k <= 4) { const b = $('qOpts').children[k - 1]; if (b && !b.disabled) answer(b.dataset.o); }
+  else if (e.key === 'Enter' && !$('qNext').hidden) { e.preventDefault(); nextQuestion(); }
+});
 function renderStats() {
   const done = Object.values(S.done);
   const total = done.reduce((s, d) => s + d.score, 0);
@@ -1408,7 +1596,7 @@ function renderSettings() {
 $('optSkip').onclick = () => { S.opts.skip = !S.opts.skip; persist(); renderSettings(); };
 $('optJump').onclick = () => { S.opts.jump = !S.opts.jump; persist(); renderSettings(); };
 armed($('wipe'), 'Tüm ilerlemeyi sil', 'Emin misin? Geri alınamaz', () => {
-  S = { games: {}, done: {}, learned: {}, streak: { last: null, count: 0 }, cur: null, opts: S.opts };
+  S = { games: {}, done: {}, learned: {}, review: {}, streak: { last: null, count: 0 }, cur: null, opts: S.opts };
   persist(); toast('Tüm ilerleme silindi.');
 });
 
