@@ -31,6 +31,8 @@ body = (open('src/app.html', encoding='utf-8').read()
         .replace('/*DATA*/{}', json.dumps(d, ensure_ascii=False, separators=(',', ':')))
         .replace("/*VERSION*/{ n: 'geliştirme', date: '' }", json.dumps(version, ensure_ascii=False))
         .replace('/*WOTD*/[]', json.dumps(words, ensure_ascii=False, separators=(',', ':'))))
+import legacy  # fallbacks for older engines (tools/legacy.py)
+body = legacy.apply(body)
 args = [x for x in sys.argv[1:] if not x.startswith('--')]
 if args:
     open(args[0], 'w', encoding='utf-8').write(body)

@@ -592,12 +592,12 @@ html.native input { -webkit-user-select: text; user-select: text; }
 
 <script>
 /* Old-engine guard, written in plain ES5 on purpose so it still runs where the app's own code
-   cannot (e.g. Android 9 phones whose WebView was never updated). The app needs Chrome / WebView 105+. */
+   cannot (e.g. Android 9 phones whose WebView was never updated). The app needs Chrome / WebView 88+. */
 (function () {
   var ok = false;
   try {
-    ok = !!(window.CSS && CSS.supports('aspect-ratio: 1') && CSS.supports('width: 1cqw') &&
-      CSS.supports('color: color-mix(in srgb, red 50%, blue)'));
+    // aspect-ratio arrived in Chrome 88; newer CSS (color-mix, cqw, dvh) has fallbacks from tools/legacy.py
+    ok = !!(window.CSS && CSS.supports('aspect-ratio: 1'));
     if (ok) new Function('var a = {}; return a?.b ?? 1;');
   } catch (e) { ok = false; }
   if (ok) return;

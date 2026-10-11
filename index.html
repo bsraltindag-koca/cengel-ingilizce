@@ -20,6 +20,9 @@
 /* Layout: phone = stacked screens with a bottom tab bar, the game fills the viewport above an on-screen keyboard;
    desktop (≥960px) = top bar with tabs, game as grid card + side panel. */
 :root {
+  /* fallbacks for older engines, see tools/legacy.py */
+  --legacy-1: rgba(241, 242, 248, 0.600); --legacy-2: #e9e7fb; --legacy-3: #ffe7e4; --legacy-4: rgba(107, 111, 134, 0.550); --legacy-5: #d7d4f8; --legacy-6: #aea7f1; --legacy-7: #7d72e9; --legacy-8: #e9e7fb; --legacy-9: #e9e7fb;
+
   --bg: #f1f2f8;
   --surface: #ffffff;
   --ink: #141629;
@@ -53,7 +56,7 @@
   --f-clue: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme="light"]) { --legacy-1: rgba(14, 15, 28, 0.600); --legacy-2: #232346; --legacy-3: #3e2d39; --legacy-4: rgba(154, 158, 184, 0.550); --legacy-5: #2b295b; --legacy-6: #3e388c; --legacy-7: #544ac4; --legacy-8: #232346; --legacy-9: #232346;
     --bg: #0e0f1c; --surface: #191b2d; --ink: #eef0ff; --muted: #9a9eb8; --line: #2a2d45; --soft: #23263b;
     --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
     --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
@@ -63,7 +66,7 @@
     color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
+:root[data-theme="dark"] { --legacy-1: rgba(14, 15, 28, 0.600); --legacy-2: #232346; --legacy-3: #3e2d39; --legacy-4: rgba(154, 158, 184, 0.550); --legacy-5: #2b295b; --legacy-6: #3e388c; --legacy-7: #544ac4; --legacy-8: #232346; --legacy-9: #232346;
   --bg: #0e0f1c; --surface: #191b2d; --ink: #eef0ff; --muted: #9a9eb8; --line: #2a2d45; --soft: #23263b;
   --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
   --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
@@ -129,18 +132,18 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wotd .w-arrow { width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); background: var(--surface); }
 .wotd .w-arrow:disabled { opacity: .35; cursor: default; }
 .wotd .w-dots { display: flex; gap: 5px; align-items: center; }
-.wotd .w-dots button { width: 6px; height: 6px; border-radius: 99px; background: color-mix(in srgb, var(--amber-ink) 25%, transparent); transition: width .2s, background .2s; padding: 0; }
+.wotd .w-dots button { width: 6px; height: 6px; border-radius: 99px; background: rgba(20, 22, 41, 0.250); transition: width .2s, background .2s; padding: 0; } @supports (color: color-mix(in srgb, red 50%, blue)) { .wotd .w-dots button { background: color-mix(in srgb, var(--amber-ink) 25%, transparent); } }
 .wotd .w-dots button[aria-selected="true"] { width: 16px; background: var(--amber-ink); }
-.wotd .w-dots button.seen:not([aria-selected="true"]) { background: color-mix(in srgb, var(--amber-ink) 55%, transparent); }
+.wotd .w-dots button.seen:not([aria-selected="true"]) { background: rgba(20, 22, 41, 0.550); } @supports (color: color-mix(in srgb, red 50%, blue)) { .wotd .w-dots button.seen:not([aria-selected="true"]) { background: color-mix(in srgb, var(--amber-ink) 55%, transparent); } }
 .wotd .w-slide { display: grid; gap: 12px; }
 .wotd .w-slide.in-r { animation: wIn .24s ease both; --from: 28px; }
 .wotd .w-slide.in-l { animation: wIn .24s ease both; --from: -28px; }
 @keyframes wIn { from { opacity: 0; transform: translateX(var(--from)); } to { opacity: 1; transform: none; } }
 .wotd .w-word { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
 .wotd h3 { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; overflow-wrap: anywhere; }
-.wotd .ipa { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: color-mix(in srgb, var(--amber-ink) 70%, var(--ink)); font-weight: 600; font-size: 15px; }
+.wotd .ipa { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: #141629; font-weight: 600; font-size: 15px; } @supports (color: color-mix(in srgb, red 50%, blue)) { .wotd .ipa { color: color-mix(in srgb, var(--amber-ink) 70%, var(--ink)); } }
 .wotd .ipa .p { font-family: "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif; }
-.wotd .chip { --t: var(--primary); --ti: var(--primary); font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--t) 18%, var(--surface)); color: var(--ti); }
+.wotd .chip { --t: var(--primary); --ti: var(--primary); font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: var(--surface); color: var(--ti); } @supports (color: color-mix(in srgb, red 50%, blue)) { .wotd .chip { background: color-mix(in srgb, var(--t) 18%, var(--surface)); } }
 .wotd .chip[data-t="isim"] { --t: var(--sky); --ti: var(--sky-ink); }
 .wotd .chip[data-t="fiil"] { --t: var(--mint); --ti: var(--mint-ink); }
 .wotd .chip[data-t="sıfat"] { --t: var(--coral); --ti: var(--coral-ink); }
@@ -206,33 +209,33 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .g-main { display: flex; flex-direction: column; gap: 12px; }
 .g-title, .g-side, .g-main .segbar { display: none; }
 
-.grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: clamp(3px, 1vw, 7px); width: min(100%, max(250px, calc(100dvh - 470px))); margin: 0 auto; user-select: none; -webkit-user-select: none; }
+.grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: clamp(3px, 1vw, 7px); width: min(100%, max(250px, calc(100vh - 470px))); width: min(100%, max(250px, calc(100dvh - 470px))); margin: 0 auto; user-select: none; -webkit-user-select: none; }
 .cell { aspect-ratio: 1; border-radius: clamp(5px, 1.6vw, 10px); position: relative; container-type: inline-size; min-width: 0; }
 .cell.clue { background: var(--primary); color: #ffffff; display: grid; place-items: center; text-align: center; cursor: pointer; padding: 6% 8%; }
-.cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: break-word; }
+.cell.clue span { font: 700 clamp(7px, calc(20 * 0.115vw), 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: break-word; } @supports (width: 1cqw) { .cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); } }
 /* long single words shrink instead of being cut in the middle (ŞEKERLEME, KAZANMAK) */
-.cell.clue span.w7 { font-size: clamp(6.5px, 17cqw, 13px); }
-.cell.clue span.w8 { font-size: clamp(6px, 15cqw, 12px); }
-.cell.clue span.w9 { font-size: clamp(6px, 13.5cqw, 11px); }
-.cell.clue span.w10 { font-size: clamp(5.5px, 12cqw, 10.5px); }
-.cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
+.cell.clue span.w7 { font-size: clamp(6.5px, calc(17 * 0.115vw), 13px); font-size: clamp(6.5px, 17cqw, 13px); }
+.cell.clue span.w8 { font-size: clamp(6px, calc(15 * 0.115vw), 12px); font-size: clamp(6px, 15cqw, 12px); }
+.cell.clue span.w9 { font-size: clamp(6px, calc(13.5 * 0.115vw), 11px); font-size: clamp(6px, 13.5cqw, 11px); }
+.cell.clue span.w10 { font-size: clamp(5.5px, calc(12 * 0.115vw), 10.5px); font-size: clamp(5.5px, 12cqw, 10.5px); }
+.cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, calc(9 * 0.115vw), 8px) solid transparent; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
 .cell.clue.A::after { right: 3%; top: 50%; transform: translateY(-50%); border-left-color: var(--sun); border-right-width: 0; }
 .cell.clue.A { padding-right: 16%; }
 .cell.clue.D::after { bottom: 4%; left: 50%; transform: translateX(-50%); border-top-color: var(--sun); border-bottom-width: 0; }
 .cell.clue.D { padding-bottom: 18%; }
 .cell.clue.active { background: var(--strong); color: var(--on-strong); }
 .cell.letter { background: var(--surface); display: grid; place-items: center; cursor: pointer; font-weight: 800; line-height: 1; color: var(--ink); }
-.cell .ch { font-size: 50cqw; }
+.cell .ch { font-size: calc(50 * 0.115vw); font-size: 50cqw; }
 .cell.letter.inword { background: var(--peach); }
-.cell.letter.sel { background: var(--sun); box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; color: #141629; }
+.cell.letter.sel { background: var(--sun); box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.115vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; color: #141629; }
 .cell.letter.ok { background: var(--good-bg); color: var(--good); }
 .cell.letter.bad { background: var(--bad-bg); color: var(--bad); }
 .cell.letter.hint { color: var(--hint); }
-.cell.letter.ok.sel, .cell.letter.bad.sel { box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
-.cell .mk { position: absolute; top: 6%; right: 8%; font-size: 20cqw; font-weight: 800; }
+.cell.letter.ok.sel, .cell.letter.bad.sel { box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.115vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
+.cell .mk { position: absolute; top: 6%; right: 8%; font-size: calc(20 * 0.115vw); font-size: 20cqw; font-weight: 800; }
 .cell.ok .mk::after { content: "✓"; color: var(--good); }
 .cell.bad .mk::after { content: "✕"; color: var(--bad); }
-.cell.hint:not(.ok) .mk::after { content: ""; display: block; width: 11cqw; height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: 4cqw; }
+.cell.hint:not(.ok) .mk::after { content: ""; display: block; width: calc(11 * 0.115vw); width: 11cqw; height: calc(11 * 0.115vw); height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: calc(4 * 0.115vw); margin-top: 4cqw; }
 .cell.blank { background: transparent; }
 
 .g-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: auto; }
@@ -274,7 +277,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .lists button b { color: var(--good); font-weight: 800; }
 
 /* pause / modal / done */
-.overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 16px; background: color-mix(in srgb, var(--bg) 60%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 16px; background: var(--legacy-1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } @supports (color: color-mix(in srgb, red 50%, blue)) { /* pause / modal / done */
+.overlay { background: color-mix(in srgb, var(--bg) 60%, transparent); } }
 .sheet { background: var(--surface); border-radius: 26px; padding: 24px; width: 100%; max-width: 400px; display: grid; gap: 12px; box-shadow: var(--shadow); }
 .sheet h2 { font-size: 26px; font-weight: 800; }
 .sheet p, .sheet li { color: var(--muted); font-weight: 600; line-height: 1.5; }
@@ -341,8 +345,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wrow .en { font-weight: 800; font-size: 18px; display: block; }
 .wrow .trw { color: var(--muted); font-weight: 600; font-size: 14px; display: block; }
 .wrow .tags { display: flex; gap: 6px; flex: none; }
-.tagc { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
-.tagc.hard { background: color-mix(in srgb, var(--coral) 16%, var(--surface)); color: var(--coral-ink); }
+.tagc { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: var(--legacy-2); color: var(--primary); } @supports (color: color-mix(in srgb, red 50%, blue)) { .tagc { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); } }
+.tagc.hard { background: var(--legacy-3); color: var(--coral-ink); } @supports (color: color-mix(in srgb, red 50%, blue)) { .tagc.hard { background: color-mix(in srgb, var(--coral) 16%, var(--surface)); } }
 .tagc.err { background: var(--bad-bg); color: var(--bad); }
 .wrow .say { width: 38px; height: 38px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; flex: none; }
 .wrow .say.on { background: var(--primary); color: var(--on-primary); }
@@ -401,10 +405,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cal .dh { text-align: center; font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: .04em; padding-bottom: 2px; }
 .cal .d { aspect-ratio: 1; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--soft); font-variant-numeric: tabular-nums; outline: none; }
 .cal .d.pad { background: transparent; }
-.cal .d.future { background: transparent; color: color-mix(in srgb, var(--muted) 55%, transparent); }
-.l1 { background: color-mix(in srgb, var(--primary) 22%, var(--surface)) !important; }
-.l2 { background: color-mix(in srgb, var(--primary) 45%, var(--surface)) !important; }
-.l3 { background: color-mix(in srgb, var(--primary) 72%, var(--surface)) !important; }
+.cal .d.future { background: transparent; color: var(--legacy-4); } @supports (color: color-mix(in srgb, red 50%, blue)) { .cal .d.future { color: color-mix(in srgb, var(--muted) 55%, transparent); } }
+.l1 { background: var(--legacy-5) !important; } @supports (color: color-mix(in srgb, red 50%, blue)) { .l1 { background: color-mix(in srgb, var(--primary) 22%, var(--surface)) !important; } }
+.l2 { background: var(--legacy-6) !important; } @supports (color: color-mix(in srgb, red 50%, blue)) { .l2 { background: color-mix(in srgb, var(--primary) 45%, var(--surface)) !important; } }
+.l3 { background: var(--legacy-7) !important; } @supports (color: color-mix(in srgb, red 50%, blue)) { .l3 { background: color-mix(in srgb, var(--primary) 72%, var(--surface)) !important; } }
 .l4 { background: var(--primary) !important; }
 .cal .d.l1, .cal .d.l2 { color: var(--ink); }
 .cal .d.l3, .cal .d.l4 { color: var(--on-primary); }
@@ -420,7 +424,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* badges */
 .badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .badge { background: var(--surface); border-radius: 18px; padding: 14px 10px; display: grid; justify-items: center; gap: 6px; text-align: center; box-shadow: var(--shadow); min-width: 0; }
-.badge .ico { --c: var(--primary); width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 18%, var(--surface)); color: var(--c); }
+.badge .ico { --c: var(--primary); width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: var(--surface); color: var(--c); } @supports (color: color-mix(in srgb, red 50%, blue)) { .badge .ico { background: color-mix(in srgb, var(--c) 18%, var(--surface)); } }
 .badge[data-c="mint"] .ico { --c: var(--mint-ink); }
 .badge[data-c="sky"] .ico { --c: var(--sky-ink); }
 .badge[data-c="sun"] .ico { --c: var(--amber-ink); }
@@ -435,7 +439,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* weak spots */
 .weak { padding: 18px 20px 20px; display: grid; gap: 12px; }
 .acc { display: flex; align-items: center; gap: 14px; }
-.accnum { width: 64px; height: 64px; border-radius: 18px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); display: grid; place-items: center; font-weight: 800; font-size: 20px; flex: none; font-variant-numeric: tabular-nums; }
+.accnum { width: 64px; height: 64px; border-radius: 18px; background: var(--legacy-8); color: var(--primary); display: grid; place-items: center; font-weight: 800; font-size: 20px; flex: none; font-variant-numeric: tabular-nums; } @supports (color: color-mix(in srgb, red 50%, blue)) { .accnum { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); } }
 .acc b { display: block; font-weight: 800; }
 .acc small { color: var(--muted); font-weight: 600; }
 .wrows.flat { box-shadow: none; padding: 0; background: transparent; }
@@ -549,7 +553,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 .chips button { height: 56px; border-radius: 14px; background: var(--bg); border: 1.5px solid var(--line); display: grid; place-items: center; align-content: center; gap: 2px; line-height: 1; }
 .chips button b { font-size: 17px; font-weight: 800; color: var(--primary); }
 .chips button small { font-size: 11px; font-weight: 700; color: var(--muted); }
-.chips button[aria-checked="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, var(--surface)); }
+.chips button[aria-checked="true"] { border-color: var(--primary); background: var(--legacy-9); } @supports (color: color-mix(in srgb, red 50%, blue)) { .chips button[aria-checked="true"] { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); } }
 .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; font-size: 14px; color: var(--muted); line-height: 1.45; cursor: pointer; }
 .check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--primary); flex: none; }
 .check.err { color: var(--bad); }
@@ -609,12 +613,12 @@ html.native input { -webkit-user-select: text; user-select: text; }
 
 <script>
 /* Old-engine guard, written in plain ES5 on purpose so it still runs where the app's own code
-   cannot (e.g. Android 9 phones whose WebView was never updated). The app needs Chrome / WebView 105+. */
+   cannot (e.g. Android 9 phones whose WebView was never updated). The app needs Chrome / WebView 88+. */
 (function () {
   var ok = false;
   try {
-    ok = !!(window.CSS && CSS.supports('aspect-ratio: 1') && CSS.supports('width: 1cqw') &&
-      CSS.supports('color: color-mix(in srgb, red 50%, blue)'));
+    // aspect-ratio arrived in Chrome 88; newer CSS (color-mix, cqw, dvh) has fallbacks from tools/legacy.py
+    ok = !!(window.CSS && CSS.supports('aspect-ratio: 1'));
     if (ok) new Function('var a = {}; return a?.b ?? 1;');
   } catch (e) { ok = false; }
   if (ok) return;
@@ -949,7 +953,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.28", "date": "11 Eki 2026, 21:41"};
+const VERSION = {"n": "1.29", "date": "11 Eki 2026, 21:58"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
