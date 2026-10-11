@@ -368,6 +368,69 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .empty { padding: 28px 20px; text-align: center; color: var(--muted); font-weight: 600; line-height: 1.5; }
 .statgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .statgrid .stat b { font-size: 30px; }
+.chartcard { padding: 18px 20px 20px; display: grid; gap: 14px; }
+.chead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.chead h2 { font-size: 18px; font-weight: 800; }
+.chead p { margin: 0; color: var(--muted); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.plot { position: relative; }
+.tip { position: absolute; z-index: 2; transform: translate(-50%, calc(-100% - 8px)); background: var(--strong); color: var(--on-strong); font-weight: 700; font-size: 13px; padding: 6px 10px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-variant-numeric: tabular-nums; }
+/* weekly bars: one series, one hue; value labels only on the best day and today */
+.wbars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; height: 150px; align-items: end; border-bottom: 1px solid var(--line); }
+.wcol { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; cursor: default; outline: none; position: relative; }
+.wcol::before { content: ""; position: absolute; inset: 0 -5px; }
+.wcol .v { font-size: 12px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; min-height: 14px; }
+.wcol .b { width: min(26px, 100%); background: var(--primary); border-radius: 4px 4px 0 0; min-height: 2px; }
+.wcol .b.zero { background: var(--line); }
+.wcol:hover .b, .wcol:focus-visible .b { filter: brightness(1.12); }
+.wcol:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+.wdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 6px; }
+.wdays span { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+.wdays span.today { color: var(--ink); font-weight: 800; }
+/* month calendar: sequential, one hue light -> dark */
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal .dh { text-align: center; font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: .04em; padding-bottom: 2px; }
+.cal .d { aspect-ratio: 1; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--soft); font-variant-numeric: tabular-nums; outline: none; }
+.cal .d.pad { background: transparent; }
+.cal .d.future { background: transparent; color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.l1 { background: color-mix(in srgb, var(--primary) 22%, var(--surface)) !important; }
+.l2 { background: color-mix(in srgb, var(--primary) 45%, var(--surface)) !important; }
+.l3 { background: color-mix(in srgb, var(--primary) 72%, var(--surface)) !important; }
+.l4 { background: var(--primary) !important; }
+.cal .d.l1, .cal .d.l2 { color: var(--ink); }
+.cal .d.l3, .cal .d.l4 { color: var(--on-primary); }
+.cal .d.today { box-shadow: inset 0 0 0 2px var(--ink); }
+.cal .d:focus-visible { box-shadow: inset 0 0 0 2px var(--primary); }
+.calkey { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.calkey i { width: 14px; height: 14px; border-radius: 4px; }
+.calkey span { margin: 0 4px; }
+/* records */
+.records { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.records .stat b { font-size: 26px; }
+.records .stat small:last-child { margin-top: 2px; font-weight: 600; }
+/* badges */
+.badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.badge { background: var(--surface); border-radius: 18px; padding: 14px 10px; display: grid; justify-items: center; gap: 6px; text-align: center; box-shadow: var(--shadow); min-width: 0; }
+.badge .ico { --c: var(--primary); width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 18%, var(--surface)); color: var(--c); }
+.badge[data-c="mint"] .ico { --c: var(--mint-ink); }
+.badge[data-c="sky"] .ico { --c: var(--sky-ink); }
+.badge[data-c="sun"] .ico { --c: var(--amber-ink); }
+.badge[data-c="coral"] .ico { --c: var(--coral-ink); }
+.badge b { font-size: 13px; font-weight: 800; line-height: 1.2; }
+.badge small { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.3; }
+.badge.locked { background: var(--soft); box-shadow: none; }
+.badge.locked .ico { background: var(--surface); color: var(--muted); }
+.badge.locked b { color: var(--muted); }
+.badge .pb { width: 70%; height: 4px; border-radius: 9px; background: var(--surface); overflow: hidden; }
+.badge .pb i { display: block; height: 100%; background: var(--muted); }
+/* weak spots */
+.weak { padding: 18px 20px 20px; display: grid; gap: 12px; }
+.acc { display: flex; align-items: center; gap: 14px; }
+.accnum { width: 64px; height: 64px; border-radius: 18px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); display: grid; place-items: center; font-weight: 800; font-size: 20px; flex: none; font-variant-numeric: tabular-nums; }
+.acc b { display: block; font-weight: 800; }
+.acc small { color: var(--muted); font-weight: 600; }
+.wrows.flat { box-shadow: none; padding: 0; background: transparent; }
+.newrec { margin-top: 10px; background: var(--sun); color: #141629; font-weight: 800; font-size: 14px; padding: 8px 14px; border-radius: 999px; }
+@media (min-width: 960px) { .badges { grid-template-columns: repeat(4, 1fr); } .records { grid-template-columns: repeat(4, 1fr); } }
 .lvbars { display: grid; gap: 14px; padding: 18px 20px; }
 .lvbars div { display: grid; grid-template-columns: 40px 1fr 56px; align-items: center; gap: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .lvbars span:last-child { text-align: right; color: var(--muted); }
@@ -648,6 +711,7 @@ button, .cell { touch-action: manipulation; }
       <p id="doneSub">Seviye A1 · Bulmaca 1</p>
       <div class="pts" id="donePts">0</div>
       <div class="eyebrow">Puan</div>
+      <div class="newrec" id="doneRecord" hidden></div>
     </div>
     <div class="done-body">
       <div class="tri">
@@ -752,6 +816,33 @@ button, .cell { touch-action: manipulation; }
   <main class="screen" id="s-stats" hidden>
     <div class="hello"><div><small>Senin rakamların</small><h1>İstatistik</h1></div></div>
     <div class="statgrid" id="statGrid"></div>
+
+    <section class="card chartcard" aria-labelledby="wkTitle">
+      <div class="chead"><h2 id="wkTitle">Son 7 gün</h2><p id="wkSub">0 kelime öğrendin</p></div>
+      <div class="plot" id="wkPlot"><div class="tip" id="wkTip" hidden></div><div class="wbars" id="wkBars" role="list"></div></div>
+    </section>
+
+    <section class="card chartcard" aria-labelledby="calTitle">
+      <div class="chead"><h2 id="calTitle">Ekim 2026</h2><p id="calSub">0 gün oynadın</p></div>
+      <div class="plot" id="calPlot"><div class="tip" id="calTip" hidden></div>
+        <div class="cal" id="cal" role="grid"></div>
+      </div>
+      <div class="calkey" aria-hidden="true"><span>Az</span><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>Çok</span></div>
+    </section>
+
+    <div class="sec-head"><h2>Rekorlar</h2></div>
+    <div class="records" id="records"></div>
+
+    <div class="sec-head"><h2>Rozetler</h2><span class="muted" id="badgeCount">0 / 12</span></div>
+    <div class="badges" id="badges"></div>
+
+    <div class="sec-head"><h2>Zayıf noktalar</h2></div>
+    <section class="card weak">
+      <div class="acc"><div class="accnum" id="accNum">%0</div><div><b>Tekrar et başarın</b><small id="accSub">Henüz test çözmedin</small></div></div>
+      <div class="wrows flat" id="weakList"></div>
+      <button class="bigbtn dark" id="weakGo">Bunları tekrar et</button>
+    </section>
+
     <div class="sec-head"><h2>Seviyelere göre</h2></div>
     <div class="card lvbars" id="lvBars"></div>
   </main>
@@ -808,7 +899,7 @@ button, .cell { touch-action: manipulation; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.20", "date": "11 Eki 2026, 20:35"};
+const VERSION = {"n": "1.21", "date": "11 Eki 2026, 20:42"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
@@ -830,6 +921,15 @@ S = Object.assign({ games: {}, done: {}, learned: {}, streak: { last: null, coun
 // older saves stored learned words as 1; give them the same shape as new ones
 for (const k of Object.keys(S.learned)) if (typeof S.learned[k] !== 'object') S.learned[k] = { at: null, lv: null, hard: false };
 S.review = S.review || {};
+S.rec = S.rec || {};
+// daily activity: { 'YYYY-MM-DD': { w: words learned, p: puzzles finished } }; older saves are filled in once from what they already have
+if (!S.activity) {
+  S.activity = {};
+  for (const k of Object.keys(S.learned)) { const at = S.learned[k].at; if (at) (S.activity[at] = S.activity[at] || { w: 0, p: 0 }).w++; }
+  for (const d of Object.values(S.done)) if (d.at) (S.activity[d.at] = S.activity[d.at] || { w: 0, p: 0 }).p++;
+}
+S.streak.best = Math.max(S.streak.best || 0, S.streak.count || 0);
+const act = () => (S.activity[dayKey()] = S.activity[dayKey()] || { w: 0, p: 0 });
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
 /* ---------- helpers ---------- */
@@ -875,6 +975,7 @@ function bumpStreak() {
   if (S.streak.last === today) return;
   S.streak.count = S.streak.last === dayKey(y) ? S.streak.count + 1 : 1;
   S.streak.last = today;
+  S.streak.best = Math.max(S.streak.best || 0, S.streak.count);
 }
 function streakNow() {
   const y = new Date(); y.setDate(y.getDate() - 1);
@@ -1193,6 +1294,7 @@ function solve(w) {
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
+  if (!S.learned[w.answer]) act().w++;
   S.learned[w.answer] = { at: (prev && prev.at) || dayKey(), lv: (prev && prev.lv) || (G.meta.lv === 'D' ? null : G.meta.lv), hard: !!(prev && prev.hard) || usedHint || G.st.m[w.i] > 0, miss: ((prev && prev.miss) || 0) + (G.st.m[w.i] || 0) };
   bumpStreak();
 }
@@ -1363,7 +1465,13 @@ function finish() {
   const bonus = Math.max(0, 200 - Math.floor(st.sec / 3));
   st.score += bonus;
   const first = G.words.filter(w => !st.m[w.i] && !st.hw.includes(w.i)).length;
+  const before = Object.entries(S.done).filter(([k]) => k !== G.id).map(([, d]) => d);
+  const recs = [];
+  if (before.length && st.score > Math.max(...before.map(d => d.score))) recs.push('en yüksek puan');
+  if (before.length && st.sec < Math.min(...before.map(d => d.sec))) recs.push('en hızlı bulmaca');
+  G.newRecord = recs.length ? `Yeni rekor: ${recs.join(' ve ')}!` : '';
   S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey() };
+  act().p++;
   bumpStreak(); persist();
   setTimeout(() => { renderDone(false); show('done'); confetti(); }, 450);
 }
@@ -1373,6 +1481,7 @@ function renderDone(all) {
   const st = G.st, d = S.done[G.id];
   $('doneSub').textContent = G.meta.lv === 'D' ? `Günün bulmacası · ${G.meta.sub}` : `${G.meta.sub} · ${G.meta.title}`;
   $('donePts').textContent = d.score;
+  $('doneRecord').textContent = G.newRecord || ''; $('doneRecord').hidden = !G.newRecord;
   $('doneTime').textContent = fmt(d.sec);
   $('doneFirst').textContent = `${d.first} / 24`;
   $('doneHints').textContent = d.hints;
@@ -1478,7 +1587,7 @@ const errCount = w => ((S.learned[w] && S.learned[w].miss) || 0) + reviewOf(w).b
 function wordRow(w, extra) {
   const L = S.learned[w] || {};
   const row = document.createElement('div'); row.className = 'wrow';
-  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${screen === 'words' && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
+  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${(screen === 'words' || screen === 'stats') && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
   row.querySelector('.en').textContent = lowerEn(w);
   row.querySelector('.trw').textContent = clue(w);
   const b = row.querySelector('.say'); if (b) b.addEventListener('click', () => speak(lowerEn(w), b));
@@ -1517,11 +1626,12 @@ $('wSort').addEventListener('change', e => { wSort = e.target.value; renderWords
 
 /* review quiz */
 let Q = null;
-function startQuiz() {
+function startQuiz(only) {
   const all = learnedList();
-  if (all.length < 4) return;
-  const n = Math.min(10, all.length);
-  const picks = all.map(w => ({ w, k: (needsReview(w) ? 2 : 0) + Math.random() })).sort((x, y) => y.k - x.k).slice(0, n).map(x => x.w);
+  const subset = Array.isArray(only) && only.length ? only : null;
+  if (!subset && all.length < 4) return;
+  const n = subset ? subset.length : Math.min(10, all.length);
+  const picks = subset ? subset.slice().sort(() => Math.random() - .5) : all.map(w => ({ w, k: (needsReview(w) ? 2 : 0) + Math.random() })).sort((x, y) => y.k - x.k).slice(0, n).map(x => x.w);
   const pool = [...new Set([...all, ...Object.keys(DATA.clues)])];
   Q = { items: picks.map(w => {
     const wrong = pool.filter(x => x !== w && clue(x) !== clue(w)).sort(() => Math.random() - .5).slice(0, 3);
@@ -1565,6 +1675,7 @@ function nextQuestion() {
   $('qMissHead').hidden = $('qMiss').hidden = !miss.length;
   $('qMiss').innerHTML = ''; miss.forEach(x => $('qMiss').appendChild(wordRow(x.w)));
   if (ok === n) confetti();
+  if (ok === n && n >= 10) { S.rec.perfectQuiz = true; persist(); }
 }
 // mute for the review only; the choice is remembered
 function renderMute() {
@@ -1579,8 +1690,8 @@ $('qMute').addEventListener('click', () => {
   toast(S.opts.quizMute ? 'Ses kapatıldı' : 'Ses açıldı');
 });
 renderMute();
-$('reviewGo').addEventListener('click', startQuiz);
-$('qAgain').addEventListener('click', startQuiz);
+$('reviewGo').addEventListener('click', () => startQuiz());
+$('qAgain').addEventListener('click', () => startQuiz());
 $('qOpts').addEventListener('click', e => { const b = e.target.closest('.qopt'); if (b) answer(b.dataset.o); });
 $('qNext').addEventListener('click', nextQuestion);
 document.addEventListener('keydown', e => {
@@ -1589,13 +1700,101 @@ document.addEventListener('keydown', e => {
   if (k >= 1 && k <= 4) { const b = $('qOpts').children[k - 1]; if (b && !b.disabled) answer(b.dataset.o); }
   else if (e.key === 'Enter' && !$('qNext').hidden) { e.preventDefault(); nextQuestion(); }
 });
+const ICONS = {"flag": "<path d=\"M5 21V4M5 4h11l-2 4 2 4H5\"/>", "star": "<path d=\"M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z\"/>", "bulb": "<path d=\"M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z\"/>", "bolt": "<path d=\"M13 2.5L5 13.5h6l-1 8 8-11h-6z\"/>", "flame": "<path d=\"M12 21a6 6 0 0 0 6-6c0-4-3-6-4.5-9.5C12.5 8 11 9 10.5 11 9.5 9.5 9 8.5 9 7.5 7 9.5 6 12 6 15a6 6 0 0 0 6 6z\"/>", "book": "<rect x=\"5\" y=\"4\" width=\"14\" height=\"16\" rx=\"1.5\"/><path d=\"M9.5 4v16\"/>", "crown": "<path d=\"M4 18h16M5 18L3.5 8l5 4L12 5l3.5 7 5-4L19 18\"/>", "loop": "<path d=\"M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7\"/>", "grid": "<rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/>"};
+const icon = n => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+const DAY_SHORT = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+const MONTH_LONG = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+const MONTH_SHORT = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+const actOf = k => S.activity[k] || { w: 0, p: 0 };
+const level = w => w >= 20 ? 4 : w >= 10 ? 3 : w >= 5 ? 2 : w >= 1 ? 1 : 0;
+function badgeList() {
+  const done = Object.values(S.done), words = Object.keys(S.learned).length, best = S.streak.best || 0;
+  const maxLevel = Math.max(0, ...LEVELS.map(L => solvedIn(L.k)));
+  return [
+    ['first', 'İlk bulmaca', 'Bir bulmaca bitir', 'flag', 'primary', done.length, 1],
+    ['ten', '10 bulmaca', '10 bulmaca bitir', 'grid', 'sky', done.length, 10],
+    ['flawless', 'Hatasız', '24 kelimeyi de ilk denemede bul', 'star', 'sun', done.filter(d => d.first === 24).length, 1],
+    ['nohint', 'İpucusuz', 'İpucu almadan bir bulmaca bitir', 'bulb', 'mint', done.filter(d => !d.hints).length, 1],
+    ['fast', 'Şimşek', 'Bir bulmacayı 5 dakikadan kısa sürede bitir', 'bolt', 'coral', done.filter(d => d.sec < 300).length, 1],
+    ['s3', '3 gün seri', '3 gün üst üste oyna', 'flame', 'coral', best, 3],
+    ['s7', '7 gün seri', '7 gün üst üste oyna', 'flame', 'sun', best, 7],
+    ['w50', '50 kelime', '50 kelime öğren', 'book', 'mint', words, 50],
+    ['w100', '100 kelime', '100 kelime öğren', 'book', 'sky', words, 100],
+    ['w200', '200 kelime', '200 kelime öğren', 'book', 'primary', words, 200],
+    ['master', 'Seviye ustası', 'Bir seviyedeki 12 bulmacanın hepsini bitir', 'crown', 'sun', maxLevel, 12],
+    ['quiz', 'Kusursuz tekrar', 'Tekrar et testinde 10 / 10 yap', 'loop', 'mint', S.rec.perfectQuiz ? 1 : 0, 1],
+  ].map(([id, name, desc, ic, c, cur, goal]) => ({ id, name, desc, ic, c, cur: Math.min(cur, goal), goal, got: cur >= goal }));
+}
+function hoverTips(plot, tip) {
+  const show = el => {
+    const r = el.getBoundingClientRect(), pr = plot.getBoundingClientRect();
+    tip.textContent = el.dataset.tip; tip.hidden = false;
+    tip.style.left = Math.min(Math.max(r.left + r.width / 2 - pr.left, 60), pr.width - 60) + 'px';
+    tip.style.top = (r.top - pr.top) + 'px';
+  };
+  plot.onpointerover = e => { const el = e.target.closest('[data-tip]'); if (el) show(el); };
+  plot.onpointerleave = () => { tip.hidden = true; };
+  plot.onfocusin = e => { const el = e.target.closest('[data-tip]'); if (el) show(el); };
+  plot.onfocusout = () => { tip.hidden = true; };
+}
 function renderStats() {
-  const done = Object.values(S.done);
-  const total = done.reduce((s, d) => s + d.score, 0);
-  const best = done.length ? Math.min(...done.map(d => d.sec)) : null;
-  const firstRate = done.length ? Math.round(done.reduce((s, d) => s + d.first, 0) / (done.length * 24) * 100) : 0;
-  const tiles = [['Çözülen bulmaca', done.length], ['Toplam puan', total], ['Gün serisi', streakNow()], ['En iyi süre', best == null ? '—' : fmt(best)], ['Öğrenilen kelime', Object.keys(S.learned).length], ['İlk denemede', done.length ? `%${firstRate}` : '—']];
+  const done = Object.values(S.done), now = new Date(), today = dayKey(now);
+  const tiles = [['Çözülen bulmaca', done.length], ['Öğrenilen kelime', Object.keys(S.learned).length], ['Toplam puan', done.reduce((s, d) => s + d.score, 0)], ['Gün serisi', streakNow()]];
   $('statGrid').innerHTML = tiles.map(([k, v]) => `<div class="stat"><small>${k}</small><b>${v}</b></div>`).join('');
+
+  // last 7 days
+  const days = [...Array(7)].map((_, i) => { const d = new Date(now); d.setDate(d.getDate() - 6 + i); return d; });
+  const vals = days.map(d => actOf(dayKey(d)).w), max = Math.max(...vals), top = Math.max(max, 5);
+  const bestI = max ? vals.lastIndexOf(max) : -1;
+  $('wkSub').textContent = `${vals.reduce((s, v) => s + v, 0)} kelime öğrendin`;
+  $('wkBars').innerHTML = days.map((d, i) => {
+    const v = vals[i], p = actOf(dayKey(d)).p, lab = i === 6 || i === bestI;
+    const tip = `${d.getDate()} ${MONTH_SHORT[d.getMonth()]}: ${v} kelime${p ? `, ${p} bulmaca` : ''}`;
+    return `<div class="wcol" role="listitem" tabindex="0" data-tip="${tip}" aria-label="${tip}"><span class="v">${lab && v ? v : ''}</span><div class="b${v ? '' : ' zero'}" style="height:${v ? Math.max(4, v / top * 120) : 2}px"></div></div>`;
+  }).join('');
+  $('wkPlot').querySelector('.wdays')?.remove();
+  $('wkPlot').insertAdjacentHTML('beforeend', `<div class="wdays">${days.map((d, i) => `<span class="${i === 6 ? 'today' : ''}">${i === 6 ? 'Bugün' : DAY_SHORT[d.getDay()]}</span>`).join('')}</div>`);
+  hoverTips($('wkPlot'), $('wkTip'));
+
+  // this month
+  const y = now.getFullYear(), m = now.getMonth(), first = new Date(y, m, 1), nDays = new Date(y, m + 1, 0).getDate();
+  const lead = (first.getDay() + 6) % 7;
+  let played = 0, cells = ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pz'].map(t => `<div class="dh">${t}</div>`).join('') + '<div class="d pad"></div>'.repeat(lead);
+  for (let dd = 1; dd <= nDays; dd++) {
+    const k = dayKey(new Date(y, m, dd)), A = actOf(k), lv = level(A.w);
+    if (A.w || A.p) played++;
+    const future = k > today;
+    const tip = `${dd} ${MONTH_SHORT[m]}: ${future ? 'henüz gelmedi' : A.w || A.p ? `${A.w} kelime${A.p ? `, ${A.p} bulmaca` : ''}` : 'oynanmadı'}`;
+    cells += `<div class="d${lv ? ' l' + lv : ''}${k === today ? ' today' : ''}${future ? ' future' : ''}" role="gridcell" tabindex="${future ? -1 : 0}" data-tip="${tip}" aria-label="${tip}">${dd}</div>`;
+  }
+  $('calTitle').textContent = `${MONTH_LONG[m]} ${y}`;
+  $('calSub').textContent = played ? `${played} gün oynadın · en uzun seri ${S.streak.best || 0} gün` : 'Bu ay henüz oynamadın';
+  $('cal').innerHTML = cells;
+  hoverTips($('calPlot'), $('calTip'));
+
+  // records
+  const by = (f, pick) => done.length ? pick(...done.map(f)) : null;
+  const bestScore = by(d => d.score, Math.max), fastest = by(d => d.sec, Math.min);
+  const recs = [['En yüksek puan', bestScore ?? '—', 'tek bulmacada'], ['En hızlı bulmaca', fastest == null ? '—' : fmt(fastest), 'dakika:saniye'], ['En uzun seri', `${S.streak.best || 0} gün`, 'üst üste oynanan'], ['Hatasız bulmaca', done.filter(d => d.first === 24).length, '24 / 24 ilk denemede']];
+  $('records').innerHTML = recs.map(([k, v, s]) => `<div class="stat"><small>${k}</small><b>${v}</b><small>${s}</small></div>`).join('');
+
+  // badges
+  const bl = badgeList();
+  $('badgeCount').textContent = `${bl.filter(b => b.got).length} / ${bl.length}`;
+  $('badges').innerHTML = bl.map(b => `<div class="badge${b.got ? '' : ' locked'}" data-c="${b.c}" title="${b.desc}"><div class="ico">${icon(b.ic)}</div><b>${b.name}</b>${b.got ? `<small>${b.desc}</small>` : `<div class="pb"><i style="width:${b.cur / b.goal * 100}%"></i></div><small>${b.goal > 1 ? `${b.cur} / ${b.goal} · ` : ''}${b.desc}</small>`}</div>`).join('');
+
+  // weak spots
+  const rv = Object.values(S.review), ok = rv.reduce((s, r) => s + r.ok, 0), bad = rv.reduce((s, r) => s + r.bad, 0);
+  $('accNum').textContent = ok + bad ? `%${Math.round(ok / (ok + bad) * 100)}` : '—';
+  $('accSub').textContent = ok + bad ? `${ok + bad} cevaptan ${ok} doğru` : 'Henüz test çözmedin';
+  const weak = learnedList().filter(w => errCount(w) || needsReview(w)).sort((x, y) => errCount(y) - errCount(x) || (S.learned[y].hard - S.learned[x].hard) || x.localeCompare(y)).slice(0, 5);
+  $('weakList').innerHTML = weak.length ? '' : '<p class="empty">Zorlandığın kelime yok. Böyle devam!</p>';
+  const prevSort = wSort; wSort = 'err';
+  weak.forEach(w => $('weakList').appendChild(wordRow(w)));
+  wSort = prevSort;
+  $('weakGo').hidden = !weak.length;
+  $('weakGo').onclick = () => startQuiz(weak);
+
   $('lvBars').innerHTML = LEVELS.map(L => { const n = solvedIn(L.k), t = DATA.levels[L.k].length; return `<div><span>${L.k}</span><div class="bar"><i style="width:${n / t * 100}%"></i></div><span>${n}/${t}</span></div>`; }).join('');
 }
 /* theme: '' follows the device, 'light' / 'dark' is the player's own choice */
@@ -1628,7 +1827,7 @@ function renderSettings() {
 $('optSkip').onclick = () => { S.opts.skip = !S.opts.skip; persist(); renderSettings(); };
 $('optJump').onclick = () => { S.opts.jump = !S.opts.jump; persist(); renderSettings(); };
 armed($('wipe'), 'Tüm ilerlemeyi sil', 'Emin misin? Geri alınamaz', () => {
-  S = { games: {}, done: {}, learned: {}, review: {}, streak: { last: null, count: 0 }, cur: null, opts: S.opts };
+  S = { games: {}, done: {}, learned: {}, review: {}, activity: {}, rec: {}, streak: { last: null, count: 0, best: 0 }, cur: null, opts: S.opts };
   persist(); toast('Tüm ilerleme silindi.');
 });
 
