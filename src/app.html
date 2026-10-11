@@ -304,6 +304,69 @@ button, .cell { touch-action: manipulation; }
 .kbd, .bottomnav, .g-actions { -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
 
+/* ---------- account (design preview) ---------- */
+.avatar { width: 48px; height: 48px; border-radius: 999px; background: var(--surface); display: grid; place-items: center; box-shadow: var(--shadow); color: var(--primary); flex: none; }
+.hello .right { display: flex; gap: 8px; align-items: center; }
+.toplogin { height: 46px; padding: 0 18px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-weight: 800; font-size: 14px; }
+.acct-card { padding: 18px 20px; display: grid; gap: 14px; }
+.acct-card .who { display: flex; gap: 14px; align-items: center; }
+.acct-card .who b { display: block; font-weight: 800; font-size: 17px; }
+.acct-card .who small { color: var(--muted); font-weight: 600; }
+.acct-card .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.auth { width: 100%; max-width: 1040px; margin: 0 auto; padding: 16px 16px 40px; display: grid; gap: 18px; }
+.auth-hero { background: var(--primary); color: var(--on-primary); border-radius: 26px; padding: 22px; display: grid; gap: 14px; position: relative; overflow: hidden; }
+.auth-hero .backrow { display: flex; justify-content: space-between; align-items: center; }
+.auth-hero .back { width: 44px; height: 44px; border-radius: 999px; background: rgba(255, 255, 255, .16); display: grid; place-items: center; color: #ffffff; }
+.auth-hero h1 { font-size: clamp(28px, 8vw, 40px); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+.auth-hero p { margin: 0; opacity: .85; font-weight: 600; line-height: 1.45; max-width: 36ch; }
+.perks { display: grid; gap: 10px; margin: 4px 0 0; padding: 0; list-style: none; }
+.perks li { display: flex; gap: 10px; align-items: center; font-weight: 700; }
+.perks i { width: 30px; height: 30px; border-radius: 9px; background: rgba(255, 255, 255, .16); display: grid; place-items: center; flex: none; }
+.auth-hero .deco { display: none; }
+.preview-pill { justify-self: start; display: inline-flex; gap: 6px; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--cream); color: var(--cream-ink); font-size: 13px; font-weight: 800; }
+.auth-form { background: var(--surface); border-radius: 26px; padding: 22px; display: grid; gap: 16px; box-shadow: var(--shadow); align-content: start; }
+.auth-form h2 { font-size: 22px; font-weight: 800; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 800; font-size: 14px; }
+.field .box { position: relative; }
+.field input { width: 100%; height: 52px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); padding: 0 14px; font: 600 16px var(--f-ui); transition: border-color .15s; }
+.field input::placeholder { color: var(--muted); opacity: .7; }
+.field input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+.field.err input { border-color: var(--bad); }
+.field .msg { font-size: 13px; font-weight: 700; color: var(--bad); min-height: 0; }
+.field .hint { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field .eye { position: absolute; right: 6px; top: 6px; height: 40px; padding: 0 10px; border-radius: 10px; font-weight: 800; font-size: 13px; color: var(--primary); }
+.field .box input.pw { padding-right: 76px; }
+.meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.meter i { height: 5px; border-radius: 9px; background: var(--soft); }
+.meter[data-s="1"] i:nth-child(-n+1) { background: var(--bad); }
+.meter[data-s="2"] i:nth-child(-n+2) { background: var(--orange); }
+.meter[data-s="3"] i:nth-child(-n+3) { background: var(--sun); }
+.meter[data-s="4"] i { background: var(--good); }
+.chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.chips button { height: 56px; border-radius: 14px; background: var(--bg); border: 1.5px solid var(--line); display: grid; place-items: center; align-content: center; gap: 2px; line-height: 1; }
+.chips button b { font-size: 17px; font-weight: 800; color: var(--primary); }
+.chips button small { font-size: 11px; font-weight: 700; color: var(--muted); }
+.chips button[aria-checked="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, var(--surface)); }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; font-size: 14px; color: var(--muted); line-height: 1.45; cursor: pointer; }
+.check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--primary); flex: none; }
+.check.err { color: var(--bad); }
+.formrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.auth-form .bigbtn.dark { margin-top: 2px; }
+.alt { text-align: center; font-weight: 600; color: var(--muted); }
+.alt button { color: var(--primary); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.notice { background: var(--cream); color: var(--cream-ink); border-radius: 16px; padding: 14px 16px; font-weight: 600; line-height: 1.45; display: grid; gap: 10px; }
+.notice b { font-weight: 800; }
+.notice .bigbtn { color: var(--ink); }
+@media (min-width: 960px) {
+  .auth { grid-template-columns: 1fr 1fr; gap: 24px; padding: 12px 32px 48px; align-items: stretch; }
+  .auth-hero { padding: 36px; align-content: start; }
+  .auth-hero .deco { display: grid; grid-template-columns: repeat(3, 48px); gap: 6px; margin-top: auto; padding-top: 24px; }
+  .auth-hero .deco i { height: 48px; border-radius: 11px; background: rgba(255, 255, 255, .14); display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 22px; }
+  .auth-hero .deco i.l { background: #ffffff; color: #4b3be0; }
+  .auth-form { padding: 32px; }
+}
+
 /* ---------- splash ---------- */
 /* fades itself out with CSS alone, so it can never stay stuck even if the script fails */
 .splash { position: fixed; inset: 0; z-index: 60; background: #4b3be0; color: #ffffff; display: grid; place-items: center; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); cursor: pointer; animation: splashOut .35s ease 2.1s forwards; }
@@ -357,6 +420,7 @@ button, .cell { touch-action: manipulation; }
     <div class="top-right">
       <span class="pill" id="dTimerWrap" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg><span id="dTimer">00:00</span></span>
       <button class="iconbtn" id="dPause" aria-label="Duraklat" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+      <button class="toplogin" data-go="login">Giriş yap</button>
       <button class="iconbtn" data-go="settings" aria-label="Ayarlar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg></button>
     </div>
   </header>
@@ -365,7 +429,7 @@ button, .cell { touch-action: manipulation; }
   <main class="screen" id="s-home">
     <div class="hello">
       <div><small>Merhaba</small><h1>Bugün ne çözelim?</h1></div>
-      <span class="streak"><svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4.5 2-7 2 1.5 2.5 3.5 2.5 5C8 8 9 5 8 0z"/></svg><span id="streak">0 gün</span></span>
+      <div class="right"><span class="streak"><svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4.5 2-7 2 1.5 2.5 3.5 2.5 5C8 8 9 5 8 0z"/></svg><span id="streak">0 gün</span></span><button class="avatar" data-go="signup" aria-label="Hesap oluştur"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg></button></div>
     </div>
     <section class="resume">
       <div class="row">
@@ -454,6 +518,52 @@ button, .cell { touch-action: manipulation; }
     </div>
   </main>
 
+  <!-- SIGN UP (design preview: no server yet) -->
+  <main class="auth" id="s-signup" hidden>
+    <section class="auth-hero">
+      <div class="backrow"><button class="back" data-go="back" aria-label="Geri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      <h1>Hesap oluştur</h1>
+      <p>İlerlemeni kaydet, kaldığın yerden her cihazda devam et.</p>
+      <ul class="perks"><li><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="13" height="10" rx="2"/><rect x="15" y="9" width="6" height="11" rx="1.5"/><path d="M7 18h5"/></svg></i><span>Her cihazdan devam et</span></li><li><i><svg width="14" height="17" viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4.5 2-7 2 1.5 2.5 3.5 2.5 5C8 8 9 5 8 0z"/></svg></i><span>Serin kaybolmaz</span></li><li><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9.5 4v16"/></svg></i><span>Kelimelerin seninle</span></li></ul>
+      <div class="deco" aria-hidden="true"><i class="l">T</i><i class="l">W</i><i class="l">O</i><i class="l">O</i><i class="l">I</i><i class="l">L</i><i class="l">E</i><i class="l">N</i><i class="l">D</i></div>
+    </section>
+    <form class="auth-form" id="signupForm" novalidate>
+      <span class="preview-pill">Önizleme · hesaplar yakında açılacak</span>
+      <div class="field" id="f-name"><label for="suName">Kullanıcı adı</label><div class="box"><input id="suName" name="username" autocomplete="username" placeholder="örn. kelimeavcisi" maxlength="20"></div><div class="msg"></div></div>
+      <div class="field" id="f-email"><label for="suEmail">E-posta</label><div class="box"><input id="suEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="ad@ornek.com"></div><div class="msg"></div></div>
+      <div class="field" id="f-pass"><label for="suPass">Şifre</label><div class="box"><input id="suPass" class="pw" name="password" type="password" autocomplete="new-password" placeholder="En az 8 karakter"><button type="button" class="eye" data-eye="suPass">Göster</button></div><div class="meter" id="meter" data-s="0"><i></i><i></i><i></i><i></i></div><div class="hint" id="meterTxt">En az 8 karakter, bir harf ve bir rakam.</div><div class="msg"></div></div>
+      <div class="field"><label id="lvLabel">Başlangıç seviyen</label><div class="chips" role="radiogroup" aria-labelledby="lvLabel" id="lvChips">
+        <button type="button" role="radio" aria-checked="true" data-lv="A1"><b>A1</b><small>Başlangıç</small></button>
+        <button type="button" role="radio" aria-checked="false" data-lv="A2"><b>A2</b><small>Temel</small></button>
+        <button type="button" role="radio" aria-checked="false" data-lv="B1"><b>B1</b><small>Orta</small></button>
+        <button type="button" role="radio" aria-checked="false" data-lv="B2"><b>B2</b><small>Orta üstü</small></button>
+      </div></div>
+      <label class="check" id="f-terms"><input type="checkbox" id="suTerms"><span>Kullanım koşullarını ve gizlilik politikasını okudum, kabul ediyorum.</span></label>
+      <button class="bigbtn dark" type="submit">Hesap oluştur</button>
+      <div class="notice" id="suNotice" hidden><div><b>Kayıt ekranı hazır, ama hesaplar henüz açılmadı.</b> Sunucu bağlandığında bu form gerçekten hesap oluşturacak. Şimdilik ilerlemen bu cihazda saklanmaya devam ediyor.</div><button type="button" class="bigbtn light" data-go="home">Oynamaya devam et</button></div>
+      <p class="alt">Zaten hesabın var mı? <button type="button" data-go="login">Giriş yap</button></p>
+    </form>
+  </main>
+
+  <!-- LOG IN (design preview: no server yet) -->
+  <main class="auth" id="s-login" hidden>
+    <section class="auth-hero">
+      <div class="backrow"><button class="back" data-go="back" aria-label="Geri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      <h1>Tekrar hoş geldin</h1>
+      <p>Hesabına giriş yap, serin ve kelimelerin seni bekliyor.</p>
+      <div class="deco" aria-hidden="true"><i class="l">T</i><i class="l">W</i><i class="l">O</i><i class="l">O</i><i class="l">I</i><i class="l">L</i><i class="l">E</i><i class="l">N</i><i class="l">D</i></div>
+    </section>
+    <form class="auth-form" id="loginForm" novalidate>
+      <span class="preview-pill">Önizleme · hesaplar yakında açılacak</span>
+      <div class="field" id="f-lemail"><label for="liEmail">E-posta</label><div class="box"><input id="liEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="ad@ornek.com"></div><div class="msg"></div></div>
+      <div class="field" id="f-lpass"><label for="liPass">Şifre</label><div class="box"><input id="liPass" class="pw" name="password" type="password" autocomplete="current-password" placeholder="Şifren"><button type="button" class="eye" data-eye="liPass">Göster</button></div><div class="msg"></div></div>
+      <div class="formrow"><label class="check"><input type="checkbox" id="liKeep" checked><span>Beni hatırla</span></label><button type="button" class="link" id="forgot">Şifremi unuttum</button></div>
+      <button class="bigbtn dark" type="submit">Giriş yap</button>
+      <div class="notice" id="liNotice" hidden><div id="liNoticeTxt"><b>Giriş henüz açılmadı.</b> Hesaplar sunucu bağlandığında çalışacak. Şimdilik misafir olarak oynayabilirsin.</div><button type="button" class="bigbtn light" data-go="home">Misafir olarak devam et</button></div>
+      <p class="alt">Hesabın yok mu? <button type="button" data-go="signup">Hesap oluştur</button></p>
+    </form>
+  </main>
+
   <!-- WORDS -->
   <main class="screen" id="s-words" hidden>
     <div class="hello"><div><small id="wCount">0 kelime</small><h1>Kelimelerim</h1></div></div>
@@ -472,6 +582,10 @@ button, .cell { touch-action: manipulation; }
   <!-- SETTINGS -->
   <main class="screen" id="s-settings" hidden>
     <div class="hello"><div><small>Oyun tercihleri</small><h1>Ayarlar</h1></div></div>
+    <div class="card acct-card">
+      <div class="who"><span class="avatar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg></span><div><b>Misafir olarak oynuyorsun</b><small>İlerlemen sadece bu cihazda saklanıyor.</small></div></div>
+      <div class="btns"><button class="bigbtn dark" data-go="signup">Hesap oluştur</button><button class="bigbtn soft" data-go="login">Giriş yap</button></div>
+    </div>
     <div class="card">
       <div class="setting"><div><b>Dolu kareleri atla</b><small>Yazarken imleç, harf yazılmış kareleri geçer.</small></div><button class="switch" role="switch" id="optSkip" aria-label="Dolu kareleri atla"></button></div>
       <div class="setting"><div><b>Bitince sonraki kelimeye geç</b><small>Bir kelime doğru tamamlanınca imleç sıradaki boş kelimeye gider.</small></div><button class="switch" role="switch" id="optJump" aria-label="Sonraki kelimeye geç"></button></div>
@@ -582,16 +696,20 @@ function streakNow() {
 }
 
 /* ---------- routing ---------- */
-const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings'];
+const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings', 'signup', 'login'];
+let prevScreen = 'home';
 let screen = 'home';
 function show(name) {
   if (name === 'play') { openGame(suggest()); return; }
+  if (name === 'back') name = prevScreen === 'signup' || prevScreen === 'login' ? 'home' : prevScreen;
+  if (name !== screen) prevScreen = screen;
   if (screen === 'game' && name !== 'game') leaveGame();
   screen = name;
   SCREENS.forEach(s => $('s-' + s).hidden = s !== name);
-  const tab = { home: 'home', level: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings' }[name];
+  const tab = { home: 'home', level: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings', signup: 'account', login: 'account' }[name];
   document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
-  $('bottomnav').hidden = name === 'game' || name === 'done';
+  $('bottomnav').hidden = ['game', 'done', 'signup', 'login'].includes(name);
+  if (name === 'signup' || name === 'login') resetAuth(name);
   $('dTimerWrap').hidden = $('dPause').hidden = name !== 'game';
   if (name === 'home') renderHome();
   if (name === 'words') renderWords();
@@ -1021,6 +1139,73 @@ $('doneNext').onclick = () => {
   if (m.lv !== 'D' && m.i + 1 < DATA.levels[m.lv].length) return openGame(`${m.lv}:${m.i + 1}`);
   openGame(suggest());
 };
+
+/* account screens: design preview only. Nothing is sent or stored; the password never leaves the input. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function setErr(fieldId, msg) {
+  const f = $(fieldId); f.classList.toggle('err', !!msg); f.querySelector('.msg').textContent = msg || '';
+  return !msg;
+}
+function strength(pw) {
+  if (!pw) return 0;
+  let s = 0;
+  if (pw.length >= 8) s++;
+  if (/[a-zçğıöşü]/i.test(pw) && /\d/.test(pw)) s++;
+  if (/[A-ZÇĞİÖŞÜ]/.test(pw) && /[a-zçğıöşü]/.test(pw)) s++;
+  if (pw.length >= 12 || /[^\wçğıöşüÇĞİÖŞÜ]/.test(pw)) s++;
+  return Math.max(1, s);
+}
+const checkName = () => { const v = $('suName').value.trim(); return setErr('f-name', !v ? 'Bir kullanıcı adı yaz.' : v.length < 3 ? 'Kullanıcı adı en az 3 karakter olmalı.' : !/^[\wçğıöşüÇĞİÖŞÜ.]+$/.test(v) ? 'Sadece harf, rakam, nokta ve alt çizgi kullan.' : ''); };
+const checkEmail = (id, field) => { const v = $(id).value.trim(); return setErr(field, !v ? 'E-posta adresini yaz.' : !EMAIL_RE.test(v) ? 'Bu e-posta adresi eksik görünüyor, örn. ad@ornek.com' : ''); };
+const checkPass = () => { const v = $('suPass').value; return setErr('f-pass', !v ? 'Bir şifre belirle.' : v.length < 8 ? 'Şifre en az 8 karakter olmalı.' : !(/\d/.test(v) && /[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(v)) ? 'Şifrede en az bir harf ve bir rakam olsun.' : ''); };
+$('suName').addEventListener('blur', () => $('suName').value && checkName());
+$('suEmail').addEventListener('blur', () => $('suEmail').value && checkEmail('suEmail', 'f-email'));
+$('liEmail').addEventListener('blur', () => $('liEmail').value && checkEmail('liEmail', 'f-lemail'));
+$('suPass').addEventListener('input', () => {
+  const s = strength($('suPass').value);
+  $('meter').dataset.s = s;
+  $('meterTxt').textContent = ['En az 8 karakter, bir harf ve bir rakam.', 'Zayıf şifre', 'İdare eder', 'İyi şifre', 'Güçlü şifre'][s];
+  if ($('f-pass').classList.contains('err')) checkPass();
+});
+document.querySelectorAll('[data-eye]').forEach(b => b.addEventListener('click', () => {
+  const inp = $(b.dataset.eye), show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password'; b.textContent = show ? 'Gizle' : 'Göster';
+}));
+$('lvChips').addEventListener('click', e => {
+  const b = e.target.closest('[data-lv]'); if (!b) return;
+  $('lvChips').querySelectorAll('[data-lv]').forEach(x => x.setAttribute('aria-checked', x === b));
+});
+$('signupForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = [checkName(), checkEmail('suEmail', 'f-email'), checkPass()].every(Boolean);
+  const terms = $('suTerms').checked;
+  $('f-terms').classList.toggle('err', !terms);
+  if (!ok || !terms) { const first = document.querySelector('#signupForm .err input'); first && first.focus(); return; }
+  $('suNotice').hidden = false;
+  $('suNotice').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+});
+$('loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = [checkEmail('liEmail', 'f-lemail'), setErr('f-lpass', $('liPass').value ? '' : 'Şifreni yaz.')].every(Boolean);
+  if (!ok) return;
+  $('liNoticeTxt').innerHTML = '<b>Giriş henüz açılmadı.</b> Hesaplar sunucu bağlandığında çalışacak. Şimdilik misafir olarak oynayabilirsin.';
+  $('liNotice').hidden = false;
+});
+$('forgot').addEventListener('click', () => {
+  $('liNoticeTxt').innerHTML = '<b>Şifre sıfırlama da hesaplarla birlikte açılacak.</b> O zaman e-posta adresine bir sıfırlama bağlantısı gelecek.';
+  $('liNotice').hidden = false;
+});
+function resetAuth(name) {
+  const form = $(name === 'signup' ? 'signupForm' : 'loginForm');
+  form.reset();
+  form.querySelectorAll('.field.err').forEach(f => setErr(f.id, ''));
+  form.querySelectorAll('.check.err').forEach(c => c.classList.remove('err'));
+  form.querySelectorAll('.pw').forEach(i => i.type = 'password');
+  form.querySelectorAll('[data-eye]').forEach(b => b.textContent = 'Göster');
+  $('meter').dataset.s = 0; $('meterTxt').textContent = 'En az 8 karakter, bir harf ve bir rakam.';
+  $('suNotice').hidden = $('liNotice').hidden = true;
+  $('lvChips').querySelectorAll('[data-lv]').forEach(x => x.setAttribute('aria-checked', x.dataset.lv === 'A1'));
+}
 
 /* words / stats / settings */
 function renderWords() {
