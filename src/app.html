@@ -26,7 +26,7 @@
   --bad: #c0362c;
   --hint: #0e7c86;
   --hint-bg: #d6f1f4;
-  /* supporting palette: one job each (levels, word card, word types) */
+  /* supporting palette for the word card and word-type chips */
   --mint: #22b07d; --mint-ink: #0d7a52;
   --sky: #3b8cff; --sky-ink: #1d5ec7;
   --amber-ink: #8f5600;
@@ -144,23 +144,16 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sec-head h2 { font-size: 24px; font-weight: 800; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.lvl { --c: var(--primary); --ci: var(--primary); background: color-mix(in srgb, var(--c) 11%, var(--surface)); border-radius: 22px; padding: 18px; display: grid; gap: 8px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
+.lvl { background: var(--surface); border-radius: 22px; padding: 18px; display: grid; gap: 8px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
 .lvl .top { display: flex; justify-content: space-between; align-items: center; }
-.lvl .code { font-size: 28px; font-weight: 800; color: var(--ci); }
-.lvl[data-c="mint"] { --c: var(--mint); --ci: var(--mint-ink); }
-.lvl[data-c="sky"] { --c: var(--sky); --ci: var(--sky-ink); }
-.lvl[data-c="sun"] { --c: var(--sun); --ci: var(--amber-ink); }
-.lvl[data-c="coral"] { --c: var(--coral); --ci: var(--coral-ink); }
+.lvl .code { font-size: 28px; font-weight: 800; color: var(--primary); }
 .lvl .count { font-size: 14px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: var(--soft); font-variant-numeric: tabular-nums; }
-.lvl .count { background: color-mix(in srgb, var(--c) 22%, var(--surface)); color: var(--ci); }
-.lvl .bar { background: color-mix(in srgb, var(--c) 20%, var(--surface)); }
-.lvl .bar i { background: var(--c); }
+.lvl .count.started { background: var(--good-bg); color: var(--good); }
 .lvl .name { font-weight: 800; font-size: 18px; }
 .bar { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--primary); border-radius: 99px; }
 .lvl.locked { background: var(--soft); box-shadow: none; }
-.lvl.locked .code { opacity: .55; }
-.lvl.locked .name { color: var(--muted); }
+.lvl.locked .code, .lvl.locked .name { color: var(--muted); }
 .lvl.locked small { color: var(--muted); font-weight: 600; font-size: 14px; }
 
 /* level screen */
@@ -714,7 +707,6 @@ const LEVELS = [
   { k: 'B1', name: 'Orta', need: ['A2', 6] },
   { k: 'B2', name: 'Orta üstü', need: ['B1', 6] },
 ];
-const LV_COLOR = { A1: 'mint', A2: 'sky', B1: 'sun', B2: 'coral' };
 const MONTHS = ['OCA', 'ŞUB', 'MAR', 'NİS', 'MAY', 'HAZ', 'TEM', 'AĞU', 'EYL', 'EKİ', 'KAS', 'ARA'];
 const OFFS = [[1, 1], [1, 5], [5, 1], [5, 5]];
 const KEY = 'cengel-app-v2';
@@ -883,11 +875,11 @@ function renderHome() {
     const b = document.createElement('button');
     const solved = solvedIn(L.k), total = DATA.levels[L.k].length;
     if (unlocked(L)) {
-      b.className = 'lvl'; b.dataset.c = LV_COLOR[L.k];
+      b.className = 'lvl';
       b.innerHTML = `<div class="top"><span class="code">${L.k}</span><span class="count${solved ? ' started' : ''}">${solved} / ${total}</span></div><div class="name">${L.name}</div><div class="bar"><i style="width:${solved / total * 100}%"></i></div>`;
       b.onclick = () => openLevel(L.k);
     } else {
-      b.className = 'lvl locked'; b.dataset.c = LV_COLOR[L.k];
+      b.className = 'lvl locked';
       b.innerHTML = `<div class="top"><span class="code">${L.k}</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="color:var(--muted)"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div class="name">${L.name}</div><small>${L.need[0]}'de ${L.need[1]} bulmaca çöz</small>`;
       b.onclick = () => toast(`${L.k} için önce ${L.need[0]}'de ${L.need[1]} bulmaca çöz (${solvedIn(L.need[0])}/${L.need[1]}).`);
     }
