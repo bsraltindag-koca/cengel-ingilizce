@@ -309,10 +309,50 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 button, .cell { touch-action: manipulation; }
 .kbd, .bottomnav, .g-actions { -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
+
+/* ---------- splash ---------- */
+/* fades itself out with CSS alone, so it can never stay stuck even if the script fails */
+.splash { position: fixed; inset: 0; z-index: 60; background: #4b3be0; color: #ffffff; display: grid; place-items: center; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); cursor: pointer; animation: splashOut .35s ease 2.1s forwards; }
+.splash.out { animation: splashOut .25s ease forwards; }
+@keyframes splashOut { to { opacity: 0; visibility: hidden; } }
+.splash .inner { display: grid; justify-items: center; gap: 22px; text-align: center; }
+.sp-grid { display: grid; grid-template-columns: repeat(4, 54px); grid-template-rows: repeat(4, 54px); gap: 6px; }
+.sp-grid i { border-radius: 12px; display: grid; place-items: center; font: 800 26px/1 var(--f-ui); font-style: normal; }
+.sp-grid .k { background: #6d5ff0; position: relative; }
+.sp-grid .k::after { content: ""; position: absolute; border: 6px solid transparent; }
+.sp-grid .k.a::after { right: 5px; top: 50%; transform: translateY(-50%); border-left-color: #ffc66e; border-right-width: 0; }
+.sp-grid .k.d::after { bottom: 5px; left: 50%; transform: translateX(-50%); border-top-color: #ffc66e; border-bottom-width: 0; }
+.sp-grid .o { background: transparent; }
+.sp-grid .l { background: #ffffff; color: #4b3be0; }
+.sp-grid .l span { opacity: 0; transform: scale(.4); animation: spPop .32s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+.sp-grid .l.lit { animation: spGood .4s ease 1.55s forwards; }
+@keyframes spPop { to { opacity: 1; transform: none; } }
+@keyframes spGood { to { background: #ddf5e6; color: #1d7a47; } }
+.splash h1 { font-size: clamp(40px, 12vw, 56px); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.splash p { margin: 0; font-weight: 700; font-size: 17px; opacity: .85; }
+.splash .lv { display: flex; gap: 8px; }
+.splash .lv b { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+.splash small { position: absolute; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); left: 0; right: 0; text-align: center; font-weight: 700; opacity: .6; font-size: 14px; }
+@media (max-height: 560px) { .sp-grid { grid-template-columns: repeat(4, 40px); grid-template-rows: repeat(4, 40px); } .sp-grid i { font-size: 19px; } .splash .inner { gap: 14px; } }
+@media (prefers-reduced-motion: reduce) {
+  .splash { animation-delay: 1s; }
+  .sp-grid .l span { animation: none; opacity: 1; transform: none; }
+  .sp-grid .l.lit { animation: none; }
+}
 </style>
 </head>
 <body>
 
+
+<div class="splash" id="splash" lang="tr" role="button" aria-label="Uygulamaya geç">
+  <div class="inner">
+    <div class="sp-grid" id="spGrid" aria-hidden="true"></div>
+    <h1>Çengel</h1>
+    <p>Türkçe ipucu, İngilizce cevap</p>
+    <div class="lv"><b>A1</b><b>A2</b><b>B1</b><b>B2</b></div>
+  </div>
+  <small>Başlamak için dokun</small>
+</div>
 
 <div class="app" lang="tr">
   <header class="topbar">
@@ -1045,6 +1085,22 @@ function confetti() {
     if (t - t0 < 4000) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); cv.hidden = true; }
   })(t0);
 }
+
+/* splash: a 3×3 block that reads DAY/ICE/GET across and DIG/ACE/YET down */
+(() => {
+  const sp = $('splash'), word = 'DAYICEGET';
+  let html = '<i class="o"></i>' + '<i class="k d"></i>'.repeat(3), n = 0;
+  for (let r = 0; r < 3; r++) {
+    html += '<i class="k a"></i>';
+    for (let c = 0; c < 3; c++, n++) html += `<i class="l lit"><span style="animation-delay:${.2 + n * .13}s">${word[n]}</span></i>`;
+  }
+  $('spGrid').innerHTML = html;
+  const close = () => { if (sp.hidden) return; sp.classList.add('out'); setTimeout(() => sp.hidden = true, 260); };
+  sp.addEventListener('pointerdown', close);
+  addEventListener('keydown', close, { once: true });
+  setTimeout(() => sp.hidden = true, 2600);
+  if (location.hash === '#oyun') sp.hidden = true;
+})();
 
 show(location.hash === '#oyun' ? 'play' : 'home');
 </script>
