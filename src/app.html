@@ -319,6 +319,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wrow .say.on { background: var(--primary); color: var(--on-primary); }
 .wrow .ok { margin-left: auto; font-weight: 800; color: var(--good); letter-spacing: .02em; }
 /* quiz */
+.mute { margin-left: auto; width: 52px; height: 52px; border-radius: 999px; background: var(--surface); color: var(--primary); display: grid; place-items: center; box-shadow: var(--shadow); flex: none; }
+.mute .i-off { display: none; }
+.mute[aria-pressed="true"] { color: var(--muted); }
+.mute[aria-pressed="true"] .i-on { display: none; }
+.mute[aria-pressed="true"] .i-off { display: block; }
 .qbar { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; }
 .qbar i { height: 6px; border-radius: 9px; background: var(--soft); }
 .qbar i.ok { background: var(--good); }
@@ -705,6 +710,7 @@ button, .cell { touch-action: manipulation; }
     <div class="back-head">
       <button class="circle-back" data-go="words" aria-label="Kelimelerime dön"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div><h1>Tekrar et</h1><p id="qSub">1 / 10</p></div>
+      <button class="mute" id="qMute" aria-pressed="false" aria-label="Sesi kapat"><svg class="i-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><svg class="i-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
     </div>
     <div class="qbar" id="qBar"></div>
     <section id="qAsk">
@@ -1524,7 +1530,7 @@ function answer(o) {
   [...$('qBar').children][Q.i].className = it.res;
   $('qNext').hidden = false;
   $('qNext').textContent = Q.i + 1 < Q.items.length ? 'Devam et' : 'Sonucu gör';
-  if (right && CAN_SPEAK) speak(lowerEn(it.w));
+  if (right && CAN_SPEAK && !S.opts.quizMute) speak(lowerEn(it.w));
 }
 function nextQuestion() {
   if (Q.i + 1 < Q.items.length) { Q.i++; renderQuiz(); return; }
@@ -1538,6 +1544,19 @@ function nextQuestion() {
   $('qMiss').innerHTML = ''; miss.forEach(x => $('qMiss').appendChild(wordRow(x.w)));
   if (ok === n) confetti();
 }
+// mute for the review only; the choice is remembered
+function renderMute() {
+  const m = !!S.opts.quizMute;
+  $('qMute').setAttribute('aria-pressed', m);
+  $('qMute').setAttribute('aria-label', m ? 'Sesi aç' : 'Sesi kapat');
+}
+if (!CAN_SPEAK) $('qMute').hidden = true;
+$('qMute').addEventListener('click', () => {
+  S.opts.quizMute = !S.opts.quizMute; persist(); renderMute();
+  if (S.opts.quizMute) { try { speechSynthesis.cancel(); } catch (e) {} }
+  toast(S.opts.quizMute ? 'Ses kapatıldı' : 'Ses açıldı');
+});
+renderMute();
 $('reviewGo').addEventListener('click', startQuiz);
 $('qAgain').addEventListener('click', startQuiz);
 $('qOpts').addEventListener('click', e => { const b = e.target.closest('.qopt'); if (b) answer(b.dataset.o); });
