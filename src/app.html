@@ -314,6 +314,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wrow .tags { display: flex; gap: 6px; flex: none; }
 .tagc { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
 .tagc.hard { background: color-mix(in srgb, var(--coral) 16%, var(--surface)); color: var(--coral-ink); }
+.tagc.err { background: var(--bad-bg); color: var(--bad); }
 .wrow .say { width: 38px; height: 38px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; flex: none; }
 .wrow .say.on { background: var(--primary); color: var(--on-primary); }
 .wrow .ok { margin-left: auto; font-weight: 800; color: var(--good); letter-spacing: .02em; }
@@ -694,7 +695,7 @@ button, .cell { touch-action: manipulation; }
     <input class="search" id="wSearch" type="search" placeholder="Türkçe ya da İngilizce ara" autocomplete="off">
     <div class="wfilters">
       <div class="fchips" id="wChips" role="radiogroup" aria-label="Filtre"></div>
-      <div class="seg" role="radiogroup" aria-label="Sıralama" id="wSort"><button role="radio" data-s="new">En yeni</button><button role="radio" data-s="az">A–Z</button></div>
+      <div class="seg" role="radiogroup" aria-label="Sıralama" id="wSort"><button role="radio" data-s="new">En yeni</button><button role="radio" data-s="az">A–Z</button><button role="radio" data-s="err">En çok hata</button></div>
     </div>
     <div class="wrows" id="wList"></div>
   </main>
@@ -1164,7 +1165,7 @@ function solve(w) {
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
-  S.learned[w.answer] = { at: (prev && prev.at) || dayKey(), lv: (prev && prev.lv) || (G.meta.lv === 'D' ? null : G.meta.lv), hard: !!(prev && prev.hard) || usedHint || G.st.m[w.i] > 0 };
+  S.learned[w.answer] = { at: (prev && prev.at) || dayKey(), lv: (prev && prev.lv) || (G.meta.lv === 'D' ? null : G.meta.lv), hard: !!(prev && prev.hard) || usedHint || G.st.m[w.i] > 0, miss: ((prev && prev.miss) || 0) + (G.st.m[w.i] || 0) };
   bumpStreak();
 }
 
@@ -1444,10 +1445,12 @@ const reviewOf = w => S.review[w] || { ok: 0, bad: 0 };
 const needsReview = w => { const r = reviewOf(w); return (S.learned[w].hard && r.ok < 1) || r.bad > r.ok; };
 const weekAgo = () => { const d = new Date(); d.setDate(d.getDate() - 6); return dayKey(d); };
 const lowerEn = w => w.toLowerCase();
+// mistakes = wrong letters / wrong fills in the puzzle + wrong answers in the review
+const errCount = w => ((S.learned[w] && S.learned[w].miss) || 0) + reviewOf(w).bad;
 function wordRow(w, extra) {
   const L = S.learned[w] || {};
   const row = document.createElement('div'); row.className = 'wrow';
-  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
+  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${screen === 'words' && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
   row.querySelector('.en').textContent = lowerEn(w);
   row.querySelector('.trw').textContent = clue(w);
   const b = row.querySelector('.say'); if (b) b.addEventListener('click', () => speak(lowerEn(w), b));
@@ -1470,7 +1473,9 @@ function renderWords() {
   const q = $('wSearch').value.trim().toLocaleLowerCase('tr');
   let list = all.filter(w => wFilter === 'all' || (wFilter === 'due' ? needsReview(w) : S.learned[w].lv === wFilter));
   if (q) list = list.filter(w => w.toLowerCase().includes(q.replace(/ı/g, 'i')) || clue(w).toLocaleLowerCase('tr').includes(q));
-  list.sort(wSort === 'az' ? (x, y) => x.localeCompare(y) : (x, y) => (S.learned[y].at || '').localeCompare(S.learned[x].at || '') || x.localeCompare(y));
+  const byNew = (x, y) => (S.learned[y].at || '').localeCompare(S.learned[x].at || '') || x.localeCompare(y);
+  const byErr = (x, y) => errCount(y) - errCount(x) || (S.learned[y].hard - S.learned[x].hard) || x.localeCompare(y);
+  list.sort(wSort === 'az' ? (x, y) => x.localeCompare(y) : wSort === 'err' ? byErr : byNew);
   $('wList').innerHTML = '';
   if (!list.length) {
     $('wList').innerHTML = `<p class="empty">${!all.length ? 'Bir bulmacada doğru bulduğun her kelime buraya eklenir. İlk bulmacanı çözünce burası dolmaya başlar.' : q ? 'Aramana uyan kelime yok.' : wFilter === 'due' ? 'Tekrar etmen gereken kelime yok. Harika!' : 'Bu filtrede kelime yok.'}</p>`;
