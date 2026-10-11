@@ -1568,9 +1568,8 @@ const lowerEn = w => w.toLowerCase();
 // mistakes = wrong letters / wrong fills in the puzzle + wrong answers in the review
 const errCount = w => ((S.learned[w] && S.learned[w].miss) || 0) + reviewOf(w).bad;
 function wordRow(w, extra) {
-  const L = S.learned[w] || {};
   const row = document.createElement('div'); row.className = 'wrow';
-  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${L.lv ? `<span class="tagc">${L.lv}</span>` : ''}${(screen === 'words' || screen === 'stats') && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
+  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${(screen === 'words' || screen === 'stats') && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
   row.querySelector('.en').textContent = lowerEn(w);
   row.querySelector('.trw').textContent = clue(w);
   const b = row.querySelector('.say'); if (b) b.addEventListener('click', () => speak(lowerEn(w), b));
