@@ -12,11 +12,11 @@ setTimeout(() => {
     };
     S.review = { CAT: { ok: 0, bad: 2 }, SUN: { ok: 1, bad: 0 } };
     show('words');
-    $('wSort').querySelector('[data-s=err]').click();
+    ($('wSort').value = 'err', $('wSort').dispatchEvent(new Event('change')));
     R.push('order=' + [...$('wList').querySelectorAll('.en')].map(e => e.textContent).join(','));
     R.push('tags=' + [...$('wList').querySelectorAll('.wrow')].map(r => r.querySelector('.en').textContent + ':' + ([...r.querySelectorAll('.tagc.err')].map(t => t.textContent).join('') || '-')).join(' '));
-    R.push('selected=' + $('wSort').querySelector('[aria-checked=true]').textContent);
-    $('wSort').querySelector('[data-s=az]').click();
+    R.push('selected=' + $('wSort').selectedOptions[0].textContent);
+    ($('wSort').value = 'az', $('wSort').dispatchEvent(new Event('change')));
     R.push('A-Z has no hata tags=' + !$('wList').querySelector('.tagc.err'));
   } catch (e) { R.push('ERR ' + e.message); }
   const p = document.createElement('pre'); p.id = 'OUT'; p.textContent = R.join('\n'); document.body.appendChild(p);

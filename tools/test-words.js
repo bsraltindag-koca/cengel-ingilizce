@@ -16,7 +16,7 @@ setTimeout(() => {
     R.push('chips=' + [...$('wChips').children].map(b => b.textContent).join(', '));
     R.push('first row=' + $('wList').children[0].textContent.trim().replace(/\s+/g, ' '));
     $('wChips').querySelector('[data-f=due]').click(); R.push('due filter rows=' + $('wList').querySelectorAll('.wrow').length);
-    $('wSort').querySelector('[data-s=az]').click(); $('wChips').querySelector('[data-f=all]').click();
+    ($('wSort').value = 'az', $('wSort').dispatchEvent(new Event('change'))); $('wChips').querySelector('[data-f=all]').click();
     R.push('A-Z first three=' + [...$('wList').querySelectorAll('.en')].slice(0, 3).map(e => e.textContent).join(','));
     $('wSearch').value = 'kedi'; renderWords(); R.push('search kedi -> ' + [...$('wList').querySelectorAll('.en')].map(e => e.textContent).join(',')); $('wSearch').value = ''; renderWords();
     // quiz
