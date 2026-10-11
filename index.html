@@ -114,15 +114,24 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .ring span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
 .btn-white { background: #ffffff; color: #141629; border-radius: 18px; height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; font-size: 17px; width: 100%; }
-.daily { background: var(--cream); border-radius: 24px; padding: 18px; display: flex; align-items: center; gap: 16px; text-align: left; width: 100%; }
-.daily .date { width: 64px; height: 64px; border-radius: 16px; background: var(--orange); color: #141629; display: grid; place-items: center; align-content: center; flex: none; line-height: 1; }
-.daily .date b { font-size: 26px; font-weight: 800; }
-.daily .date small { font-size: 11px; font-weight: 800; }
-.daily .eyebrow { color: var(--cream-ink); }
-.daily h3 { font-size: 22px; font-weight: 800; margin-top: 2px; }
-.daily p { margin: 2px 0 0; color: var(--cream-ink); font-weight: 600; }
-.daily .chev { margin-left: auto; }
-.daily .tag-done { color: var(--good); font-weight: 800; }
+.wotd { background: var(--cream); border-radius: 24px; padding: 18px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 16px; align-items: start; }
+.wotd .date { width: 64px; height: 64px; border-radius: 16px; background: var(--orange); color: #141629; display: grid; place-items: center; align-content: center; line-height: 1; grid-row: span 2; }
+.wotd .date b { font-size: 26px; font-weight: 800; }
+.wotd .date small { font-size: 11px; font-weight: 800; }
+.wotd .eyebrow { color: var(--cream-ink); }
+.wotd .wrow { display: flex; align-items: center; gap: 10px; }
+.wotd h3 { font-size: 28px; font-weight: 800; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.wotd .say { width: 38px; height: 38px; border-radius: 999px; background: var(--surface); color: var(--primary); display: grid; place-items: center; flex: none; box-shadow: var(--shadow); }
+.wotd .say.on { background: var(--primary); color: var(--on-primary); }
+.wotd .ipa { margin: 0; color: var(--cream-ink); font-weight: 600; font-size: 15px; }
+.wotd .ipa span { font-family: "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif; }
+.wotd .meaning { grid-column: 1 / -1; display: grid; gap: 6px; margin-top: 10px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--cream-ink) 22%, transparent); }
+.wotd .meaning b { font-size: 22px; font-weight: 800; }
+.wotd .meaning .en { margin: 0; font-weight: 700; font-size: 16px; }
+.wotd .meaning .tr { margin: 0; color: var(--cream-ink); font-weight: 600; font-size: 15px; }
+.wotd .reveal { grid-column: 1 / -1; margin-top: 10px; height: 46px; border-radius: 14px; background: var(--surface); font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.wotd .reveal svg { transition: transform .2s; }
+.wotd .reveal[aria-expanded="true"] svg { transform: rotate(180deg); }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sec-head h2 { font-size: 24px; font-weight: 800; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -474,11 +483,20 @@ button, .cell { touch-action: manipulation; }
       </div>
       <button class="btn-white" id="rGo"><span id="rBtn">Devam et</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </section>
-    <button class="daily" id="daily">
-      <div class="date"><b id="dDay">11</b><small id="dMon">EKİ</small></div>
-      <div><div class="eyebrow">Günün bulmacası</div><h3>Günün kelimeleri</h3><p id="dSub">8 × 8 · 24 kelime</p></div>
-      <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
+    <section class="wotd" aria-labelledby="wWord">
+      <div class="date"><b id="wDay">11</b><small id="wMon">EKİ</small></div>
+      <div class="eyebrow">Günün kelimesi</div>
+      <div style="min-width:0">
+        <div class="wrow"><h3 id="wWord" lang="en">journey</h3><button class="say" id="wSay" aria-label="Kelimeyi dinle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button></div>
+        <p class="ipa"><span id="wIpa" lang="en">/ˈdʒɜːrni/</span> · <span id="wType">isim</span></p>
+      </div>
+      <div class="meaning" id="wMeaning" hidden>
+        <b id="wTr">Yolculuk</b>
+        <p class="en" lang="en" id="wEn"></p>
+        <p class="tr" id="wTrEx"></p>
+      </div>
+      <button class="reveal" id="wReveal" aria-expanded="false" aria-controls="wMeaning"><span>Anlamını göster</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
   </main>
@@ -663,7 +681,7 @@ button, .cell { touch-action: manipulation; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.8", "date": "11 Eki 2026, 19:36"};
+const VERSION = {"n": "1.9", "date": "11 Eki 2026, 19:44"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
@@ -757,6 +775,36 @@ function show(name) {
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
 
+/* word of the day: [word, IPA, type, Turkish, example, example in Turkish]; one per day, cycles every 60 days */
+const WOTD = [["journey","ˈdʒɝːni","isim","Yolculuk","We had a long journey home.","Eve uzun bir yolculuk yaptık."],["borrow","ˈbɑːroʊ","fiil","Ödünç almak","Can I borrow your pen?","Kalemini ödünç alabilir miyim?"],["brave","breɪv","sıfat","Cesur","She was brave enough to try again.","Tekrar denemeye yetecek kadar cesurdu."],["weather","ˈweðɚ","isim","Hava durumu","The weather is lovely today.","Bugün hava çok güzel."],["explain","ɪkˈspleɪn","fiil","Açıklamak","Can you explain this word?","Bu kelimeyi açıklayabilir misin?"],["quiet","ˈkwaɪət","sıfat","Sessiz","The library is very quiet.","Kütüphane çok sessiz."],["neighbor","ˈneɪbɚ","isim","Komşu","Our neighbor has a big dog.","Komşumuzun büyük bir köpeği var."],["remember","rɪˈmembɚ","fiil","Hatırlamak","I can't remember his name.","Onun adını hatırlayamıyorum."],["hungry","ˈhʌŋɡri","sıfat","Aç","I'm hungry, let's eat.","Acıktım, hadi yemek yiyelim."],["holiday","ˈhɑːlədeɪ","isim","Tatil","We are going on holiday in July.","Temmuzda tatile gidiyoruz."],["choose","tʃuːz","fiil","Seçmek","Choose one color.","Bir renk seç."],["honest","ˈɑːnɪst","sıfat","Dürüst","He is an honest man.","O dürüst bir adam."],["kitchen","ˈkɪtʃɪn","isim","Mutfak","Mom is cooking in the kitchen.","Annem mutfakta yemek yapıyor."],["forget","fɚˈɡet","fiil","Unutmak","Don't forget your keys.","Anahtarlarını unutma."],["early","ˈɝːli","zarf","Erken","I woke up early today.","Bugün erken uyandım."],["answer","ˈænsɚ","isim","Cevap","I know the answer!","Cevabı biliyorum!"],["believe","bɪˈliːv","fiil","İnanmak","I believe you.","Sana inanıyorum."],["tired","ˈtaɪɚd","sıfat","Yorgun","I'm too tired to walk.","Yürüyemeyecek kadar yorgunum."],["bridge","brɪdʒ","isim","Köprü","We walked across the bridge.","Köprünün üzerinden yürüdük."],["build","bɪld","fiil","İnşa etmek","They want to build a new school.","Yeni bir okul inşa etmek istiyorlar."],["careful","ˈkerfəl","sıfat","Dikkatli","Be careful, the floor is wet.","Dikkatli ol, yer ıslak."],["mirror","ˈmɪrɚ","isim","Ayna","She looked in the mirror.","Aynaya baktı."],["laugh","læf","fiil","Gülmek","The joke made us laugh.","Şaka bizi güldürdü."],["empty","ˈempti","sıfat","Boş","The fridge is empty.","Buzdolabı boş."],["friendship","ˈfrendʃɪp","isim","Arkadaşlık","Their friendship is very strong.","Arkadaşlıkları çok güçlü."],["arrive","əˈraɪv","fiil","Varmak","The train will arrive at six.","Tren altıda varacak."],["famous","ˈfeɪməs","sıfat","Ünlü","This city is famous for its food.","Bu şehir yemekleriyle ünlü."],["umbrella","ʌmˈbrelə","isim","Şemsiye","Take an umbrella, it's raining.","Şemsiye al, yağmur yağıyor."],["carry","ˈkæri","fiil","Taşımak","Can you carry this bag?","Bu çantayı taşıyabilir misin?"],["strange","streɪndʒ","sıfat","Garip","I heard a strange noise.","Garip bir ses duydum."],["village","ˈvɪlɪdʒ","isim","Köy","My grandmother lives in a village.","Büyükannem bir köyde yaşıyor."],["decide","dɪˈsaɪd","fiil","Karar vermek","I can't decide what to eat.","Ne yiyeceğime karar veremiyorum."],["heavy","ˈhevi","sıfat","Ağır","This box is too heavy.","Bu kutu çok ağır."],["knowledge","ˈnɑːlɪdʒ","isim","Bilgi","Reading gives you knowledge.","Okumak sana bilgi kazandırır."],["wait","weɪt","fiil","Beklemek","Please wait here.","Lütfen burada bekle."],["polite","pəˈlaɪt","sıfat","Kibar","Always be polite to people.","İnsanlara her zaman kibar ol."],["island","ˈaɪlənd","isim","Ada","We spent a week on an island.","Bir adada bir hafta geçirdik."],["improve","ɪmˈpruːv","fiil","Geliştirmek","I want to improve my English.","İngilizcemi geliştirmek istiyorum."],["lucky","ˈlʌki","sıfat","Şanslı","You are so lucky!","Çok şanslısın!"],["advice","ədˈvaɪs","isim","Tavsiye","Thanks for your advice.","Tavsiyen için teşekkürler."],["share","ʃer","fiil","Paylaşmak","Let's share the cake.","Pastayı paylaşalım."],["dangerous","ˈdeɪndʒərəs","sıfat","Tehlikeli","This road is dangerous at night.","Bu yol geceleri tehlikeli."],["language","ˈlæŋɡwɪdʒ","isim","Dil","How many languages do you speak?","Kaç dil konuşuyorsun?"],["practice","ˈpræktɪs","fiil","Pratik yapmak","Practice a little every day.","Her gün biraz pratik yap."],["proud","praʊd","sıfat","Gururlu","I'm proud of you.","Seninle gurur duyuyorum."],["future","ˈfjuːtʃɚ","isim","Gelecek","Nobody knows the future.","Geleceği kimse bilemez."],["grow","ɡroʊ","fiil","Büyümek","Children grow so fast.","Çocuklar çok hızlı büyüyor."],["cheap","tʃiːp","sıfat","Ucuz","These shoes were cheap.","Bu ayakkabılar ucuzdu."],["surprise","sɚˈpraɪz","isim","Sürpriz","We planned a surprise for her.","Onun için bir sürpriz planladık."],["search","sɝːtʃ","fiil","Aramak","I searched everywhere for my phone.","Telefonumu her yerde aradım."],["curious","ˈkjʊriəs","sıfat","Meraklı","Cats are very curious animals.","Kediler çok meraklı hayvanlardır."],["healthy","ˈhelθi","sıfat","Sağlıklı","Fruit is healthy food.","Meyve sağlıklı bir yiyecektir."],["promise","ˈprɑːmɪs","fiil","Söz vermek","I promise I'll call you.","Seni arayacağıma söz veriyorum."],["opinion","əˈpɪnjən","isim","Görüş","What is your opinion?","Senin görüşün ne?"],["crowded","ˈkraʊdɪd","sıfat","Kalabalık","The bus was very crowded.","Otobüs çok kalabalıktı."],["enjoy","ɪnˈdʒɔɪ","fiil","Keyif almak","I enjoy reading books.","Kitap okumaktan keyif alıyorum."],["calm","kɑːm","sıfat","Sakin","Stay calm and try again.","Sakin ol ve tekrar dene."],["adventure","ədˈventʃɚ","isim","Macera","Life is an adventure.","Hayat bir maceradır."],["thirsty","ˈθɝːsti","sıfat","Susamış","I'm thirsty, can I have some water?","Susadım, biraz su alabilir miyim?"],["achieve","əˈtʃiːv","fiil","Başarmak","You can achieve your dreams.","Hayallerine ulaşabilirsin."]];
+let wotdOpen = false;
+function renderWotd() {
+  const now = new Date();
+  const n = Math.floor(new Date(dayKey(now) + 'T12:00:00').getTime() / 864e5);
+  const [word, ipa, type, tr, en, trEx] = WOTD[((n % WOTD.length) + WOTD.length) % WOTD.length];
+  $('wDay').textContent = now.getDate(); $('wMon').textContent = MONTHS[now.getMonth()];
+  $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type;
+  $('wTr').textContent = tr; $('wEn').textContent = en; $('wTrEx').textContent = trEx;
+  $('wMeaning').hidden = !wotdOpen;
+  $('wReveal').setAttribute('aria-expanded', wotdOpen);
+  $('wReveal').firstChild.textContent = wotdOpen ? 'Anlamını gizle' : 'Anlamını göster';
+}
+$('wReveal').addEventListener('click', () => { wotdOpen = !wotdOpen; renderWotd(); });
+// speech is optional: the button only shows where the browser can read English aloud
+if (!('speechSynthesis' in window)) $('wSay').hidden = true;
+$('wSay').addEventListener('click', () => {
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance($('wWord').textContent);
+    u.lang = 'en-US'; u.rate = .85;
+    const v = speechSynthesis.getVoices().find(v => /^en[-_]US/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
+    if (v) u.voice = v;
+    u.onend = u.onerror = () => $('wSay').classList.remove('on');
+    $('wSay').classList.add('on');
+    speechSynthesis.speak(u);
+  } catch (e) { $('wSay').classList.remove('on'); toast('Bu cihaz sesli okumayı desteklemiyor.'); }
+});
+
 /* ---------- home ---------- */
 function renderHome() {
   $('streak').textContent = `${streakNow()} gün`;
@@ -769,10 +817,7 @@ function renderHome() {
   $('rArc').setAttribute('stroke-dashoffset', 238.8 * (1 - n / 24));
   $('rBtn').textContent = g ? 'Devam et' : 'Başla';
   $('rGo').onclick = () => openGame(id);
-  const now = new Date(), did = `D:${dayKey()}`;
-  $('dDay').textContent = now.getDate(); $('dMon').textContent = MONTHS[now.getMonth()];
-  $('dSub').innerHTML = S.done[did] ? `<span class="tag-done">Çözüldü · ${S.done[did].score} puan</span>` : S.games[did] ? `${S.games[did].sw.length} / 24 kelime · devam et` : '8 × 8 · 24 kelime';
-  $('daily').onclick = () => openGame(did);
+  renderWotd();
   $('levels').innerHTML = '';
   for (const L of LEVELS) {
     const b = document.createElement('button');
