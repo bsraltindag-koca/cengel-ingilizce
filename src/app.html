@@ -32,6 +32,7 @@
   --amber-ink: #9a4f00;
   --coral: #ff6b57; --coral-ink: #c13d2c;
   --strong: #141629;
+  --nav-bg: #141629; --nav-ink: #ffffff; --nav-border: transparent;
   --on-strong: #ffffff;
   --shadow: 0 1px 2px rgba(20, 22, 41, .04), 0 8px 24px -12px rgba(20, 22, 41, .18);
   --f-ui: "Manrope", "Avenir Next", system-ui, -apple-system, sans-serif;
@@ -42,7 +43,7 @@
     --bg: #0e0f1c; --surface: #191b2d; --ink: #eef0ff; --muted: #9a9eb8; --line: #2a2d45; --soft: #23263b;
     --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
     --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
-    --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629;
+    --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629; --nav-bg: #2d3150; --nav-ink: #d4d7f0; --nav-border: rgba(255, 255, 255, .1);
     --mint: #3fd39c; --mint-ink: #86f0c6; --sky: #5aa2ff; --sky-ink: #a6cbff; --amber-ink: #ffcf8f; --coral: #ff8a7a; --coral-ink: #ffb3a8;
     --shadow: 0 8px 24px -12px rgba(0, 0, 0, .6);
     color-scheme: dark;
@@ -52,7 +53,7 @@
   --bg: #0e0f1c; --surface: #191b2d; --ink: #eef0ff; --muted: #9a9eb8; --line: #2a2d45; --soft: #23263b;
   --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
   --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
-  --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629;
+  --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629; --nav-bg: #2d3150; --nav-ink: #d4d7f0; --nav-border: rgba(255, 255, 255, .1);
     --mint: #3fd39c; --mint-ink: #86f0c6; --sky: #5aa2ff; --sky-ink: #a6cbff; --amber-ink: #ffcf8f; --coral: #ff8a7a; --coral-ink: #ffb3a8;
   --shadow: 0 8px 24px -12px rgba(0, 0, 0, .6);
   color-scheme: dark;
@@ -80,8 +81,8 @@ svg { display: block; }
 .iconbtn { width: 46px; height: 46px; border-radius: 999px; background: var(--surface); display: grid; place-items: center; box-shadow: var(--shadow); }
 
 /* ---------- bottom nav (phone) ---------- */
-.bottomnav { position: fixed; left: 16px; right: 16px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 6px; border-radius: 26px; background: #141629; max-width: 520px; margin: 0 auto; }
-.bottomnav button { height: 50px; border-radius: 20px; display: grid; place-items: center; color: #ffffff; }
+.bottomnav { position: fixed; left: 16px; right: 16px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 6px; border-radius: 26px; background: var(--nav-bg); border: 1px solid var(--nav-border); box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .45); max-width: 520px; margin: 0 auto; }
+.bottomnav button { height: 50px; border-radius: 20px; display: grid; place-items: center; color: var(--nav-ink); }
 .bottomnav button.on { background: #ffffff; color: #141629; }
 
 /* ---------- screens ---------- */
