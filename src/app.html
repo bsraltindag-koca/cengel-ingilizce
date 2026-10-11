@@ -26,6 +26,12 @@
   --bad: #c0362c;
   --hint: #0e7c86;
   --hint-bg: #d6f1f4;
+  /* supporting palette: one job each (levels, word card, word types) */
+  --mint: #22b07d; --mint-ink: #0d7a52;
+  --sky: #3b8cff; --sky-ink: #1d5ec7;
+  --amber-ink: #8f5600;
+  --wotd-mix: 24%;
+  --coral: #ff6b57; --coral-ink: #c13d2c;
   --strong: #141629;
   --on-strong: #ffffff;
   --shadow: 0 1px 2px rgba(20, 22, 41, .04), 0 8px 24px -12px rgba(20, 22, 41, .18);
@@ -38,6 +44,7 @@
     --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
     --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
     --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629;
+    --mint: #3fd39c; --mint-ink: #86f0c6; --sky: #5aa2ff; --sky-ink: #a6cbff; --amber-ink: #ffd48a; --wotd-mix: 8%; --coral: #ff8a7a; --coral-ink: #ffb3a8;
     --shadow: 0 8px 24px -12px rgba(0, 0, 0, .6);
     color-scheme: dark;
   }
@@ -47,6 +54,7 @@
   --primary: #6b5cff; --primary-2: #8577ff; --on-primary: #ffffff; --sun: #e9aa45; --peach: #4a3a22;
   --orange: #ff8a33; --cream: #33281a; --cream-ink: #ffcf8a; --good-bg: #173b29; --good: #7fe0a6;
   --bad-bg: #4a1e1e; --bad: #ff9c91; --hint: #6fd6e0; --hint-bg: #143a3f; --strong: #eef0ff; --on-strong: #141629;
+    --mint: #3fd39c; --mint-ink: #86f0c6; --sky: #5aa2ff; --sky-ink: #a6cbff; --amber-ink: #ffd48a; --wotd-mix: 8%; --coral: #ff8a7a; --coral-ink: #ffb3a8;
   --shadow: 0 8px 24px -12px rgba(0, 0, 0, .6);
   color-scheme: dark;
 }
@@ -100,32 +108,35 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .ring span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
 .btn-white { background: #ffffff; color: #141629; border-radius: 18px; height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; font-size: 17px; width: 100%; }
-.wotd { background: var(--surface); border-radius: 24px; padding: 18px 20px 20px; display: grid; gap: 12px; box-shadow: var(--shadow); touch-action: pan-y; }
+.wotd { background: color-mix(in srgb, var(--sun) var(--wotd-mix), var(--surface)); border-radius: 24px; padding: 18px 20px 20px; display: grid; gap: 12px; box-shadow: var(--shadow); touch-action: pan-y; }
 .wotd .w-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.wotd .eyebrow { color: var(--primary); }
+.wotd .eyebrow { color: var(--amber-ink); }
 .wotd .w-nav { display: flex; align-items: center; gap: 8px; }
-.wotd .w-arrow { width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); background: var(--soft); }
+.wotd .w-arrow { width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); background: var(--surface); }
 .wotd .w-arrow:disabled { opacity: .35; cursor: default; }
 .wotd .w-dots { display: flex; gap: 5px; align-items: center; }
-.wotd .w-dots button { width: 6px; height: 6px; border-radius: 99px; background: var(--line); transition: width .2s, background .2s; padding: 0; }
-.wotd .w-dots button[aria-selected="true"] { width: 16px; background: var(--primary); }
-.wotd .w-dots button.seen:not([aria-selected="true"]) { background: color-mix(in srgb, var(--primary) 40%, var(--line)); }
+.wotd .w-dots button { width: 6px; height: 6px; border-radius: 99px; background: color-mix(in srgb, var(--amber-ink) 25%, transparent); transition: width .2s, background .2s; padding: 0; }
+.wotd .w-dots button[aria-selected="true"] { width: 16px; background: var(--amber-ink); }
+.wotd .w-dots button.seen:not([aria-selected="true"]) { background: color-mix(in srgb, var(--amber-ink) 55%, transparent); }
 .wotd .w-slide { display: grid; gap: 12px; }
 .wotd .w-slide.in-r { animation: wIn .24s ease both; --from: 28px; }
 .wotd .w-slide.in-l { animation: wIn .24s ease both; --from: -28px; }
 @keyframes wIn { from { opacity: 0; transform: translateX(var(--from)); } to { opacity: 1; transform: none; } }
 .wotd .w-word { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
 .wotd h3 { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; overflow-wrap: anywhere; }
-.wotd .ipa { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-weight: 600; font-size: 15px; }
+.wotd .ipa { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: color-mix(in srgb, var(--amber-ink) 70%, var(--ink)); font-weight: 600; font-size: 15px; }
 .wotd .ipa .p { font-family: "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif; }
-.wotd .chip { font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: var(--soft); color: var(--ink); }
+.wotd .chip { --t: var(--primary); --ti: var(--primary); font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--t) 18%, var(--surface)); color: var(--ti); }
+.wotd .chip[data-t="isim"] { --t: var(--sky); --ti: var(--sky-ink); }
+.wotd .chip[data-t="fiil"] { --t: var(--mint); --ti: var(--mint-ink); }
+.wotd .chip[data-t="sıfat"] { --t: var(--coral); --ti: var(--coral-ink); }
 .wotd .w-actions { display: flex; gap: 8px; flex: none; }
-.wotd .say { width: 46px; height: 46px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; transition: background .15s, color .15s; }
+.wotd .say { width: 46px; height: 46px; border-radius: 999px; background: var(--surface); color: var(--primary); display: grid; place-items: center; transition: background .15s, color .15s; }
 .wotd .say.on, .wotd .eye[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
 .wotd .eye .i-off { display: none; }
 .wotd .eye[aria-pressed="true"] .i-open { display: none; }
 .wotd .eye[aria-pressed="true"] .i-off { display: block; }
-.wotd .w-meaning { display: grid; gap: 4px; border-radius: 16px; background: var(--bg); padding: 14px 16px; }
+.wotd .w-meaning { display: grid; gap: 4px; border-radius: 16px; background: var(--surface); padding: 14px 16px; }
 .wotd .w-meaning b { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .wotd .w-meaning .en { font-weight: 700; font-size: 16px; color: var(--ink); }
 .wotd .w-meaning .tr { color: var(--muted); font-weight: 600; font-size: 15px; }
@@ -133,16 +144,23 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sec-head h2 { font-size: 24px; font-weight: 800; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.lvl { background: var(--surface); border-radius: 22px; padding: 18px; display: grid; gap: 8px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
+.lvl { --c: var(--primary); --ci: var(--primary); background: color-mix(in srgb, var(--c) 11%, var(--surface)); border-radius: 22px; padding: 18px; display: grid; gap: 8px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
 .lvl .top { display: flex; justify-content: space-between; align-items: center; }
-.lvl .code { font-size: 28px; font-weight: 800; color: var(--primary); }
+.lvl .code { font-size: 28px; font-weight: 800; color: var(--ci); }
+.lvl[data-c="mint"] { --c: var(--mint); --ci: var(--mint-ink); }
+.lvl[data-c="sky"] { --c: var(--sky); --ci: var(--sky-ink); }
+.lvl[data-c="sun"] { --c: var(--sun); --ci: var(--amber-ink); }
+.lvl[data-c="coral"] { --c: var(--coral); --ci: var(--coral-ink); }
 .lvl .count { font-size: 14px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: var(--soft); font-variant-numeric: tabular-nums; }
-.lvl .count.started { background: var(--good-bg); color: var(--good); }
+.lvl .count { background: color-mix(in srgb, var(--c) 22%, var(--surface)); color: var(--ci); }
+.lvl .bar { background: color-mix(in srgb, var(--c) 20%, var(--surface)); }
+.lvl .bar i { background: var(--c); }
 .lvl .name { font-weight: 800; font-size: 18px; }
 .bar { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--primary); border-radius: 99px; }
 .lvl.locked { background: var(--soft); box-shadow: none; }
-.lvl.locked .code, .lvl.locked .name { color: var(--muted); }
+.lvl.locked .code { opacity: .55; }
+.lvl.locked .name { color: var(--muted); }
 .lvl.locked small { color: var(--muted); font-weight: 600; font-size: 14px; }
 
 /* level screen */
@@ -696,6 +714,7 @@ const LEVELS = [
   { k: 'B1', name: 'Orta', need: ['A2', 6] },
   { k: 'B2', name: 'Orta üstü', need: ['B1', 6] },
 ];
+const LV_COLOR = { A1: 'mint', A2: 'sky', B1: 'sun', B2: 'coral' };
 const MONTHS = ['OCA', 'ŞUB', 'MAR', 'NİS', 'MAY', 'HAZ', 'TEM', 'AĞU', 'EYL', 'EKİ', 'KAS', 'ARA'];
 const OFFS = [[1, 1], [1, 5], [5, 1], [5, 5]];
 const KEY = 'cengel-app-v2';
@@ -797,7 +816,7 @@ function renderWotd(dir) {
   const list = todaysWords();
   const [word, ipa, type, tr, en, trEx] = list[wIdx];
   const open = !!wOpen[wIdx];
-  $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type;
+  $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type; $('wType').dataset.t = type;
   $('wTr').textContent = tr; $('wEn').textContent = en; $('wTrEx').textContent = trEx;
   $('wMeaning').hidden = !open;
   $('wReveal').setAttribute('aria-pressed', open);
@@ -864,11 +883,11 @@ function renderHome() {
     const b = document.createElement('button');
     const solved = solvedIn(L.k), total = DATA.levels[L.k].length;
     if (unlocked(L)) {
-      b.className = 'lvl';
+      b.className = 'lvl'; b.dataset.c = LV_COLOR[L.k];
       b.innerHTML = `<div class="top"><span class="code">${L.k}</span><span class="count${solved ? ' started' : ''}">${solved} / ${total}</span></div><div class="name">${L.name}</div><div class="bar"><i style="width:${solved / total * 100}%"></i></div>`;
       b.onclick = () => openLevel(L.k);
     } else {
-      b.className = 'lvl locked';
+      b.className = 'lvl locked'; b.dataset.c = LV_COLOR[L.k];
       b.innerHTML = `<div class="top"><span class="code">${L.k}</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="color:var(--muted)"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div class="name">${L.name}</div><small>${L.need[0]}'de ${L.need[1]} bulmaca çöz</small>`;
       b.onclick = () => toast(`${L.k} için önce ${L.need[0]}'de ${L.need[1]} bulmaca çöz (${solvedIn(L.need[0])}/${L.need[1]}).`);
     }
