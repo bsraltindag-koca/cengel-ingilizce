@@ -390,6 +390,9 @@ button, .cell { touch-action: manipulation; }
 .splash p { margin: 0; font-weight: 700; font-size: 17px; opacity: .85; }
 .splash .lv { display: flex; gap: 8px; }
 .splash .lv b { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+.splash .ver { display: block; margin-top: 6px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.version { text-align: center; color: var(--muted); font-size: 13px; font-weight: 600; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.version b { color: var(--ink); font-weight: 800; }
 .splash small { position: absolute; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); left: 0; right: 0; text-align: center; font-weight: 700; opacity: .6; font-size: 14px; }
 @media (max-height: 560px) { .sp-grid { grid-template-columns: repeat(4, 40px); grid-template-rows: repeat(4, 40px); } .sp-grid i { font-size: 19px; } .splash .inner { gap: 14px; } }
 @media (prefers-reduced-motion: reduce) {
@@ -407,7 +410,7 @@ button, .cell { touch-action: manipulation; }
     <p>Türkçe ipucu, İngilizce cevap</p>
     <div class="lv"><b>A1</b><b>A2</b><b>B1</b><b>B2</b></div>
   </div>
-  <small>Başlamak için dokun</small>
+  <small>Başlamak için dokun<span class="ver" id="verSplash"></span></small>
 </div>
 
 <div class="app" lang="tr">
@@ -593,6 +596,7 @@ button, .cell { touch-action: manipulation; }
       <div class="setting"><div><b>Bitince sonraki kelimeye geç</b><small>Bir kelime doğru tamamlanınca imleç sıradaki boş kelimeye gider.</small></div><button class="switch" role="switch" id="optJump" aria-label="Sonraki kelimeye geç"></button></div>
     </div>
     <button class="bigbtn danger" id="wipe">Tüm ilerlemeyi sil</button>
+    <p class="version" id="verSettings"></p>
   </main>
 
   <nav class="bottomnav" id="bottomnav">
@@ -630,6 +634,10 @@ button, .cell { touch-action: manipulation; }
 
 <script>
 const DATA = /*DATA*/{};
+// filled in by tools/build.py: build number and build time
+const VERSION = /*VERSION*/{ n: 'geliştirme', date: '' };
+document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
+document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
 const $ = id => document.getElementById(id);
 const LEVELS = [
