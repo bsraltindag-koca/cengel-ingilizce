@@ -118,7 +118,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wotd .w-meaning b { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .wotd .w-meaning .en { font-weight: 700; font-size: 16px; color: var(--ink); }
 .wotd .w-meaning .tr { color: var(--muted); font-weight: 600; font-size: 15px; }
-@media (prefers-reduced-motion: reduce) { .wotd .say, .wotd .w-box { transition: none; } }
+.wotd { touch-action: pan-y; }
+.wotd .w-slide { display: grid; gap: 14px; }
+.wotd .w-slide.in-r { animation: wIn .24s ease both; --from: 28px; }
+.wotd .w-slide.in-l { animation: wIn .24s ease both; --from: -28px; }
+@keyframes wIn { from { opacity: 0; transform: translateX(var(--from)); } to { opacity: 1; transform: none; } }
+.wotd .w-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wotd .w-arrow { width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); background: var(--soft); }
+.wotd .w-arrow:disabled { opacity: .35; cursor: default; }
+.wotd .w-dots { display: flex; gap: 8px; align-items: center; }
+.wotd .w-dots button { width: 8px; height: 8px; border-radius: 99px; background: var(--line); transition: width .2s, background .2s; padding: 0; }
+.wotd .w-dots button[aria-selected="true"] { width: 22px; background: var(--primary); }
+.wotd .w-dots button.seen:not([aria-selected="true"]) { background: color-mix(in srgb, var(--primary) 40%, var(--line)); }
+@media (prefers-reduced-motion: reduce) { .wotd .say, .wotd .w-box, .wotd .w-dots button { transition: none; } .wotd .w-slide.in-r, .wotd .w-slide.in-l { animation: none; } }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sec-head h2 { font-size: 24px; font-weight: 800; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -468,7 +480,8 @@ button, .cell { touch-action: manipulation; }
       <button class="btn-white" id="rGo"><span id="rBtn">Devam et</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </section>
     <section class="wotd" aria-labelledby="wWord">
-      <div class="w-top"><span class="eyebrow">Günün kelimesi</span><span class="w-date" id="wDate">11 Eki</span></div>
+      <div class="w-top"><span class="eyebrow">Günün kelimeleri</span><span class="w-date" id="wDate">11 Eki</span></div>
+      <div class="w-slide" id="wSlide">
       <div class="w-word">
         <div style="min-width:0">
           <h3 id="wWord" lang="en">improve</h3>
@@ -480,6 +493,12 @@ button, .cell { touch-action: manipulation; }
         <span class="w-hint" id="wHint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>Anlamını görmek için dokun</span>
         <span class="w-meaning" id="wMeaning" hidden><b id="wTr">Geliştirmek</b><span class="en" lang="en" id="wEn"></span><span class="tr" id="wTrEx"></span></span>
       </button>
+      </div>
+      <div class="w-nav">
+        <button class="w-arrow" id="wPrev" aria-label="Önceki kelime"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <div class="w-dots" id="wDots" role="tablist" aria-label="Günün kelimeleri"></div>
+        <button class="w-arrow" id="wNext" aria-label="Sonraki kelime"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
@@ -759,21 +778,58 @@ function show(name) {
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
 
-/* word of the day: [word, IPA, type, Turkish, example, example in Turkish]; one per day, cycles every 60 days */
-const WOTD = [["journey","ˈdʒɝːni","isim","Yolculuk","We had a long journey home.","Eve uzun bir yolculuk yaptık."],["borrow","ˈbɑːroʊ","fiil","Ödünç almak","Can I borrow your pen?","Kalemini ödünç alabilir miyim?"],["brave","breɪv","sıfat","Cesur","She was brave enough to try again.","Tekrar denemeye yetecek kadar cesurdu."],["weather","ˈweðɚ","isim","Hava durumu","The weather is lovely today.","Bugün hava çok güzel."],["explain","ɪkˈspleɪn","fiil","Açıklamak","Can you explain this word?","Bu kelimeyi açıklayabilir misin?"],["quiet","ˈkwaɪət","sıfat","Sessiz","The library is very quiet.","Kütüphane çok sessiz."],["neighbor","ˈneɪbɚ","isim","Komşu","Our neighbor has a big dog.","Komşumuzun büyük bir köpeği var."],["remember","rɪˈmembɚ","fiil","Hatırlamak","I can't remember his name.","Onun adını hatırlayamıyorum."],["hungry","ˈhʌŋɡri","sıfat","Aç","I'm hungry, let's eat.","Acıktım, hadi yemek yiyelim."],["holiday","ˈhɑːlədeɪ","isim","Tatil","We are going on holiday in July.","Temmuzda tatile gidiyoruz."],["choose","tʃuːz","fiil","Seçmek","Choose one color.","Bir renk seç."],["honest","ˈɑːnɪst","sıfat","Dürüst","He is an honest man.","O dürüst bir adam."],["kitchen","ˈkɪtʃɪn","isim","Mutfak","Mom is cooking in the kitchen.","Annem mutfakta yemek yapıyor."],["forget","fɚˈɡet","fiil","Unutmak","Don't forget your keys.","Anahtarlarını unutma."],["early","ˈɝːli","zarf","Erken","I woke up early today.","Bugün erken uyandım."],["answer","ˈænsɚ","isim","Cevap","I know the answer!","Cevabı biliyorum!"],["believe","bɪˈliːv","fiil","İnanmak","I believe you.","Sana inanıyorum."],["tired","ˈtaɪɚd","sıfat","Yorgun","I'm too tired to walk.","Yürüyemeyecek kadar yorgunum."],["bridge","brɪdʒ","isim","Köprü","We walked across the bridge.","Köprünün üzerinden yürüdük."],["build","bɪld","fiil","İnşa etmek","They want to build a new school.","Yeni bir okul inşa etmek istiyorlar."],["careful","ˈkerfəl","sıfat","Dikkatli","Be careful, the floor is wet.","Dikkatli ol, yer ıslak."],["mirror","ˈmɪrɚ","isim","Ayna","She looked in the mirror.","Aynaya baktı."],["laugh","læf","fiil","Gülmek","The joke made us laugh.","Şaka bizi güldürdü."],["empty","ˈempti","sıfat","Boş","The fridge is empty.","Buzdolabı boş."],["friendship","ˈfrendʃɪp","isim","Arkadaşlık","Their friendship is very strong.","Arkadaşlıkları çok güçlü."],["arrive","əˈraɪv","fiil","Varmak","The train will arrive at six.","Tren altıda varacak."],["famous","ˈfeɪməs","sıfat","Ünlü","This city is famous for its food.","Bu şehir yemekleriyle ünlü."],["umbrella","ʌmˈbrelə","isim","Şemsiye","Take an umbrella, it's raining.","Şemsiye al, yağmur yağıyor."],["carry","ˈkæri","fiil","Taşımak","Can you carry this bag?","Bu çantayı taşıyabilir misin?"],["strange","streɪndʒ","sıfat","Garip","I heard a strange noise.","Garip bir ses duydum."],["village","ˈvɪlɪdʒ","isim","Köy","My grandmother lives in a village.","Büyükannem bir köyde yaşıyor."],["decide","dɪˈsaɪd","fiil","Karar vermek","I can't decide what to eat.","Ne yiyeceğime karar veremiyorum."],["heavy","ˈhevi","sıfat","Ağır","This box is too heavy.","Bu kutu çok ağır."],["knowledge","ˈnɑːlɪdʒ","isim","Bilgi","Reading gives you knowledge.","Okumak sana bilgi kazandırır."],["wait","weɪt","fiil","Beklemek","Please wait here.","Lütfen burada bekle."],["polite","pəˈlaɪt","sıfat","Kibar","Always be polite to people.","İnsanlara her zaman kibar ol."],["island","ˈaɪlənd","isim","Ada","We spent a week on an island.","Bir adada bir hafta geçirdik."],["improve","ɪmˈpruːv","fiil","Geliştirmek","I want to improve my English.","İngilizcemi geliştirmek istiyorum."],["lucky","ˈlʌki","sıfat","Şanslı","You are so lucky!","Çok şanslısın!"],["advice","ədˈvaɪs","isim","Tavsiye","Thanks for your advice.","Tavsiyen için teşekkürler."],["share","ʃer","fiil","Paylaşmak","Let's share the cake.","Pastayı paylaşalım."],["dangerous","ˈdeɪndʒərəs","sıfat","Tehlikeli","This road is dangerous at night.","Bu yol geceleri tehlikeli."],["language","ˈlæŋɡwɪdʒ","isim","Dil","How many languages do you speak?","Kaç dil konuşuyorsun?"],["practice","ˈpræktɪs","fiil","Pratik yapmak","Practice a little every day.","Her gün biraz pratik yap."],["proud","praʊd","sıfat","Gururlu","I'm proud of you.","Seninle gurur duyuyorum."],["future","ˈfjuːtʃɚ","isim","Gelecek","Nobody knows the future.","Geleceği kimse bilemez."],["grow","ɡroʊ","fiil","Büyümek","Children grow so fast.","Çocuklar çok hızlı büyüyor."],["cheap","tʃiːp","sıfat","Ucuz","These shoes were cheap.","Bu ayakkabılar ucuzdu."],["surprise","sɚˈpraɪz","isim","Sürpriz","We planned a surprise for her.","Onun için bir sürpriz planladık."],["search","sɝːtʃ","fiil","Aramak","I searched everywhere for my phone.","Telefonumu her yerde aradım."],["curious","ˈkjʊriəs","sıfat","Meraklı","Cats are very curious animals.","Kediler çok meraklı hayvanlardır."],["healthy","ˈhelθi","sıfat","Sağlıklı","Fruit is healthy food.","Meyve sağlıklı bir yiyecektir."],["promise","ˈprɑːmɪs","fiil","Söz vermek","I promise I'll call you.","Seni arayacağıma söz veriyorum."],["opinion","əˈpɪnjən","isim","Görüş","What is your opinion?","Senin görüşün ne?"],["crowded","ˈkraʊdɪd","sıfat","Kalabalık","The bus was very crowded.","Otobüs çok kalabalıktı."],["enjoy","ɪnˈdʒɔɪ","fiil","Keyif almak","I enjoy reading books.","Kitap okumaktan keyif alıyorum."],["calm","kɑːm","sıfat","Sakin","Stay calm and try again.","Sakin ol ve tekrar dene."],["adventure","ədˈventʃɚ","isim","Macera","Life is an adventure.","Hayat bir maceradır."],["thirsty","ˈθɝːsti","sıfat","Susamış","I'm thirsty, can I have some water?","Susadım, biraz su alabilir miyim?"],["achieve","əˈtʃiːv","fiil","Başarmak","You can achieve your dreams.","Hayallerine ulaşabilirsin."]];
-let wotdOpen = false;
-function renderWotd() {
+/* words of the day: [word, IPA, type, Turkish, example, example in Turkish] from data/words.tsv; 5 a day, 300 words, so 60 days without a repeat */
+const WOTD = /*WOTD*/[];
+const W_PER_DAY = 5;
+let wIdx = 0, wOpen = [], wSeen = new Set(), wDayKey = '';
+function todaysWords() {
   const now = new Date();
   const n = Math.floor(new Date(dayKey(now) + 'T12:00:00').getTime() / 864e5);
-  const [word, ipa, type, tr, en, trEx] = WOTD[((n % WOTD.length) + WOTD.length) % WOTD.length];
+  const days = Math.floor(WOTD.length / W_PER_DAY);
+  const start = (((n % days) + days) % days) * W_PER_DAY;
+  return WOTD.slice(start, start + W_PER_DAY);
+}
+function renderWotd(dir) {
+  const now = new Date();
+  if (wDayKey !== dayKey(now)) { wDayKey = dayKey(now); wIdx = 0; wOpen = []; wSeen = new Set(); }
+  wSeen.add(wIdx);
+  const list = todaysWords();
+  const [word, ipa, type, tr, en, trEx] = list[wIdx];
+  const open = !!wOpen[wIdx];
   $('wDate').textContent = `${now.getDate()} ${['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'][now.getMonth()]}`;
   $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type;
   $('wTr').textContent = tr; $('wEn').textContent = en; $('wTrEx').textContent = trEx;
-  $('wMeaning').hidden = !wotdOpen;
-  $('wReveal').setAttribute('aria-expanded', wotdOpen);
-  $('wHint').hidden = wotdOpen;
+  $('wMeaning').hidden = !open; $('wHint').hidden = open;
+  $('wReveal').setAttribute('aria-expanded', open);
+  $('wPrev').disabled = wIdx === 0; $('wNext').disabled = wIdx === list.length - 1;
+  $('wDots').innerHTML = list.map((w, i) => `<button role="tab" aria-selected="${i === wIdx}" aria-label="${i + 1}. kelime" class="${wSeen.has(i) ? 'seen' : ''}" data-i="${i}"></button>`).join('');
+  if (dir) { const sl = $('wSlide'); sl.classList.remove('in-l', 'in-r'); void sl.offsetWidth; sl.classList.add(dir > 0 ? 'in-r' : 'in-l'); }
 }
-$('wReveal').addEventListener('click', () => { wotdOpen = !wotdOpen; renderWotd(); });
+function goWord(i) {
+  const n = todaysWords().length;
+  if (i < 0 || i >= n || i === wIdx) return;
+  const dir = i > wIdx ? 1 : -1; wIdx = i;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  $('wSay').classList.remove('on');
+  renderWotd(dir);
+}
+let wSwiped = false;
+$('wReveal').addEventListener('click', () => { if (wSwiped) { wSwiped = false; return; } wOpen[wIdx] = !wOpen[wIdx]; renderWotd(); });
+$('wPrev').addEventListener('click', () => goWord(wIdx - 1));
+$('wNext').addEventListener('click', () => goWord(wIdx + 1));
+$('wDots').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) goWord(+b.dataset.i); });
+// swipe left / right on the card; vertical scrolling stays with the page
+(() => {
+  let x0 = null, y0 = 0;
+  const card = document.querySelector('.wotd');
+  card.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') return; x0 = e.clientX; y0 = e.clientY; });
+  card.addEventListener('pointerup', e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { wSwiped = true; setTimeout(() => wSwiped = false, 350); goWord(wIdx + (dx < 0 ? 1 : -1)); }
+  });
+  card.addEventListener('pointercancel', () => { x0 = null; });
+})();
 // speech is optional: the button only shows where the browser can read English aloud
 if (!('speechSynthesis' in window)) $('wSay').hidden = true;
 $('wSay').addEventListener('click', () => {
