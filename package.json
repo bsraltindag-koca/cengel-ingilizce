@@ -1,0 +1,28 @@
+{
+  "name": "kanca-word-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kanca - Word Game: Türkçe-İngilizce çengel bulmaca, iOS ve Android için Capacitor ile paketlenir",
+  "scripts": {
+    "build": "python3 tools/build.py --www",
+    "sync": "npm run build && npx cap sync",
+    "ios": "npm run sync && npx cap open ios",
+    "android": "npm run sync && npx cap open android",
+    "assets": "npx capacitor-assets generate --ios --android --iconBackgroundColor '#4b3be0' --iconBackgroundColorDark '#4b3be0' --splashBackgroundColor '#4b3be0' --splashBackgroundColorDark '#4b3be0'",
+    "apk": "npm run sync && cd android && JAVA_HOME=$(/usr/libexec/java_home -v 21) ./gradlew assembleDebug && echo APK: android/app/build/outputs/apk/debug/app-debug.apk"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.3",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3"
+  }
+}

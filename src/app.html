@@ -468,6 +468,15 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 button, .cell { touch-action: manipulation; }
 .kbd, .bottomnav, .g-actions { -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
+/* native app: the web view runs edge to edge, so pages pad themselves past the notch and home indicator */
+html.native .app { padding-top: env(safe-area-inset-top, 0px); }
+html.native .kbd { padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+html.native .game { padding-bottom: 0; }
+html.native .done-hero { margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: calc(36px + env(safe-area-inset-top, 0px)); }
+html.native .done-body { padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+html.native .overlay { padding-top: calc(16px + env(safe-area-inset-top, 0px)); }
+html.native body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overscroll-behavior: none; }
+html.native input { -webkit-user-select: text; user-select: text; }
 
 /* ---------- account (design preview) ---------- */
 .avatar { width: 48px; height: 48px; border-radius: 999px; background: var(--surface); display: grid; place-items: center; box-shadow: var(--shadow); color: var(--primary); flex: none; }
@@ -894,6 +903,11 @@ document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
 const $ = id => document.getElementById(id);
+// native app (Capacitor on iOS / Android). In a browser NATIVE is false and PLUG is empty.
+const CAP = window.Capacitor;
+const NATIVE = !!(CAP && CAP.isNativePlatform && CAP.isNativePlatform());
+const PLUG = NATIVE ? (CAP.Plugins || {}) : {};
+if (NATIVE) document.documentElement.classList.add('native', 'native-' + CAP.getPlatform());
 const LEVELS = [
   { k: 'A1', name: 'Başlangıç' },
   { k: 'A2', name: 'Temel' },
@@ -1028,7 +1042,7 @@ function goWord(i) {
   const n = todaysWords().length;
   if (i < 0 || i >= n || i === wIdx) return;
   const dir = i > wIdx ? 1 : -1; wIdx = i;
-  try { speechSynthesis.cancel(); } catch (e) {}
+  stopSpeech();
   $('wSay').classList.remove('on');
   renderWotd(dir);
 }
@@ -1049,10 +1063,22 @@ $('wDots').addEventListener('click', e => { const b = e.target.closest('[data-i]
   });
   card.addEventListener('pointercancel', () => { x0 = null; });
 })();
-// speech is optional: the button only shows where the browser can read English aloud
-if (!('speechSynthesis' in window)) $('wSay').hidden = true;
-const CAN_SPEAK = 'speechSynthesis' in window;
+// speech is optional: buttons only show where English can be read aloud
+const TTS = PLUG.TextToSpeech;
+const CAN_SPEAK = !!TTS || 'speechSynthesis' in window;
+if (!CAN_SPEAK) $('wSay').hidden = true;
+function stopSpeech() {
+  if (TTS) TTS.stop().catch(() => {});
+  else try { speechSynthesis.cancel(); } catch (e) {}
+  document.querySelectorAll('.say.on').forEach(b => b.classList.remove('on'));
+}
 function speak(text, btn) {
+  if (TTS) {
+    stopSpeech();
+    if (btn) btn.classList.add('on');
+    TTS.speak({ text, lang: 'en-US', rate: .9 }).catch(() => toast('Bu cihaz sesli okumayı desteklemiyor.')).finally(() => btn && btn.classList.remove('on'));
+    return;
+  }
   try {
     speechSynthesis.cancel();
     document.querySelectorAll('.say.on').forEach(b => b.classList.remove('on'));
@@ -1282,6 +1308,7 @@ function solve(w) {
   // only the word that was selected when Harf aç / Kelime aç was pressed counts as found with a hint
   const usedHint = (G.st.hx || []).includes(w.i);
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
+  buzz('light');
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
   if (!S.learned[w.answer]) act().w++;
@@ -1462,6 +1489,7 @@ function finish() {
   G.newRecord = recs.length ? `Yeni rekor: ${recs.join(' ve ')}!` : '';
   S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey() };
   act().p++;
+  buzz('success');
   bumpStreak(); persist();
   setTimeout(() => { renderDone(false); show('done'); confetti(); }, 450);
 }
@@ -1675,7 +1703,7 @@ function renderMute() {
 if (!CAN_SPEAK) $('qMute').hidden = true;
 $('qMute').addEventListener('click', () => {
   S.opts.quizMute = !S.opts.quizMute; persist(); renderMute();
-  if (S.opts.quizMute) { try { speechSynthesis.cancel(); } catch (e) {} }
+  if (S.opts.quizMute) stopSpeech();
   toast(S.opts.quizMute ? 'Ses kapatıldı' : 'Ses açıldı');
 });
 renderMute();
@@ -1796,6 +1824,7 @@ function applyTheme() {
   else if (themeSet) { delete root.dataset.theme; themeSet = false; }
   const dark = isDark();
   root.classList.toggle('is-dark', dark);
+  nativeTheme(dark);
   document.querySelectorAll('[data-theme-toggle]').forEach(b => b.setAttribute('aria-label', dark ? 'Açık temaya geç' : 'Koyu temaya geç'));
   $('themeSeg').querySelectorAll('[data-t]').forEach(b => b.setAttribute('aria-checked', b.dataset.t === (S.opts.theme || '')));
 }
@@ -1860,6 +1889,29 @@ function confetti() {
   setTimeout(() => sp.hidden = true, 2600);
   if (location.hash === '#oyun') sp.hidden = true;
 })();
+
+/* native app bridge: status bar, Android back button, haptics. In a browser these do nothing. */
+function nativeTheme(dark) {
+  if (!PLUG.StatusBar) return;
+  PLUG.StatusBar.setStyle({ style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
+  if (CAP.getPlatform() === 'android') PLUG.StatusBar.setBackgroundColor({ color: dark ? '#0e0f1c' : '#f1f2f8' }).catch(() => {});
+}
+function buzz(kind) {
+  if (!PLUG.Haptics) return;
+  if (kind === 'success') PLUG.Haptics.notification({ type: 'SUCCESS' }).catch(() => {});
+  else PLUG.Haptics.impact({ style: 'LIGHT' }).catch(() => {});
+}
+if (PLUG.App) {
+  // Android back: close what is open, then step back, and only leave the app from the home page
+  PLUG.App.addListener('backButton', () => {
+    if (!$('how').hidden) { $('how').hidden = true; return; }
+    if (!$('pause').hidden) { $('resume').click(); return; }
+    if (!$('splash').hidden) { $('splash').hidden = true; return; }
+    if (screen === 'home') { PLUG.App.exitApp(); return; }
+    show(screen === 'quiz' ? 'words' : 'home');
+  });
+}
+if (PLUG.SplashScreen) PLUG.SplashScreen.hide().catch(() => {});
 
 applyTheme();
 show(location.hash === '#oyun' ? 'play' : 'home');

@@ -3,8 +3,10 @@
 The version is 1.<number of the commit this build goes into>, plus the build time
 in Turkey time, so the screen shows which update is live.
 Optional argument: a path to also write the page without <head> (for the Claude artifact).
+--www also writes www/ for the iOS / Android apps: the same page with the fonts bundled
+(no internet needed) and only the files the app uses.
 """
-import json, subprocess, sys
+import json, os, re, shutil, subprocess, sys
 from datetime import datetime, timedelta, timezone
 d = json.load(open('data/data.json', encoding='utf-8'))
 # every 3x3 block must read as words across and down, all 24 words distinct, each with a clue
@@ -29,10 +31,21 @@ body = (open('src/app.html', encoding='utf-8').read()
         .replace('/*DATA*/{}', json.dumps(d, ensure_ascii=False, separators=(',', ':')))
         .replace("/*VERSION*/{ n: 'geliştirme', date: '' }", json.dumps(version, ensure_ascii=False))
         .replace('/*WOTD*/[]', json.dumps(words, ensure_ascii=False, separators=(',', ':'))))
-if len(sys.argv) > 1:
-    open(sys.argv[1], 'w', encoding='utf-8').write(body)
+args = [x for x in sys.argv[1:] if not x.startswith('--')]
+if args:
+    open(args[0], 'w', encoding='utf-8').write(body)
 head = '<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<meta name="theme-color" content="#4b3be0">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-title" content="Kanca">\n<meta name="apple-mobile-web-app-status-bar-style" content="default">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">\n<link rel="manifest" href="manifest.webmanifest">\n<style>body{margin:0;font-size:14px}</style>\n'
 title_end = body.index('</style>') + len('</style>')
 html = head + body[:title_end] + '\n</head>\n<body>\n' + body[title_end:] + '\n</body>\n</html>\n'
 open('index.html', 'w', encoding='utf-8').write(html)
 print('index.html built, version', version['n'], version['date'])
+if '--www' in sys.argv:
+    fonts_link = re.search(r'<link rel="preconnect" href="https://fonts.googleapis.com">.*?display=swap">', html, re.S)
+    assert fonts_link, 'Google Fonts links not found'
+    app_html = html.replace(fonts_link.group(0), '<link rel="stylesheet" href="fonts/fonts.css">')
+    shutil.rmtree('www', ignore_errors=True)
+    os.makedirs('www')
+    open('www/index.html', 'w', encoding='utf-8').write(app_html)
+    shutil.copytree('fonts', 'www/fonts')
+    shutil.copytree('icons', 'www/icons', ignore=shutil.ignore_patterns('logo-source.html'))
+    print('www/ built for the apps:', ', '.join(sorted(os.listdir('www'))))

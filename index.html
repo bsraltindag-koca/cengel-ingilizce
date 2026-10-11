@@ -482,6 +482,15 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 button, .cell { touch-action: manipulation; }
 .kbd, .bottomnav, .g-actions { -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
+/* native app: the web view runs edge to edge, so pages pad themselves past the notch and home indicator */
+html.native .app { padding-top: env(safe-area-inset-top, 0px); }
+html.native .kbd { padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+html.native .game { padding-bottom: 0; }
+html.native .done-hero { margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: calc(36px + env(safe-area-inset-top, 0px)); }
+html.native .done-body { padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+html.native .overlay { padding-top: calc(16px + env(safe-area-inset-top, 0px)); }
+html.native body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overscroll-behavior: none; }
+html.native input { -webkit-user-select: text; user-select: text; }
 
 /* ---------- account (design preview) ---------- */
 .avatar { width: 48px; height: 48px; border-radius: 999px; background: var(--surface); display: grid; place-items: center; box-shadow: var(--shadow); color: var(--primary); flex: none; }
@@ -906,11 +915,16 @@ button, .cell { touch-action: manipulation; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.26", "date": "11 Eki 2026, 21:14"};
+const VERSION = {"n": "1.27", "date": "11 Eki 2026, 21:21"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
 const $ = id => document.getElementById(id);
+// native app (Capacitor on iOS / Android). In a browser NATIVE is false and PLUG is empty.
+const CAP = window.Capacitor;
+const NATIVE = !!(CAP && CAP.isNativePlatform && CAP.isNativePlatform());
+const PLUG = NATIVE ? (CAP.Plugins || {}) : {};
+if (NATIVE) document.documentElement.classList.add('native', 'native-' + CAP.getPlatform());
 const LEVELS = [
   { k: 'A1', name: 'Başlangıç' },
   { k: 'A2', name: 'Temel' },
@@ -1045,7 +1059,7 @@ function goWord(i) {
   const n = todaysWords().length;
   if (i < 0 || i >= n || i === wIdx) return;
   const dir = i > wIdx ? 1 : -1; wIdx = i;
-  try { speechSynthesis.cancel(); } catch (e) {}
+  stopSpeech();
   $('wSay').classList.remove('on');
   renderWotd(dir);
 }
@@ -1066,10 +1080,22 @@ $('wDots').addEventListener('click', e => { const b = e.target.closest('[data-i]
   });
   card.addEventListener('pointercancel', () => { x0 = null; });
 })();
-// speech is optional: the button only shows where the browser can read English aloud
-if (!('speechSynthesis' in window)) $('wSay').hidden = true;
-const CAN_SPEAK = 'speechSynthesis' in window;
+// speech is optional: buttons only show where English can be read aloud
+const TTS = PLUG.TextToSpeech;
+const CAN_SPEAK = !!TTS || 'speechSynthesis' in window;
+if (!CAN_SPEAK) $('wSay').hidden = true;
+function stopSpeech() {
+  if (TTS) TTS.stop().catch(() => {});
+  else try { speechSynthesis.cancel(); } catch (e) {}
+  document.querySelectorAll('.say.on').forEach(b => b.classList.remove('on'));
+}
 function speak(text, btn) {
+  if (TTS) {
+    stopSpeech();
+    if (btn) btn.classList.add('on');
+    TTS.speak({ text, lang: 'en-US', rate: .9 }).catch(() => toast('Bu cihaz sesli okumayı desteklemiyor.')).finally(() => btn && btn.classList.remove('on'));
+    return;
+  }
   try {
     speechSynthesis.cancel();
     document.querySelectorAll('.say.on').forEach(b => b.classList.remove('on'));
@@ -1299,6 +1325,7 @@ function solve(w) {
   // only the word that was selected when Harf aç / Kelime aç was pressed counts as found with a hint
   const usedHint = (G.st.hx || []).includes(w.i);
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
+  buzz('light');
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
   if (!S.learned[w.answer]) act().w++;
@@ -1479,6 +1506,7 @@ function finish() {
   G.newRecord = recs.length ? `Yeni rekor: ${recs.join(' ve ')}!` : '';
   S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey() };
   act().p++;
+  buzz('success');
   bumpStreak(); persist();
   setTimeout(() => { renderDone(false); show('done'); confetti(); }, 450);
 }
@@ -1692,7 +1720,7 @@ function renderMute() {
 if (!CAN_SPEAK) $('qMute').hidden = true;
 $('qMute').addEventListener('click', () => {
   S.opts.quizMute = !S.opts.quizMute; persist(); renderMute();
-  if (S.opts.quizMute) { try { speechSynthesis.cancel(); } catch (e) {} }
+  if (S.opts.quizMute) stopSpeech();
   toast(S.opts.quizMute ? 'Ses kapatıldı' : 'Ses açıldı');
 });
 renderMute();
@@ -1813,6 +1841,7 @@ function applyTheme() {
   else if (themeSet) { delete root.dataset.theme; themeSet = false; }
   const dark = isDark();
   root.classList.toggle('is-dark', dark);
+  nativeTheme(dark);
   document.querySelectorAll('[data-theme-toggle]').forEach(b => b.setAttribute('aria-label', dark ? 'Açık temaya geç' : 'Koyu temaya geç'));
   $('themeSeg').querySelectorAll('[data-t]').forEach(b => b.setAttribute('aria-checked', b.dataset.t === (S.opts.theme || '')));
 }
@@ -1877,6 +1906,29 @@ function confetti() {
   setTimeout(() => sp.hidden = true, 2600);
   if (location.hash === '#oyun') sp.hidden = true;
 })();
+
+/* native app bridge: status bar, Android back button, haptics. In a browser these do nothing. */
+function nativeTheme(dark) {
+  if (!PLUG.StatusBar) return;
+  PLUG.StatusBar.setStyle({ style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
+  if (CAP.getPlatform() === 'android') PLUG.StatusBar.setBackgroundColor({ color: dark ? '#0e0f1c' : '#f1f2f8' }).catch(() => {});
+}
+function buzz(kind) {
+  if (!PLUG.Haptics) return;
+  if (kind === 'success') PLUG.Haptics.notification({ type: 'SUCCESS' }).catch(() => {});
+  else PLUG.Haptics.impact({ style: 'LIGHT' }).catch(() => {});
+}
+if (PLUG.App) {
+  // Android back: close what is open, then step back, and only leave the app from the home page
+  PLUG.App.addListener('backButton', () => {
+    if (!$('how').hidden) { $('how').hidden = true; return; }
+    if (!$('pause').hidden) { $('resume').click(); return; }
+    if (!$('splash').hidden) { $('splash').hidden = true; return; }
+    if (screen === 'home') { PLUG.App.exitApp(); return; }
+    show(screen === 'quiz' ? 'words' : 'home');
+  });
+}
+if (PLUG.SplashScreen) PLUG.SplashScreen.hide().catch(() => {});
 
 applyTheme();
 show(location.hash === '#oyun' ? 'play' : 'home');

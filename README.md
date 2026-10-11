@@ -19,3 +19,17 @@ python3 tools/build.py     # src/app.html + veri -> index.html
 ```
 
 Kelime listesi ve Türkçe ipuçları `tools/squares.py` içinde.
+
+## iOS ve Android uygulaması
+
+Uygulama [Capacitor](https://capacitorjs.com) ile paketlenir (`ios/`, `android/`). Telefon sürümü internetsiz çalışır: yazı tipleri `fonts/` içinde gelir.
+
+```sh
+npm install
+npm run sync      # www/ üretir ve iki projeye kopyalar
+npm run ios       # Xcode'da açar: iPhone'u seç, Çalıştır
+npm run apk       # Android APK: android/app/build/outputs/apk/debug/app-debug.apk (JDK 21 gerekir)
+npm run assets    # assets/ içindeki simge ve açılış görselinden tüm boyutları üretir
+```
+
+Telefonda ek olarak: durum çubuğu temaya uyar, Android geri tuşu uygulama içinde geri gider, kelimeler telefonun kendi sesli okumasıyla okunur, kelime bulununca ve bulmaca bitince titreşim olur, ekran dikey kalır.

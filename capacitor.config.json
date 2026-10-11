@@ -1,0 +1,21 @@
+{
+  "appId": "io.github.bsraltindagkoca.kanca",
+  "appName": "Kanca",
+  "webDir": "www",
+  "backgroundColor": "#4b3be0",
+  "ios": {
+    "contentInset": "never",
+    "scheme": "Kanca"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 400,
+      "launchAutoHide": true,
+      "backgroundColor": "#4b3be0",
+      "showSpinner": false
+    }
+  }
+}
