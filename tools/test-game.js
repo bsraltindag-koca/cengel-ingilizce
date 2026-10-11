@@ -34,7 +34,7 @@ setTimeout(() => {
     for (const w of G.words) for (const [r, c] of w.cells) { if (r === hr && c === hc) continue; G.cur = G.cells[r][c]; G.dir = w.dir; key(G.cells[r][c].sol); }
     const before = G.st.sw.length;
     pickWord(holdA); hintWord();
-    R.T2 = { solvedBefore: before, finished: !!G.finished, score: S.done[id] && S.done[id].score, expected: 22 * 35 + 25 + 25 - 40 + 200, stateScore: G.st.score };
+    R.T2 = { solvedBefore: before, finished: !!G.finished, score: S.done[id] && S.done[id].score, expected: 22 * 35 + 25 + 35 - 40 + 200, stateScore: G.st.score };
   } catch (e) { R.T2 = 'ERR ' + e.message; }
 
   // T3: typing on a locked square goes to the next open square

@@ -1014,7 +1014,7 @@ function openGame(id) {
   if (screen === 'game') leaveGame();
   const m = meta(id);
   const { grid, words } = buildPuzzle(m.squares);
-  if (!S.games[id]) S.games[id] = { v: '.'.repeat(64), h: '0'.repeat(64), m: Array(24).fill(0), lw: Array(24).fill(''), hints: 0, sec: 0, score: 0, sw: [], hw: [] };
+  if (!S.games[id]) S.games[id] = { v: '.'.repeat(64), h: '0'.repeat(64), m: Array(24).fill(0), lw: Array(24).fill(''), hints: 0, sec: 0, score: 0, sw: [], hw: [], hx: [] };
   if (!id.startsWith('D:')) S.cur = id;
   G = { id, meta: m, grid, words, st: S.games[id], cur: null, dir: 'A', marks: {} };
   // cells
@@ -1159,7 +1159,8 @@ function evaluate(cell) {
 
 function solve(w) {
   G.st.sw.push(w.i);
-  const usedHint = w.cells.some(([r, c]) => hinted(r, c));
+  // only the word that was selected when Harf aç / Kelime aç was pressed counts as found with a hint
+  const usedHint = (G.st.hx || []).includes(w.i);
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
@@ -1242,6 +1243,8 @@ function reveal(cells, cost) {
     delete G.marks[idx(r, c)];
   }
   G.st.hints++; G.st.score = Math.max(0, G.st.score - cost);
+  G.st.hx = G.st.hx || [];
+  if (!G.st.hx.includes(curWord().i)) G.st.hx.push(curWord().i);
   toast(`−${cost} puan`);
   for (const [r, c] of todo) evaluate(G.cells[r][c]);
   return true;
@@ -1437,8 +1440,8 @@ const SPK_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" str
 let wFilter = 'all', wSort = 'new';
 const learnedList = () => Object.keys(S.learned);
 const reviewOf = w => S.review[w] || { ok: 0, bad: 0 };
-// a word needs review if it was hard and has not been answered right twice since, or if it is missed more than it is known
-const needsReview = w => { const r = reviewOf(w); return (S.learned[w].hard && r.ok < 2) || r.bad > r.ok; };
+// a word needs review if it was hard and has not been answered right in the review since, or if it is missed more than it is known
+const needsReview = w => { const r = reviewOf(w); return (S.learned[w].hard && r.ok < 1) || r.bad > r.ok; };
 const weekAgo = () => { const d = new Date(); d.setDate(d.getDate() - 6); return dayKey(d); };
 const lowerEn = w => w.toLowerCase();
 function wordRow(w, extra) {
