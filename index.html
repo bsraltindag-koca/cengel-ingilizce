@@ -209,7 +209,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: clamp(3px, 1vw, 7px); width: min(100%, max(250px, calc(100dvh - 470px))); margin: 0 auto; user-select: none; -webkit-user-select: none; }
 .cell { aspect-ratio: 1; border-radius: clamp(5px, 1.6vw, 10px); position: relative; container-type: inline-size; min-width: 0; }
 .cell.clue { background: var(--primary); color: #ffffff; display: grid; place-items: center; text-align: center; cursor: pointer; padding: 6% 8%; }
-.cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: anywhere; hyphens: auto; }
+.cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: break-word; }
+/* long single words shrink instead of being cut in the middle (ŞEKERLEME, KAZANMAK) */
+.cell.clue span.w7 { font-size: clamp(6.5px, 17cqw, 13px); }
+.cell.clue span.w8 { font-size: clamp(6px, 15cqw, 12px); }
+.cell.clue span.w9 { font-size: clamp(6px, 13.5cqw, 11px); }
+.cell.clue span.w10 { font-size: clamp(5.5px, 12cqw, 10.5px); }
 .cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
 .cell.clue.A::after { right: 3%; top: 50%; transform: translateY(-50%); border-left-color: var(--sun); border-right-width: 0; }
 .cell.clue.A { padding-right: 16%; }
@@ -602,6 +607,35 @@ html.native input { -webkit-user-select: text; user-select: text; }
 <body>
 
 
+<script>
+/* Old-engine guard, written in plain ES5 on purpose so it still runs where the app's own code
+   cannot (e.g. Android 9 phones whose WebView was never updated). The app needs Chrome / WebView 105+. */
+(function () {
+  var ok = false;
+  try {
+    ok = !!(window.CSS && CSS.supports('aspect-ratio: 1') && CSS.supports('width: 1cqw') &&
+      CSS.supports('color: color-mix(in srgb, red 50%, blue)'));
+    if (ok) new Function('var a = {}; return a?.b ?? 1;');
+  } catch (e) { ok = false; }
+  if (ok) return;
+  var android = /Android/i.test(navigator.userAgent);
+  var css = document.createElement('style');
+  css.textContent = 'body > *:not(#oldMsg){display:none !important}' +
+    '#oldMsg{position:fixed;top:0;left:0;right:0;bottom:0;background:#4b3be0;color:#fff;font-family:system-ui,-apple-system,Roboto,sans-serif;padding:48px 24px;text-align:center;overflow:auto}' +
+    '#oldMsg h1{font-size:28px;margin:24px 0 12px}#oldMsg p{font-size:17px;line-height:1.5;margin:0 auto 24px;max-width:420px;opacity:.92}' +
+    '#oldMsg a{display:block;max-width:360px;margin:0 auto 12px;padding:16px;border-radius:16px;background:#fff;color:#141629;font-weight:700;font-size:17px;text-decoration:none}' +
+    '#oldMsg .k{display:inline-block;width:72px;height:72px;line-height:72px;border-radius:20px;background:#fff;color:#4b3be0;font-size:40px;font-weight:800}';
+  document.head.appendChild(css);
+  var box = document.createElement('div');
+  box.id = 'oldMsg';
+  box.innerHTML = '<div class="k">K</div><h1>Bir güncelleme gerekiyor</h1>' + (android
+    ? '<p>Kanca, telefonundaki web motorunun daha yeni bir sürümünü kullanıyor. Play Store’dan <b>Android System WebView</b> ve <b>Google Chrome</b>’u güncelle, sonra Kanca’yı yeniden aç.</p>' +
+      '<a href="market://details?id=com.google.android.webview">Android System WebView’i güncelle</a>' +
+      '<a href="market://details?id=com.android.chrome">Google Chrome’u güncelle</a>'
+    : '<p>Bu tarayıcı Kanca için çok eski. Tarayıcını güncelleyip sayfayı yeniden aç.</p>');
+  document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(box); });
+})();
+</script>
 <div class="splash" id="splash" lang="tr" role="button" aria-label="Kanca uygulamasına geç">
   <div class="inner">
     <div class="sp-grid" id="spGrid" aria-hidden="true"></div>
@@ -915,7 +949,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.27", "date": "11 Eki 2026, 21:21"};
+const VERSION = {"n": "1.28", "date": "11 Eki 2026, 21:41"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 
@@ -1194,6 +1228,8 @@ function openGame(id) {
       if (w) {
         el.className = 'cell clue ' + w.dir;
         el.innerHTML = '<span></span>'; el.firstChild.textContent = w.clue;
+        const longest = Math.max(...w.clue.split(/[\s()]+/).map(s => s.length));
+        if (longest >= 7) el.firstChild.className = 'w' + Math.min(longest, 10);
         el.title = w.clue;
         el.addEventListener('pointerdown', e => { e.preventDefault(); pickWord(w); });
         w.clueEl = el;
@@ -1909,9 +1945,9 @@ function confetti() {
 
 /* native app bridge: status bar, Android back button, haptics. In a browser these do nothing. */
 function nativeTheme(dark) {
-  if (!PLUG.StatusBar) return;
-  PLUG.StatusBar.setStyle({ style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
-  if (CAP.getPlatform() === 'android') PLUG.StatusBar.setBackgroundColor({ color: dark ? '#0e0f1c' : '#f1f2f8' }).catch(() => {});
+  // Android: our own ThemeBars plugin paints behind the status and navigation bars (Android 15+ ignores the old call)
+  if (PLUG.ThemeBars) { PLUG.ThemeBars.set({ dark, color: dark ? '#0e0f1c' : '#f1f2f8' }).catch(() => {}); return; }
+  if (PLUG.StatusBar) PLUG.StatusBar.setStyle({ style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
 }
 function buzz(kind) {
   if (!PLUG.Haptics) return;
