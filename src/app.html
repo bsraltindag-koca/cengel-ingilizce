@@ -100,24 +100,25 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .ring span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
 .btn-white { background: #ffffff; color: #141629; border-radius: 18px; height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; font-size: 17px; width: 100%; }
-.wotd { background: var(--cream); border-radius: 24px; padding: 18px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 16px; align-items: start; }
-.wotd .date { width: 64px; height: 64px; border-radius: 16px; background: var(--orange); color: #141629; display: grid; place-items: center; align-content: center; line-height: 1; grid-row: span 2; }
-.wotd .date b { font-size: 26px; font-weight: 800; }
-.wotd .date small { font-size: 11px; font-weight: 800; }
-.wotd .eyebrow { color: var(--cream-ink); }
-.wotd .wrow { display: flex; align-items: center; gap: 10px; }
-.wotd h3 { font-size: 28px; font-weight: 800; letter-spacing: -.01em; overflow-wrap: anywhere; }
-.wotd .say { width: 38px; height: 38px; border-radius: 999px; background: var(--surface); color: var(--primary); display: grid; place-items: center; flex: none; box-shadow: var(--shadow); }
+.wotd { background: var(--surface); border-radius: 24px; padding: 20px; display: grid; gap: 14px; box-shadow: var(--shadow); }
+.wotd .w-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.wotd .eyebrow { color: var(--primary); }
+.wotd .w-date { color: var(--muted); font-weight: 700; font-size: 13px; }
+.wotd .w-word { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.wotd h3 { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; overflow-wrap: anywhere; }
+.wotd .ipa { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-weight: 600; font-size: 15px; }
+.wotd .ipa .p { font-family: "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif; }
+.wotd .chip { font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: var(--soft); color: var(--ink); }
+.wotd .say { width: 48px; height: 48px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; flex: none; transition: background .15s, color .15s; }
 .wotd .say.on { background: var(--primary); color: var(--on-primary); }
-.wotd .ipa { margin: 0; color: var(--cream-ink); font-weight: 600; font-size: 15px; }
-.wotd .ipa span { font-family: "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif; }
-.wotd .meaning { grid-column: 1 / -1; display: grid; gap: 6px; margin-top: 10px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--cream-ink) 22%, transparent); }
-.wotd .meaning b { font-size: 22px; font-weight: 800; }
-.wotd .meaning .en { margin: 0; font-weight: 700; font-size: 16px; }
-.wotd .meaning .tr { margin: 0; color: var(--cream-ink); font-weight: 600; font-size: 15px; }
-.wotd .reveal { grid-column: 1 / -1; margin-top: 10px; height: 46px; border-radius: 14px; background: var(--surface); font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.wotd .reveal svg { transition: transform .2s; }
-.wotd .reveal[aria-expanded="true"] svg { transform: rotate(180deg); }
+.wotd .w-box { width: 100%; border-radius: 16px; border: 1.5px dashed var(--line); padding: 14px 16px; text-align: left; display: grid; transition: background .15s, border-color .15s; }
+.wotd .w-hint { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-weight: 700; font-size: 15px; }
+.wotd .w-box[aria-expanded="true"] { border-style: solid; border-color: transparent; background: var(--bg); }
+.wotd .w-meaning { display: grid; gap: 4px; }
+.wotd .w-meaning b { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+.wotd .w-meaning .en { font-weight: 700; font-size: 16px; color: var(--ink); }
+.wotd .w-meaning .tr { color: var(--muted); font-weight: 600; font-size: 15px; }
+@media (prefers-reduced-motion: reduce) { .wotd .say, .wotd .w-box { transition: none; } }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sec-head h2 { font-size: 24px; font-weight: 800; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -467,18 +468,18 @@ button, .cell { touch-action: manipulation; }
       <button class="btn-white" id="rGo"><span id="rBtn">Devam et</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </section>
     <section class="wotd" aria-labelledby="wWord">
-      <div class="date"><b id="wDay">11</b><small id="wMon">EKİ</small></div>
-      <div class="eyebrow">Günün kelimesi</div>
-      <div style="min-width:0">
-        <div class="wrow"><h3 id="wWord" lang="en">journey</h3><button class="say" id="wSay" aria-label="Kelimeyi dinle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button></div>
-        <p class="ipa"><span id="wIpa" lang="en">/ˈdʒɜːrni/</span> · <span id="wType">isim</span></p>
+      <div class="w-top"><span class="eyebrow">Günün kelimesi</span><span class="w-date" id="wDate">11 Eki</span></div>
+      <div class="w-word">
+        <div style="min-width:0">
+          <h3 id="wWord" lang="en">improve</h3>
+          <p class="ipa"><span class="p" id="wIpa" lang="en">/ɪmˈpruːv/</span><span class="chip" id="wType">fiil</span></p>
+        </div>
+        <button class="say" id="wSay" aria-label="Kelimeyi dinle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
       </div>
-      <div class="meaning" id="wMeaning" hidden>
-        <b id="wTr">Yolculuk</b>
-        <p class="en" lang="en" id="wEn"></p>
-        <p class="tr" id="wTrEx"></p>
-      </div>
-      <button class="reveal" id="wReveal" aria-expanded="false" aria-controls="wMeaning"><span>Anlamını göster</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="w-box" id="wReveal" aria-expanded="false" aria-controls="wMeaning">
+        <span class="w-hint" id="wHint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>Anlamını görmek için dokun</span>
+        <span class="w-meaning" id="wMeaning" hidden><b id="wTr">Geliştirmek</b><span class="en" lang="en" id="wEn"></span><span class="tr" id="wTrEx"></span></span>
+      </button>
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
@@ -765,12 +766,12 @@ function renderWotd() {
   const now = new Date();
   const n = Math.floor(new Date(dayKey(now) + 'T12:00:00').getTime() / 864e5);
   const [word, ipa, type, tr, en, trEx] = WOTD[((n % WOTD.length) + WOTD.length) % WOTD.length];
-  $('wDay').textContent = now.getDate(); $('wMon').textContent = MONTHS[now.getMonth()];
+  $('wDate').textContent = `${now.getDate()} ${['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'][now.getMonth()]}`;
   $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type;
   $('wTr').textContent = tr; $('wEn').textContent = en; $('wTrEx').textContent = trEx;
   $('wMeaning').hidden = !wotdOpen;
   $('wReveal').setAttribute('aria-expanded', wotdOpen);
-  $('wReveal').firstChild.textContent = wotdOpen ? 'Anlamını gizle' : 'Anlamını göster';
+  $('wHint').hidden = wotdOpen;
 }
 $('wReveal').addEventListener('click', () => { wotdOpen = !wotdOpen; renderWotd(); });
 // speech is optional: the button only shows where the browser can read English aloud
