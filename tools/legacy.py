@@ -7,7 +7,7 @@ same property just before it:
 
   color-mix(in srgb, A p%, B)  ->  the mixed colour, computed here from the theme tokens
   Ncqw                         ->  an approximation from the screen width (a grid cell is
-                                    about 1/8.7 of a phone's width)
+                                    about 1/9.5 of a phone's width)
   dvh                          ->  vh
 
 cqw and dvh fallbacks without var() simply go first: an old engine drops the original as invalid and keeps
@@ -120,7 +120,7 @@ def add_fallbacks(css):
                 fb = value
                 if 'color-mix' in fb:
                     fb = mix_fallback(fb, scoped)
-                fb = re.sub(r'(\d*\.?\d+)cqw', lambda x: 'calc(%s * 0.115vw)' % x.group(1), fb)
+                fb = re.sub(r'(\d*\.?\d+)cqw', lambda x: 'calc(%s * 0.105vw)' % x.group(1), fb)
                 fb = fb.replace('dvh', 'vh')
                 # color-mix always, and anything that also holds var(): an old engine would accept
                 # it while parsing and then compute it to nothing, so it moves into @supports

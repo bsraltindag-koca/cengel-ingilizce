@@ -212,30 +212,30 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: clamp(3px, 1vw, 7px); width: min(100%, max(250px, calc(100vh - 470px))); width: min(100%, max(250px, calc(100dvh - 470px))); margin: 0 auto; user-select: none; -webkit-user-select: none; }
 .cell { aspect-ratio: 1; border-radius: clamp(5px, 1.6vw, 10px); position: relative; container-type: inline-size; min-width: 0; }
 .cell.clue { background: var(--primary); color: #ffffff; display: grid; place-items: center; text-align: center; cursor: pointer; padding: 6% 8%; }
-.cell.clue span { font: 700 clamp(7px, calc(20 * 0.115vw), 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: break-word; } @supports (width: 1cqw) { .cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); } }
+.cell.clue span { font: 700 clamp(7px, calc(20 * 0.105vw), 15px)/1.02 var(--f-clue); text-transform: uppercase; overflow-wrap: break-word; } @supports (width: 1cqw) { .cell.clue span { font: 700 clamp(7px, 20cqw, 15px)/1.02 var(--f-clue); } }
 /* long single words shrink instead of being cut in the middle (ŞEKERLEME, KAZANMAK) */
-.cell.clue span.w7 { font-size: clamp(6.5px, calc(17 * 0.115vw), 13px); font-size: clamp(6.5px, 17cqw, 13px); }
-.cell.clue span.w8 { font-size: clamp(6px, calc(15 * 0.115vw), 12px); font-size: clamp(6px, 15cqw, 12px); }
-.cell.clue span.w9 { font-size: clamp(6px, calc(13.5 * 0.115vw), 11px); font-size: clamp(6px, 13.5cqw, 11px); }
-.cell.clue span.w10 { font-size: clamp(5.5px, calc(12 * 0.115vw), 10.5px); font-size: clamp(5.5px, 12cqw, 10.5px); }
-.cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, calc(9 * 0.115vw), 8px) solid transparent; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
+.cell.clue span.w7 { font-size: clamp(6.5px, calc(17 * 0.105vw), 13px); font-size: clamp(6.5px, 17cqw, 13px); }
+.cell.clue span.w8 { font-size: clamp(6px, calc(15 * 0.105vw), 12px); font-size: clamp(6px, 15cqw, 12px); }
+.cell.clue span.w9 { font-size: clamp(6px, calc(13.5 * 0.105vw), 11px); font-size: clamp(6px, 13.5cqw, 11px); }
+.cell.clue span.w10 { font-size: clamp(5.5px, calc(12 * 0.105vw), 10.5px); font-size: clamp(5.5px, 12cqw, 10.5px); }
+.cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, calc(9 * 0.105vw), 8px) solid transparent; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
 .cell.clue.A::after { right: 3%; top: 50%; transform: translateY(-50%); border-left-color: var(--sun); border-right-width: 0; }
 .cell.clue.A { padding-right: 16%; }
 .cell.clue.D::after { bottom: 4%; left: 50%; transform: translateX(-50%); border-top-color: var(--sun); border-bottom-width: 0; }
 .cell.clue.D { padding-bottom: 18%; }
 .cell.clue.active { background: var(--strong); color: var(--on-strong); }
 .cell.letter { background: var(--surface); display: grid; place-items: center; cursor: pointer; font-weight: 800; line-height: 1; color: var(--ink); }
-.cell .ch { font-size: calc(50 * 0.115vw); font-size: 50cqw; }
+.cell .ch { font-size: calc(50 * 0.105vw); font-size: 50cqw; }
 .cell.letter.inword { background: var(--peach); }
-.cell.letter.sel { background: var(--sun); box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.115vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; color: #141629; }
+.cell.letter.sel { background: var(--sun); box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.105vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; color: #141629; }
 .cell.letter.ok { background: var(--good-bg); color: var(--good); }
 .cell.letter.bad { background: var(--bad-bg); color: var(--bad); }
 .cell.letter.hint { color: var(--hint); }
-.cell.letter.ok.sel, .cell.letter.bad.sel { box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.115vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
-.cell .mk { position: absolute; top: 6%; right: 8%; font-size: calc(20 * 0.115vw); font-size: 20cqw; font-weight: 800; }
+.cell.letter.ok.sel, .cell.letter.bad.sel { box-shadow: inset 0 0 0 clamp(2px, calc(5 * 0.105vw), 3px) #141629; box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
+.cell .mk { position: absolute; top: 6%; right: 8%; font-size: calc(20 * 0.105vw); font-size: 20cqw; font-weight: 800; }
 .cell.ok .mk::after { content: "✓"; color: var(--good); }
 .cell.bad .mk::after { content: "✕"; color: var(--bad); }
-.cell.hint:not(.ok) .mk::after { content: ""; display: block; width: calc(11 * 0.115vw); width: 11cqw; height: calc(11 * 0.115vw); height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: calc(4 * 0.115vw); margin-top: 4cqw; }
+.cell.hint:not(.ok) .mk::after { content: ""; display: block; width: calc(11 * 0.105vw); width: 11cqw; height: calc(11 * 0.105vw); height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: calc(4 * 0.105vw); margin-top: 4cqw; }
 .cell.blank { background: transparent; }
 
 .g-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: auto; }
@@ -464,6 +464,35 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
   .act { font-size: 14px; gap: 4px; }
   .banner .clue { font-size: 22px; }
   .kbd button { height: 44px; font-size: 17px; }
+}
+/* narrow phones (360px wide): the header group and the page title share the row without touching */
+@media (max-width: 380px) {
+  .hello { gap: 8px; }
+  .hello h1 { font-size: 23px; }
+  .hello small { font-size: 13px; white-space: nowrap; }
+  .hello .right, .right { gap: 6px; }
+  .themebtn, .avatar { width: 40px; height: 40px; }
+  .streak { padding: 9px 12px; font-size: 15px; gap: 6px; }
+}
+/* short phones (e.g. 360 x 740 like a Galaxy S8): tighter game chrome so the grid keeps its size
+   and the whole keyboard stays on screen */
+@media (max-height: 800px) and (max-width: 959px) {
+  .game { gap: 8px; padding-top: 10px; }
+  .g-head { gap: 6px; }
+  .g-head h1 { font-size: 19px; }
+  .g-head p { font-size: 12px; }
+  .circle-back { width: 44px; height: 44px; }
+  .g-head .pill { height: 40px; padding: 0 12px; gap: 6px; font-size: 14px; }
+  .score-dot { min-width: 44px; height: 44px; }
+  .banner { padding: 6px; border-radius: 18px; grid-template-columns: 42px 1fr 42px; }
+  .banner button { height: 42px; border-radius: 12px; }
+  .banner .eyebrow { font-size: 10px; }
+  .banner .clue { font-size: 20px; }
+  .grid { width: min(100%, max(250px, calc(100vh - 380px))); width: min(100%, max(250px, calc(100dvh - 380px))); }
+  .act { height: 44px; font-size: 14px; }
+  .g-actions { gap: 8px; }
+  .kbd { gap: 6px; padding-top: 8px; }
+  .kbd button { height: 42px; font-size: 17px; }
 }
 
 /* ---------- desktop ---------- */
@@ -953,7 +982,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 <script>
 const DATA = {"levels":{"A1":[["NAPERATEN","TWOOILEND","DAYAGEDOT","HITACESEA"],["CAPAGENOT","FEWARERAT","ILLTIESET","CABONEDYE"],["FANICEGET","TOEOWNOLD","SHEPEAANT","HISERARED"],["SAYPIEART","HASAGOTEN","TEAOWNPET","PANICEGET"],["SPAEAREYE","CABONEDYE","MANAGOPET","FORERAWET"],["ITSLIELET","TWOOILEND","DIGACEYET","SPAHEREAT"],["TAPERANEW","BAGAGEDOT","SHEPENAND","HISACETEA"],["SEWIRERAT","TENRYEYET","TOOOWLEND","GASAGEPOT"],["CODANYBEE","NAPOREWET","SEAOWNNET","ILLTIESET"],["HAMERARED","CATAGONEW","SAYPIEART","SAPICETEA"],["TWOOILEND","CABAGEROD","CAPOREWET","HISERARED"],["SEEPAYARE","TEAOWNYET","SADICETEN","ILLTIESET"]],"A2":[["ELMYOUEGG","ASHSEAKEY","NODEARTRY","BIGACEGYM"],["ATELOGLEG","OPTAIRKEY","ERABUNBED","SHEEELARM"],["EYELOGMUG","OAKPIETRY","APESEAHAT","LOWEWEGET"],["BAGICYGEM","JOBARERED","ASKSEEHAY","NODEARTRY"],["ATELOGLEG","ERABUNBED","FOROWEEND","BATAGODEW"],["LIDACEPEN","MOMAREPET","EYENOWDUE","HISERANEW"],["FOGEWEWET","OAKLIEDRY","BIGACEGYM","ASHPEAEAT"],["MAPAGEDOG","ATELOGLEG","TOYIREPET","SEAHERELM"],["NODEARTRY","HASICEDEW","COPARETEN","HAMAGEDOT"],["EBBRUEAND","FOEOWNRED","EYELOGMUG","ANTTOOEWE"],["OAKPIETRY","LOWIREPET","BATAGODEN","TOEEWEALL"],["ASHSEAKEY","YAMERASET","BIGACEGYM","DRYEYEWET"]],"B1":[["HISEVERYE","ODDWAYEYE","ARTSUEHEN","LOTEARDRY"],["OREFUNFED","ATENOWDOE","HISEVERYE","OWEDAYDYE"],["TWOEARAXE","ODDAIRKEY","SPYPIEANT","LIPERADEN"],["ARTSUEHEN","ANDTOOEWE","HASIREDEW","LAWAGOPEN"],["OWELAYDYE","HERIVYSEE","OFFRUEEND","LOTEARDRY"],["PINACEDEW","SOBIRERED","OAKDIEDRY","BOYEWEGET"],["SAPAGETON","OPTLIEDEN","EBBRUEATE","TWOEARAXE"],["SPAPINYET","BINAREDEW","RANICEMET","HISEVERYE"],["ASHRUETEN","ENDRAYAPE","ANDTOOEWE","SAWAGOPEN"],["LEDOARTRY","HOPIRETEA","ODDWAYEYE","PAYERAGEM"],["TAGAGONET","JOGAREMET","SPYPIEANT","ODDAIRKEY"],["RIMACEWET","SADIREPEN","ERAVANEND","ATEROWTOE"]],"B2":[["PIGEVEGYM","ODDFOEFEW","DOGIREMET","PAWAGODEN"],["PIGEVEGYM","ODDFOEFEW","BOWEWEGET","FEDIRETAN"],["FOEOWLGEM","REDIVYBEE","OPTDIEDEN","SIPOREBEG"],["BIGEVEGYM","OFFDOEDEW","SHEPAWATE","MADAGETON"],["DOGOWEELM","RIBEVEDYE","CABOREPEG","FIRERADEW"],["FOGOWEELM","RIBEVEDYE","SHEPAWATE","ODDPIETEN"],["OFFDOEDEW","PEGIVYGEM","MOPEWETEA","ORELAYDYE"],["DOGOWEELM","MATAGODEW","RANIREMET","REDIVYBEE"],["OFFDOEDEW","RIPOREWET","EWERAYAXE","BIGEVEGYM"],["FOEOWLGEM","SHEPAWATE","ODDPIETEN","CABOREPEG"],["BEDIRETAN","METOWEPEA","MATAGODEW","OLDRAYEYE"],["SPAEATEWE","ODDFOEFEW","PEGIVYGEM","PADOREPEN"]],"daily":[["PIGACENET","SADAGOYET","TOEWINOLD","FEWARERAT"],["HATAGESON","CABONEDYE","SPAHEREAT","TEAOWNPET"],["ITSLIELET","HATICESEA","TOOOWLEND","MANAGOPET"],["HERARESAD","FIGACENET","OAKPIETRY","EYELOGMUG"],["SEEPAYARE","SEWIRERAT","DAYAGEDOT","ITSLIELET"],["SHEPENAND","BAGICYGEM","ASHSEAKEY","CODANYBEE"],["NOTAREPEN","ERABUNBED","ATELOGLEG","CAPAGONET"],["TEAOWNYET","NODEARTRY","TWOOILEND","LIPOREWET"],["SEAHERELM","HAMICESET","SAYPIEART","TAPERANEW"],["FOROWEEND","APESEAHAT","CANAGEROW","CODANYBEE"],["FEWOWEGET","BAGICYGEM","OPTAIRKEY","JAROREBED"],["ILLTIESET","ELMYOUEGG","ANTTOOEWE","LIDACEPEN"],["JETAREMAN","BATAGODEW","NODEARTRY","SHEPEAANT"],["ASHSEAKEY","EBBRUEAND","TOEWINOLD","TIPOREYET"],["CAPAGETON","SEWIRERAT","DIGACEYET","CABONEDYE"],["ELMYOUEGG","ITSLIELET","TEAOWLEEL","SAPPIEART"],["MADAGOPEG","SADORENEW","FOROWEEND","ASHPEAEAT"],["BAGICYGEM","NETOARDRY","LEGOWEWET","LIPERATEN"],["SPAEATEYE","SHEEELARM","FANAGEROW","SITACEDEN"],["HAMOREWET","TOEOWNOLD","EBBRUEAND","OPTAIRKEY"],["CODANYBEE","DENRYEYET","GAPAGOSET","HISACEDEW"],["TOPEWEANT","ALLTOEEGG","ILLTIESET","HIDERARED"],["ASHSEAKEY","NAPORETEA","EYENOWDUE","BIGACEGYM"],["SPAAIRYET","HISERANEW","TOEWINOLD","CATAGOPEN"],["NETOARDRY","CODANYBEE","MOMAREPET","FOGEWEWET"],["SHEEELARM","EBBRUEAND","BINACEDEW","TAGAGEPOT"],["SHEPEAANT","ELMYOUEGG","ILLTIESET","FOEOWNRED"],["ASKSEEHAY","SAPIRETEN","MADAGOPEG","ALLTOEEGG"],["HIDACESEW","OAKPIETRY","CABONEDYE","SPAEARANT"],["YAMERASET","DENRYEYET","TWOOILEND","BIGACEGYM"]]},"clues":{"ACE":"As (kart)","AGE":"Yaş","AGO":"Önce","AIR":"Hava","ALL":"Hepsi","AND":"Ve","ANT":"Karınca","ANY":"Herhangi","APE":"İri maymun","ARE":"Olmak (siz)","ARM":"Kol","ART":"Sanat","ASH":"Kül","ASK":"Sormak","ATE":"Yedi (fiil)","AXE":"Balta","BAD":"Kötü","BAG":"Çanta","BAT":"Yarasa","BED":"Yatak","BEE":"Arı","BEG":"Yalvarmak","BIG":"Büyük","BIN":"Çöp kutusu","BIT":"Isırdı","BOW":"Eğilmek","BOY":"Erkek çocuk","BUN":"Çörek","BUT":"Ama","CAB":"Taksi","CAN":"Konserve kutusu","CAP":"Kep","CAR":"Araba","CAT":"Kedi","COD":"Morina","COP":"Polis","COW":"İnek","DAD":"Baba","DAY":"Gün","DEN":"İn","DEW":"Çiy","DIE":"Ölmek","DIG":"Kazmak","DIM":"Loş","DOE":"Dişi geyik","DOG":"Köpek","DOT":"Nokta","DRY":"Kuru","DUE":"Vadesi gelmiş","DYE":"Boya","EAR":"Kulak","EAT":"Yemek yemek","EBB":"Cezir","EEL":"Yılan balığı","EGG":"Yumurta","ELM":"Karaağaç","END":"Son","ERA":"Çağ","EVE":"Arife","EWE":"Dişi koyun","EYE":"Göz","FAN":"Vantilatör","FAR":"Uzak","FED":"Besledi","FEW":"Az","FIG":"İncir","FIR":"Köknar","FIT":"Formda","FOE":"Düşman","FOG":"Sis","FOR":"İçin","FUN":"Eğlence","GAP":"Boşluk","GAS":"Gaz","GEM":"Mücevher","GET":"Almak","GOT":"Aldı","GYM":"Spor salonu","HAD":"Sahipti","HAM":"Jambon","HAS":"Sahip (o)","HAT":"Şapka","HAY":"Saman","HEN":"Tavuk","HER":"Onun (kadın)","HID":"Sakladı","HIS":"Onun (erkek)","HIT":"Vurmak","HOP":"Zıplamak","HOW":"Nasıl","ICE":"Buz","ICY":"Buzlu","ILL":"Hasta","IRE":"Öfke","ITS":"Onun (nesne)","IVY":"Sarmaşık","JAM":"Reçel","JAR":"Kavanoz","JET":"Jet uçağı","JOB":"İş","JOG":"Hafif koşmak","KEY":"Anahtar","LAP":"Kucak","LAW":"Kanun","LAY":"Uzanmak","LED":"Yönetti","LEG":"Bacak","LET":"İzin vermek","LID":"Kapak","LIE":"Yalan","LIP":"Dudak","LOG":"Kütük","LOT":"Çok","LOW":"Alçak","MAD":"Deli","MAN":"Adam","MAP":"Harita","MAT":"Paspas","MET":"Tanıştı","MOM":"Anne","MOP":"Paspas (saplı)","MUG":"Kupa","NAP":"Şekerleme","NET":"File","NEW":"Yeni","NOD":"Baş sallamak","NOT":"Değil","NOW":"Şimdi","OAK":"Meşe","OAR":"Kürek","ODD":"Tek (sayı)","OFF":"Kapalı","OIL":"Yağ","OLD":"Yaşlı","ONE":"Bir","OPT":"Seçmek","ORE":"Maden cevheri","OWE":"Borçlu olmak","OWL":"Baykuş","OWN":"Kendi","PAD":"Yastıkçık","PAN":"Tava","PAW":"Pati","PAY":"Ödemek","PEA":"Bezelye","PEG":"Mandal","PEN":"Kalem","PET":"Evcil hayvan","PIE":"Turta","PIG":"Domuz","PIN":"Toplu iğne","POP":"Patlamak","POT":"Tencere","RAN":"Koştu","RAT":"Sıçan","RAW":"Çiğ","RAY":"Işın","RED":"Kırmızı","RIB":"Kaburga","RIM":"Kenar","RIP":"Yırtmak","ROD":"Çubuk","ROW":"Sıra","RUE":"Pişman olmak","RYE":"Çavdar","SAD":"Üzgün","SAP":"Özsu","SAT":"Oturdu","SAW":"Testere","SAY":"Söylemek","SEA":"Deniz","SEE":"Görmek","SET":"Takım","SEW":"Dikmek","SHE":"O (kadın)","SIP":"Yudumlamak","SIR":"Bayım","SIT":"Oturmak","SOB":"Hıçkırmak","SON":"Oğul","SPA":"Kaplıca","SPY":"Casus","SUE":"Dava etmek","TAG":"Etiket","TAN":"Bronz ten","TAP":"Musluk","TEA":"Çay","TEN":"On","TIE":"Kravat","TIP":"Bahşiş","TOE":"Ayak parmağı","TON":"Ton","TOO":"Fazla","TOP":"Tepe","TOW":"Çekmek","TOY":"Oyuncak","TRY":"Denemek","TWO":"İki","VAN":"Minibüs","WAX":"Balmumu","WAY":"Yol","WET":"Islak","WIN":"Kazanmak","WON":"Kazandı","YAM":"Tatlı patates","YES":"Evet","YET":"Henüz","YOU":"Sen"}};
 // filled in by tools/build.py: build number and build time
-const VERSION = {"n": "1.29", "date": "11 Eki 2026, 21:58"};
+const VERSION = {"n": "1.30", "date": "11 Eki 2026, 22:03"};
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
 document.getElementById('verSettings').innerHTML = `<b>Kanca - Word Game</b><br>Sürüm ${VERSION.n}${VERSION.date ? ' · ' + VERSION.date : ''}`;
 

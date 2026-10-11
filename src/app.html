@@ -447,6 +447,35 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
   .banner .clue { font-size: 22px; }
   .kbd button { height: 44px; font-size: 17px; }
 }
+/* narrow phones (360px wide): the header group and the page title share the row without touching */
+@media (max-width: 380px) {
+  .hello { gap: 8px; }
+  .hello h1 { font-size: 23px; }
+  .hello small { font-size: 13px; white-space: nowrap; }
+  .hello .right, .right { gap: 6px; }
+  .themebtn, .avatar { width: 40px; height: 40px; }
+  .streak { padding: 9px 12px; font-size: 15px; gap: 6px; }
+}
+/* short phones (e.g. 360 x 740 like a Galaxy S8): tighter game chrome so the grid keeps its size
+   and the whole keyboard stays on screen */
+@media (max-height: 800px) and (max-width: 959px) {
+  .game { gap: 8px; padding-top: 10px; }
+  .g-head { gap: 6px; }
+  .g-head h1 { font-size: 19px; }
+  .g-head p { font-size: 12px; }
+  .circle-back { width: 44px; height: 44px; }
+  .g-head .pill { height: 40px; padding: 0 12px; gap: 6px; font-size: 14px; }
+  .score-dot { min-width: 44px; height: 44px; }
+  .banner { padding: 6px; border-radius: 18px; grid-template-columns: 42px 1fr 42px; }
+  .banner button { height: 42px; border-radius: 12px; }
+  .banner .eyebrow { font-size: 10px; }
+  .banner .clue { font-size: 20px; }
+  .grid { width: min(100%, max(250px, calc(100dvh - 380px))); }
+  .act { height: 44px; font-size: 14px; }
+  .g-actions { gap: 8px; }
+  .kbd { gap: 6px; padding-top: 8px; }
+  .kbd button { height: 42px; font-size: 17px; }
+}
 
 /* ---------- desktop ---------- */
 @media (min-width: 960px) {
