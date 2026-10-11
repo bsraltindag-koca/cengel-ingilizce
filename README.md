@@ -1,4 +1,4 @@
-# Çengel İngilizce
+# Kanca - Word Game
 
 Türkçe ipuçlarının İngilizce karşılıklarını ok yönünde yazdığın çengel bulmaca. Tek dosya, kurulum gerektirmez: `index.html`'i tarayıcıda aç.
 

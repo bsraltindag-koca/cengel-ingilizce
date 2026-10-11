@@ -1,6 +1,6 @@
 {
-  "name": "Çengel İngilizce",
-  "short_name": "Çengel",
+  "name": "Kanca - Word Game",
+  "short_name": "Kanca",
   "description": "Türkçe ipuçlarının İngilizcesini yazdığın çengel bulmaca",
   "lang": "tr",
   "start_url": "./",

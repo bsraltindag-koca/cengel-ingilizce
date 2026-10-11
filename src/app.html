@@ -1,4 +1,4 @@
-<title>Çengel İngilizce</title>
+<title>Kanca - Word Game</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Barlow+Condensed:wght@600;700&display=swap">
@@ -386,6 +386,7 @@ button, .cell { touch-action: manipulation; }
 @keyframes spPop { to { opacity: 1; transform: none; } }
 @keyframes spGood { to { background: #ddf5e6; color: #1d7a47; } }
 .splash h1 { font-size: clamp(40px, 12vw, 56px); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.splash .sp-tag { font-size: 13px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; opacity: .7; margin-bottom: -12px; }
 .splash p { margin: 0; font-weight: 700; font-size: 17px; opacity: .85; }
 .splash .lv { display: flex; gap: 8px; }
 .splash .lv b { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
@@ -398,10 +399,11 @@ button, .cell { touch-action: manipulation; }
 }
 </style>
 
-<div class="splash" id="splash" lang="tr" role="button" aria-label="Uygulamaya geç">
+<div class="splash" id="splash" lang="tr" role="button" aria-label="Kanca uygulamasına geç">
   <div class="inner">
     <div class="sp-grid" id="spGrid" aria-hidden="true"></div>
-    <h1>Çengel</h1>
+    <div class="sp-tag">Word Game</div>
+    <h1>Kanca</h1>
     <p>Türkçe ipucu, İngilizce cevap</p>
     <div class="lv"><b>A1</b><b>A2</b><b>B1</b><b>B2</b></div>
   </div>
@@ -410,7 +412,7 @@ button, .cell { touch-action: manipulation; }
 
 <div class="app" lang="tr">
   <header class="topbar">
-    <div class="brand"><div class="logo">Ç</div><div><b>Çengel</b><small>Türkçe → İngilizce</small></div></div>
+    <div class="brand"><div class="logo">K</div><div><b>Kanca</b><small>Word Game · Türkçe → İngilizce</small></div></div>
     <nav class="tabs" id="tabs">
       <button data-go="home">Ana sayfa</button>
       <button data-go="play">Bulmaca</button>
