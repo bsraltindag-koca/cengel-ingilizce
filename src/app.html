@@ -136,6 +136,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wotd .eye .i-off { display: none; }
 .wotd .eye[aria-pressed="true"] .i-open { display: none; }
 .wotd .eye[aria-pressed="true"] .i-off { display: block; }
+.wotd .w-review { justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 800; font-size: 15px; }
 .wotd .w-meaning { display: grid; gap: 4px; border-radius: 16px; background: var(--surface); padding: 14px 16px; }
 .wotd .w-meaning b { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .wotd .w-meaning .en { font-weight: 700; font-size: 16px; color: var(--ink); }
@@ -784,7 +785,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
     </section>
     <section class="wotd" aria-labelledby="wWord">
       <div class="w-top">
-        <span class="eyebrow">Günün kelimeleri</span>
+        <span class="eyebrow" id="wTitle">Günün kelimeleri</span>
         <div class="w-nav">
           <button class="w-arrow" id="wPrev" aria-label="Önceki kelime"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
           <div class="w-dots" id="wDots" role="tablist" aria-label="Günün kelimeleri"></div>
@@ -804,6 +805,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         </div>
         <div class="w-meaning" id="wMeaning" hidden><b id="wTr">Buzdolabı</b><span class="en" lang="en" id="wEn"></span><span class="tr" id="wTrEx"></span></div>
       </div>
+      <button class="w-review" id="wReview" hidden>Bunları tekrar et<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
@@ -1234,6 +1236,20 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-go]'
 const WOTD = /*WOTD*/[];
 const W_PER_DAY = 5;
 let wIdx = 0, wOpen = [], wSeen = new Set(), wDayKey = '';
+// the card shows the words that need review while there are any (most mistakes first),
+// and the new words of the day once everything is known
+function reviewWords() {
+  const byWord = Object.fromEntries(WOTD.map(x => [x[0].toUpperCase(), x]));
+  return learnedList().filter(needsReview).sort((a, b) => errCount(b) - errCount(a)).slice(0, W_PER_DAY).map(w => {
+    const h = DATA.hints[w], x = byWord[w];
+    // [word, IPA, type, Turkish, line 1, line 2]: the meaning note stands in for the example when the word is not in words.tsv
+    return x ? [x[0], x[1], x[2], clue(w), x[4], x[5]] : [lowerEn(w), '', h ? h[0] : '', clue(w), h ? h[1] : '', h && h[2] ? 'Örnek: ' + h[2] : ''];
+  });
+}
+function cardWords() {
+  const r = reviewWords();
+  return r.length ? { review: true, list: r } : { review: false, list: todaysWords() };
+}
 function todaysWords() {
   const now = new Date();
   const n = Math.floor(new Date(dayKey(now) + 'T12:00:00').getTime() / 864e5);
@@ -1243,10 +1259,17 @@ function todaysWords() {
 }
 function renderWotd(dir) {
   const now = new Date();
-  if (wDayKey !== dayKey(now)) { wDayKey = dayKey(now); wIdx = 0; wOpen = []; wSeen = new Set(); }
+  const { review, list } = cardWords();
+  const key = dayKey(now) + (review ? '|' + list.map(x => x[0]).join(',') : '');
+  if (wDayKey !== key) { wDayKey = key; wIdx = 0; wOpen = []; wSeen = new Set(); }
   wSeen.add(wIdx);
-  const list = todaysWords();
   const [word, ipa, type, tr, en, trEx] = list[wIdx];
+  $('wTitle').textContent = review ? 'Tekrar etmen gerekenler' : 'Günün kelimeleri';
+  $('wDots').setAttribute('aria-label', $('wTitle').textContent);
+  $('wReview').hidden = !review;
+  $('wIpa').hidden = !ipa; $('wType').hidden = !type;
+  // the meaning note is Turkish; an example from words.tsv is English
+  $('wEn').lang = review && !WOTD.some(x => x[0] === word) ? 'tr' : 'en';
   const open = !!wOpen[wIdx];
   $('wWord').textContent = word; $('wIpa').textContent = `/${ipa}/`; $('wType').textContent = type; $('wType').dataset.t = type;
   $('wTr').textContent = tr; $('wEn').textContent = en; $('wTrEx').textContent = trEx;
@@ -1258,7 +1281,7 @@ function renderWotd(dir) {
   if (dir) { const sl = $('wSlide'); sl.classList.remove('in-l', 'in-r'); void sl.offsetWidth; sl.classList.add(dir > 0 ? 'in-r' : 'in-l'); }
 }
 function goWord(i) {
-  const n = todaysWords().length;
+  const n = cardWords().list.length;
   if (i < 0 || i >= n || i === wIdx) return;
   const dir = i > wIdx ? 1 : -1; wIdx = i;
   stopSpeech();
@@ -1268,6 +1291,7 @@ function goWord(i) {
 let wSwiped = false;
 $('wReveal').addEventListener('click', () => { if (wSwiped) { wSwiped = false; return; } wOpen[wIdx] = !wOpen[wIdx]; renderWotd(); });
 $('wPrev').addEventListener('click', () => goWord(wIdx - 1));
+$('wReview').addEventListener('click', () => startQuiz(cardWords().list.map(x => x[0].toUpperCase())));
 $('wNext').addEventListener('click', () => goWord(wIdx + 1));
 $('wDots').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) goWord(+b.dataset.i); });
 // swipe left / right on the card; vertical scrolling stays with the page
