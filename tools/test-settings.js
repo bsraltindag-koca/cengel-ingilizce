@@ -38,7 +38,7 @@ setTimeout(() => {
     openGame('A1:1'); const w = G.words.find(x => !wordSolved(x));
     const open = w.cells.filter(([r, c]) => !locked(r, c));
     open.forEach(([r, c], i) => { G.cur = G.cells[r][c]; G.dir = w.dir; tones = 0; vib = 0; key(G.cells[r][c].sol === 'Q' ? 'Z' : 'Q'); });
-    R.push('last letter of a wrong word: tones=' + tones + ' vib=' + vib + ' shaking=' + w.cells.filter(([r, c]) => G.cells[r][c].el.classList.contains('shake')).length + '/' + w.cells.length + ' badMarks=' + Object.values(G.marks).filter(m => m === 'bad').length);
+    R.push('last letter of a wrong word: tones=' + tones + ' vib=' + vib + ' shaking=' + w.cells.filter(([r, c]) => G.cells[r][c].el.classList.contains('shake')).length + '/' + w.cells.length + ' badMarks=' + Object.values(G.marks).filter(m => m === 'bad').length + ' redWord=' + w.cells.filter(([r, c]) => G.cells[r][c].el.classList.contains('wword')).length + ' afterFix=' + (() => { const [r, c] = open[0]; G.cur = G.cells[r][c]; key('Backspace'); return w.cells.filter(([r, c]) => G.cells[r][c].el.classList.contains('wword')).length; })());
   } catch (e) { R.push('ERR ' + e.message); }
   const p = document.getElementById('OUT'); p.textContent += '\n' + R.join('\n');
 }, 900);

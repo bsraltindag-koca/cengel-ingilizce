@@ -285,8 +285,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell.letter.sel { background: var(--sun); box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; color: #141629; }
 .cell.letter.ok { background: var(--good-bg); color: var(--good); }
 .cell.letter.bad { background: var(--bad-bg); color: var(--bad); }
+.cell.letter.wword { background: var(--bad-bg); color: var(--bad); }
 .cell.letter.hint { color: var(--hint); }
-.cell.letter.ok.sel, .cell.letter.bad.sel { box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
+.cell.letter.ok.sel, .cell.letter.bad.sel, .cell.letter.wword.sel { box-shadow: inset 0 0 0 clamp(2px, 5cqw, 3px) #141629; }
 .cell .mk { position: absolute; top: 6%; right: 8%; font-size: 20cqw; font-weight: 800; }
 .cell.ok .mk::after { content: "✓"; color: var(--good); }
 .cell.bad .mk::after { content: "✕"; color: var(--bad); }
@@ -1523,6 +1524,13 @@ function nextOpenWord(from, step = 1) {
 }
 const curWord = () => G.cur[G.dir];
 
+// a word whose squares are all filled but which is not the answer
+function wordWrong(x) {
+  if (wordSolved(x)) return false;
+  const got = x.cells.map(([r, c]) => val(r, c)).join('');
+  return got.length === x.answer.length && got !== x.answer;
+}
+
 function paint() {
   const w = curWord();
   for (const row of G.cells) for (const cell of row) {
@@ -1533,6 +1541,8 @@ function paint() {
     const mark = G.marks[idx(r, c)];
     el.classList.toggle('ok', solved || mark === 'ok');
     el.classList.toggle('bad', !solved && mark === 'bad');
+    // the whole word turns red without marking which letter is wrong (Kontrol et shows that)
+    el.classList.toggle('wword', !solved && mark !== 'bad' && [cell.A, cell.D].some(x => x && wordWrong(x)));
     el.classList.toggle('hint', hinted(r, c));
     el.classList.toggle('inword', !!w.cells.find(([rr, cc]) => rr === r && cc === c));
     el.classList.toggle('sel', G.cur === cell);
