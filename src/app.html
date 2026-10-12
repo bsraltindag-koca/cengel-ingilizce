@@ -195,6 +195,18 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* ---------- game ---------- */
 .game { width: 100%; max-width: 560px; margin: 0 auto; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 12px; min-height: 100%; }
+/* phones: the game screen is pinned to the screen height. Header, clue bar, buttons and the
+   keyboard keep their size and the grid takes the space that is left, so nothing scrolls. */
+@media (max-width: 959px) {
+  .game { position: fixed; top: 0; bottom: 0; left: 0; right: 0; min-height: 0; overflow: hidden; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 0; z-index: 4; background: var(--bg); }
+  .g-main { flex: 1; min-height: 0; }
+  .g-board { flex: 1; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .g-actions { margin-top: 0; }
+  .kbd { flex: none; padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+}
+@supports (height: 1cqh) {
+  @media (max-width: 959px) { .g-board .grid { width: min(100cqw, 100cqh); } }
+}
 .g-head { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 8px; }
 .g-head .ttl { text-align: center; min-width: 0; }
 .g-head h1 { font-size: 22px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -493,7 +505,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 /* short phones (e.g. 360 x 740 like a Galaxy S8): tighter game chrome so the grid keeps its size
    and the whole keyboard stays on screen */
 @media (max-height: 800px) and (max-width: 959px) {
-  .game { gap: 8px; padding-top: 10px; }
+  .game { gap: 8px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
   .g-head { gap: 6px; }
   .g-head h1 { font-size: 19px; }
   .g-head p { font-size: 12px; }
@@ -519,7 +531,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
   .screen { max-width: 880px; padding: 12px 32px 48px; }
   .levels { grid-template-columns: repeat(4, 1fr); }
   .tiles { grid-template-columns: repeat(6, 1fr); }
-  .game { max-width: 1240px; padding: 12px 32px 40px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+  .game { position: static; max-width: 1240px; padding: 12px 32px 40px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
   .g-main { background: var(--surface); border-radius: 28px; padding: 24px; box-shadow: var(--shadow); gap: 16px; }
   .g-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .g-title h1 { font-size: 26px; font-weight: 800; }
@@ -798,7 +810,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         <div class="mid"><div class="eyebrow" id="bLabel">Yatay · 3 harf</div><div class="clue" id="bClue">…</div></div>
         <button id="nextW" aria-label="Sonraki kelime"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="g-board"><div class="grid" id="grid"></div></div>
     </div>
     <aside class="g-side">
       <div class="active-card"><div class="eyebrow" id="sLabel">Aktif ipucu · Yatay · 3 harf</div><h2 id="sClue">…</h2><div class="mini" id="sMini"></div></div>
