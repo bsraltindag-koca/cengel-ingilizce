@@ -223,6 +223,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .banner .clue { font-size: 26px; font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
 /* "?" next to the clue: opens a short Turkish note on which meaning is asked */
 .clue-row { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+/* the clue bar keeps one line: long clues get a smaller font (fitClue), never a second line */
+.banner .clue { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto; }
 .active-card .clue-row { justify-content: flex-start; }
 .qbtn { flex: none; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; background: rgba(255, 255, 255, .2); color: #ffffff; }
 .qbtn[aria-expanded="true"] { background: #ffffff; color: #4b3be0; }
@@ -1522,7 +1524,7 @@ function paint() {
     x.listEl.firstChild.textContent = x.clue;
   });
   const lab = `${w.dir === 'A' ? 'Yatay' : 'Dikey'} · ${w.answer.length} harf`;
-  $('bLabel').textContent = lab; $('bClue').textContent = w.clue;
+  $('bLabel').textContent = lab; $('bClue').textContent = w.clue; fitClue();
   renderHint(w);
   $('sLabel').textContent = 'Aktif ipucu · ' + lab; $('sClue').textContent = w.clue;
   $('sMini').innerHTML = w.cells.map(([r, c]) => `<i class="${G.cells[r][c] === G.cur ? 'sel' : wordSolved(w) ? 'ok' : ''}">${val(r, c)}</i>`).join('');
@@ -1538,6 +1540,14 @@ function paint() {
 
 /* "which meaning?" note for the current clue (data/hints-*.tsv); it never shows the English word */
 let hintOpen = false;
+function fitClue() {
+  const el = $('bClue');
+  el.style.fontSize = '';
+  const base = parseFloat(getComputedStyle(el).fontSize);
+  let size = base;
+  while (el.scrollWidth > el.clientWidth + 1 && size > 14) { size -= 1; el.style.fontSize = size + 'px'; }
+}
+addEventListener('resize', () => { if (screen === 'game') fitClue(); });
 function renderHint(w) {
   const h = DATA.hints[w.answer];
   document.querySelectorAll('[data-hint-toggle]').forEach(b => { b.hidden = !h; b.setAttribute('aria-expanded', hintOpen && !!h); });
