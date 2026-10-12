@@ -6,6 +6,7 @@
 /* Layout: phone = stacked screens with a bottom tab bar, the game fills the viewport above an on-screen keyboard;
    desktop (≥960px) = top bar with tabs, game as grid card + side panel. */
 :root {
+  --page-primary: var(--primary); /* the theme's own purple, for buttons inside cards that fix their colours (.wotd) */
   --bg: #f1f2f8;
   --surface: #ffffff;
   --ink: #141629;
@@ -136,6 +137,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wotd .eye .i-off { display: none; }
 .wotd .eye[aria-pressed="true"] .i-open { display: none; }
 .wotd .eye[aria-pressed="true"] .i-off { display: block; }
+.wotd .w-review { background: var(--page-primary); }
 .wotd .w-count { min-width: 40px; text-align: center; font-weight: 800; font-size: 14px; color: var(--amber-ink); font-variant-numeric: tabular-nums; }
 .wotd .chip.err { background: #ffe1dc; color: #b42318; }
 .wotd .w-meaning { display: grid; gap: 4px; border-radius: 16px; background: var(--surface); padding: 14px 16px; }
@@ -808,7 +810,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         </div>
         <div class="w-meaning" id="wMeaning" hidden><b id="wTr">Buzdolabı</b><span class="en" lang="en" id="wEn"></span><span class="tr" id="wTrEx"></span></div>
       </div>
-      <button class="btn-white w-review" id="wReview" hidden><span id="wReviewTx">Bunları tekrar et</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button class="review-cta w-review" id="wReview" hidden><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg></span><span><b>Tekrar et</b><small id="wReviewTx">3 kelime</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
@@ -1275,7 +1277,7 @@ function renderWotd(dir) {
   $('wCount').textContent = `${wIdx + 1} / ${list.length}`;
   const errs = review ? errCount(word.toUpperCase()) : 0;
   $('wErr').hidden = !errs; $('wErr').textContent = `${errs} hata`;
-  $('wReviewTx').textContent = list.length > 1 ? `${list.length} kelimeyi tekrar et` : 'Bu kelimeyi tekrar et';
+  $('wReviewTx').textContent = list.length > 1 ? `${list.length} soru · en çok hatalıdan başlar` : '1 soru';
   $('wIpa').hidden = !ipa; $('wType').hidden = !type;
   // the meaning note is Turkish; an example from words.tsv is English
   $('wEn').lang = review && !WOTD.some(x => x[0] === word) ? 'tr' : 'en';
