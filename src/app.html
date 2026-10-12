@@ -633,7 +633,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 .meter[data-s="2"] i:nth-child(-n+2) { background: var(--orange); }
 .meter[data-s="3"] i:nth-child(-n+3) { background: var(--sun); }
 .meter[data-s="4"] i { background: var(--good); }
-.chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .chips button { height: 56px; border-radius: 14px; background: var(--bg); border: 1.5px solid var(--line); display: grid; place-items: center; align-content: center; gap: 2px; line-height: 1; }
 .chips button b { font-size: 17px; font-weight: 800; color: var(--primary); }
 .chips button small { font-size: 11px; font-weight: 700; color: var(--muted); }
@@ -678,7 +678,8 @@ html.native input { -webkit-user-select: text; user-select: text; }
 .splash h1 { font-size: clamp(40px, 12vw, 56px); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
 .splash .sp-tag { font-size: 13px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; opacity: .7; margin-bottom: -12px; }
 .splash p { margin: 0; font-weight: 700; font-size: 17px; opacity: .85; }
-.splash .lv { display: flex; gap: 8px; }
+.splash .lv { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 340px; }
+.splash .lv b.ie { background: #ffc66e; color: #141629; }
 .splash .lv b { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
 .splash .ver { display: block; margin-top: 6px; font-size: 12px; font-variant-numeric: tabular-nums; }
 .version { text-align: center; color: var(--muted); font-size: 13px; font-weight: 600; line-height: 1.5; font-variant-numeric: tabular-nums; }
@@ -727,7 +728,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
     <div class="sp-tag">Word Game</div>
     <h1>Kanca</h1>
     <p>Türkçe ipucu, İngilizce cevap</p>
-    <div class="lv"><b>A1</b><b>A2</b><b>B1</b><b>B2</b></div>
+    <div class="lv"><b>A1</b><b>A2</b><b>B1</b><b>B2</b><b>C1</b><b>C2</b><b class="ie">IELTS</b></div>
   </div>
   <small>Başlamak için dokun<span class="ver" id="verSplash"></span></small>
 </div>
@@ -900,6 +901,8 @@ html.native input { -webkit-user-select: text; user-select: text; }
         <button type="button" role="radio" aria-checked="false" data-lv="A2"><b>A2</b><small>Temel</small></button>
         <button type="button" role="radio" aria-checked="false" data-lv="B1"><b>B1</b><small>Orta</small></button>
         <button type="button" role="radio" aria-checked="false" data-lv="B2"><b>B2</b><small>Orta üstü</small></button>
+        <button type="button" role="radio" aria-checked="false" data-lv="C1"><b>C1</b><small>İleri</small></button>
+        <button type="button" role="radio" aria-checked="false" data-lv="C2"><b>C2</b><small>Uzman</small></button>
       </div></div>
       <label class="check" id="f-terms"><input type="checkbox" id="suTerms"><span>Kullanım koşullarını ve gizlilik politikasını okudum, kabul ediyorum.</span></label>
       <button class="bigbtn dark" type="submit">Hesap oluştur</button>
