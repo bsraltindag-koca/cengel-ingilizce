@@ -1,0 +1,270 @@
+DEGREE	Akademik derece	egitim	5-6
+EXAM	Sınav	egitim	5-6
+LECTURE	Ders anlatımı	egitim	5-6
+COURSE	Kurs	egitim	5-6
+STUDENT	Öğrenci	egitim	5-6
+TEACHER	Öğretmen	egitim	5-6
+SCHOOL	Okul	egitim	5-6
+GRADE	Not	egitim	5-6
+SUBJECT	Ders (branş)	egitim	5-6
+CAMPUS	Kampüs	egitim	5-6
+LESSON	Ders	egitim	5-6
+SKILL	Beceri	egitim	5-6
+HOMEWORK	Ödev	egitim	5-6
+LEARNER	Öğrenen	egitim	5-6
+TEXTBOOK	Ders kitabı	egitim	5-6
+TUITION	Okul ücreti	egitim	6-7
+LITERACY	Okuryazarlık	egitim	6-7
+SYLLABUS	Ders izlencesi	egitim	6-7
+SEMESTER	Dönem	egitim	6-7
+GRADUATE	Mezun	egitim	6-7
+THESIS	Tez	egitim	6-7
+DIPLOMA	Diploma	egitim	6-7
+SCHOLAR	Akademisyen	egitim	6-7
+FACULTY	Fakülte	egitim	6-7
+ACADEMIC	Akademik	egitim	6-7
+TUTOR	Özel öğretmen	egitim	6-7
+ESSAY	Kompozisyon	egitim	6-7
+RESEARCH	Araştırma	egitim	6-7
+ENROL	Kaydolmak	egitim	6-7
+MENTOR	Akıl hocası	egitim	6-7
+PEDAGOGY	Pedagoji	egitim	7+
+ROTE	Ezber	egitim	7+
+DIDACTIC	Öğretici	egitim	7+
+ERUDITE	Bilgili	egitim	7+
+TRUANCY	Devamsızlık	egitim	7+
+ACCREDIT	Akredite etmek	egitim	7+
+TERTIARY	Yükseköğretim	egitim	7+
+ALUMNUS	Eski mezun	egitim	7+
+RUBRIC	Puanlama	egitim	7+
+APTITUDE	Yetenek	egitim	7+
+DROPOUT	Okulu bırakan	egitim	7+
+TUTELAGE	Rehberlik	egitim	7+
+NUMERACY	Sayı becerisi	egitim	7+
+ACADEMIA	Akademi	egitim	7+
+MASTERY	Ustalık	egitim	7+
+CLIMATE	İklim	cevre	5-6
+POLLUTE	Kirletmek	cevre	5-6
+WASTE	Atık	cevre	5-6
+ENERGY	Enerji	cevre	5-6
+NATURE	Doğa	cevre	5-6
+FOREST	Orman	cevre	5-6
+PLASTIC	Plastik	cevre	5-6
+RECYCLE	Geri dönüştür	cevre	5-6
+SOLAR	Güneşe ait	cevre	5-6
+WILDLIFE	Yaban hayatı	cevre	5-6
+OCEAN	Okyanus	cevre	5-6
+FLOOD	Sel	cevre	5-6
+WEATHER	Hava durumu	cevre	5-6
+PLANET	Gezegen	cevre	5-6
+SPECIES	Tür (canlı)	cevre	5-6
+EMISSION	Salım	cevre	6-7
+HABITAT	Yaşam alanı	cevre	6-7
+FOSSIL	Fosil	cevre	6-7
+DROUGHT	Kuraklık	cevre	6-7
+CARBON	Karbon	cevre	6-7
+GLACIER	Buzul	cevre	6-7
+ORGANIC	Organik	cevre	6-7
+TOXIC	Zehirli	cevre	6-7
+LANDFILL	Çöp sahası	cevre	6-7
+EROSION	Erozyon	cevre	6-7
+SMOG	Kirli sis	cevre	6-7
+CONSERVE	Korumak	cevre	6-7
+EXTINCT	Nesli tükenmiş	cevre	6-7
+OZONE	Ozon	cevre	6-7
+TURBINE	Türbin	cevre	6-7
+DEPLETE	Tüketmek	cevre	7+
+DEGRADE	Bozmak	cevre	7+
+ARID	Kurak	cevre	7+
+FLORA	Bitki örtüsü	cevre	7+
+FAUNA	Hayvan varlığı	cevre	7+
+PRISTINE	Bozulmamış	cevre	7+
+EFFLUENT	Atık su	cevre	7+
+MITIGATE	Hafifletmek	cevre	7+
+SUSTAIN	Sürdürmek	cevre	7+
+BIOMASS	Biyokütle	cevre	7+
+ARABLE	Ekilebilir	cevre	7+
+SALINITY	Tuzluluk	cevre	7+
+TOXIN	Toksin	cevre	7+
+DELUGE	Tufan	cevre	7+
+ESTUARY	Haliç	cevre	7+
+DIET	Diyet	saglik	5-6
+HEALTH	Sağlık	saglik	5-6
+DOCTOR	Doktor	saglik	5-6
+NURSE	Hemşire	saglik	5-6
+PATIENT	Hasta	saglik	5-6
+DISEASE	Hastalık	saglik	5-6
+MEDICINE	İlaç	saglik	5-6
+HOSPITAL	Hastane	saglik	5-6
+FITNESS	Zindelik	saglik	5-6
+STRESS	Stres	saglik	5-6
+INJURY	Yaralanma	saglik	5-6
+SLEEP	Uyku	saglik	5-6
+VITAMIN	Vitamin	saglik	5-6
+EXERCISE	Egzersiz	saglik	5-6
+CANCER	Kanser	saglik	5-6
+OBESITY	Obezite	saglik	6-7
+VACCINE	Aşı	saglik	6-7
+CHRONIC	Kronik	saglik	6-7
+EPIDEMIC	Salgın	saglik	6-7
+SYMPTOM	Belirti	saglik	6-7
+THERAPY	Tedavi	saglik	6-7
+NUTRIENT	Besin öğesi	saglik	6-7
+ALLERGY	Alerji	saglik	6-7
+SURGERY	Ameliyat	saglik	6-7
+INFECT	Bulaştırmak	saglik	6-7
+ADDICT	Bağımlı	saglik	6-7
+IMMUNE	Bağışık	saglik	6-7
+DIAGNOSE	Teşhis koymak	saglik	6-7
+CALORIE	Kalori	saglik	6-7
+DOSAGE	Doz	saglik	6-7
+MORBID	Hastalıklı	saglik	7+
+PANDEMIC	Pandemi	saglik	7+
+LETHAL	Öldürücü	saglik	7+
+ACUTE	Akut	saglik	7+
+REMEDY	Çare	saglik	7+
+FATIGUE	Yorgunluk	saglik	7+
+PATHOGEN	Patojen	saglik	7+
+ANTIBODY	Antikor	saglik	7+
+HYGIENE	Hijyen	saglik	7+
+PLACEBO	Plasebo	saglik	7+
+CARDIAC	Kalbe ait	saglik	7+
+AILMENT	Rahatsızlık	saglik	7+
+LESION	Lezyon	saglik	7+
+TUMOUR	Tümör	saglik	7+
+ANOREXIA	Anoreksi	saglik	7+
+DEVICE	Cihaz	teknoloji	5-6
+NETWORK	Ağ	teknoloji	5-6
+DIGITAL	Dijital	teknoloji	5-6
+ONLINE	Çevrim içi	teknoloji	5-6
+ROBOT	Robot	teknoloji	5-6
+SCREEN	Ekran	teknoloji	5-6
+INTERNET	İnternet	teknoloji	5-6
+MOBILE	Mobil	teknoloji	5-6
+WEBSITE	Web sitesi	teknoloji	5-6
+MACHINE	Makine	teknoloji	5-6
+EMAIL	E-posta	teknoloji	5-6
+LAPTOP	Dizüstü	teknoloji	5-6
+GADGET	Aygıt	teknoloji	5-6
+INVENT	İcat etmek	teknoloji	5-6
+SCIENCE	Bilim	teknoloji	5-6
+PRIVACY	Gizlilik	teknoloji	6-7
+SOFTWARE	Yazılım	teknoloji	6-7
+HARDWARE	Donanım	teknoloji	6-7
+DATABASE	Veri tabanı	teknoloji	6-7
+BROWSER	Tarayıcı	teknoloji	6-7
+PLATFORM	Platform	teknoloji	6-7
+VIRTUAL	Sanal	teknoloji	6-7
+INNOVATE	Yenilik yapmak	teknoloji	6-7
+ENCRYPT	Şifrelemek	teknoloji	6-7
+SENSOR	Sensör	teknoloji	6-7
+UPGRADE	Yükseltme	teknoloji	6-7
+DOWNLOAD	İndirmek	teknoloji	6-7
+AUTOMATE	Otomatikleştir	teknoloji	6-7
+DRONE	İnsansız uçak	teknoloji	6-7
+CODING	Kodlama	teknoloji	6-7
+OBSOLETE	Eskimiş	teknoloji	7+
+CLONING	Klonlama	teknoloji	7+
+GENOME	Genom	teknoloji	7+
+HACKER	Siber korsan	teknoloji	7+
+MALWARE	Kötü yazılım	teknoloji	7+
+GLITCH	Aksaklık	teknoloji	7+
+LATENCY	Gecikme	teknoloji	7+
+ROBOTICS	Robotik	teknoloji	7+
+QUANTUM	Kuantum	teknoloji	7+
+PATENT	Patent	teknoloji	7+
+ANALOGUE	Analog	teknoloji	7+
+EMULATE	Öykünmek	teknoloji	7+
+UBIQUITY	Her yerdelik	teknoloji	7+
+DISRUPT	Sarsmak	teknoloji	7+
+CIPHER	Şifre (kod)	teknoloji	7+
+SALARY	Maaş	is	5-6
+EMPLOYEE	Çalışan	is	5-6
+BUDGET	Bütçe	is	5-6
+PROFIT	Kâr	is	5-6
+CAREER	Kariyer	is	5-6
+MANAGER	Yönetici	is	5-6
+OFFICE	Ofis	is	5-6
+MARKET	Piyasa	is	5-6
+INCOME	Gelir	is	5-6
+COMPANY	Şirket	is	5-6
+CUSTOMER	Müşteri	is	5-6
+TRADE	Ticaret	is	5-6
+PRICE	Fiyat	is	5-6
+WAGE	Ücret	is	5-6
+BUSINESS	İşletme	is	5-6
+EMPLOYER	İşveren	is	6-7
+INVEST	Yatırım yapmak	is	6-7
+RECRUIT	İşe almak	is	6-7
+REVENUE	Hasılat	is	6-7
+EXPORT	İhracat	is	6-7
+IMPORT	İthalat	is	6-7
+ECONOMY	Ekonomi	is	6-7
+DEBT	Borç	is	6-7
+TAXATION	Vergilendirme	is	6-7
+PENSION	Emekli maaşı	is	6-7
+LABOUR	İş gücü	is	6-7
+RETAIL	Perakende	is	6-7
+CONSUMER	Tüketici	is	6-7
+STARTUP	Girişim	is	6-7
+INTERN	Stajyer	is	6-7
+TARIFF	Gümrük vergisi	is	7+
+SUBSIDY	Sübvansiyon	is	7+
+FISCAL	Mali	is	7+
+MONETARY	Parasal	is	7+
+DEFICIT	Bütçe açığı	is	7+
+EQUITY	Öz sermaye	is	7+
+MERGER	Birleşme	is	7+
+TENURE	Görev süresi	is	7+
+LAYOFF	İşten çıkarma	is	7+
+STAGNATE	Durgunlaşmak	is	7+
+SURPLUS	Bütçe fazlası	is	7+
+DIVIDEND	Kâr payı	is	7+
+BARTER	Takas	is	7+
+AUDIT	Denetim	is	7+
+MONOPOLY	Tekel	is	7+
+POVERTY	Yoksulluk	toplum	5-6
+CRIME	Suç	toplum	5-6
+FAMILY	Aile	toplum	5-6
+CULTURE	Kültür	toplum	5-6
+CITIZEN	Vatandaş	toplum	5-6
+VILLAGE	Köy	toplum	5-6
+CITY	Şehir	toplum	5-6
+POLICE	Polis	toplum	5-6
+RELIGION	Din	toplum	5-6
+HOUSING	Konut	toplum	5-6
+YOUTH	Gençlik	toplum	5-6
+ELDERLY	Yaşlılar	toplum	5-6
+CUSTOM	Gelenek	toplum	5-6
+RIGHTS	Haklar	toplum	5-6
+VOTE	Oy	toplum	5-6
+MIGRANT	Göçmen	toplum	6-7
+WELFARE	Refah	toplum	6-7
+GENDER	Cinsiyet	toplum	6-7
+EQUALITY	Eşitlik	toplum	6-7
+MINORITY	Azınlık	toplum	6-7
+URBAN	Kentsel	toplum	6-7
+RURAL	Kırsal	toplum	6-7
+REFUGEE	Mülteci	toplum	6-7
+CHARITY	Hayır kurumu	toplum	6-7
+PRISON	Hapishane	toplum	6-7
+DIVERSE	Çeşitli	toplum	6-7
+IDENTITY	Kimlik	toplum	6-7
+OFFENDER	Suçlu	toplum	6-7
+ETHNIC	Etnik	toplum	6-7
+LIBERTY	Özgürlük	toplum	6-7
+INEQUITY	Adaletsizlik	toplum	7+
+STIGMA	Damga	toplum	7+
+ALIENATE	Yabancılaştır	toplum	7+
+DEPRIVED	Yoksun	toplum	7+
+ASYLUM	Sığınma	toplum	7+
+CENSUS	Nüfus sayımı	toplum	7+
+KINSHIP	Akrabalık	toplum	7+
+BIGOTRY	Bağnazlık	toplum	7+
+EXODUS	Toplu göç	toplum	7+
+GHETTO	Getto	toplum	7+
+ANARCHY	Anarşi	toplum	7+
+CIVIC	Yurttaşlık	toplum	7+
+ELITE	Seçkinler	toplum	7+
+TABOO	Tabu	toplum	7+
+PLIGHT	Zor durum	toplum	7+

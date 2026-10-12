@@ -166,6 +166,26 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .back-head h1 { font-size: 26px; font-weight: 800; }
 .back-head p { margin: 2px 0 0; color: var(--muted); font-weight: 600; }
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tile .ttag { font-size: 11px; font-weight: 800; color: var(--primary); }
+.tile.solved .ttag { color: var(--good); }
+/* IELTS card on home and the IELTS hub */
+.ielts-card { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 18px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.ielts-card .ic { width: 52px; height: 52px; border-radius: 16px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; flex: none; }
+.ielts-card .tx { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.ielts-card .eyebrow { color: var(--primary); font-size: 11px; }
+.ielts-card b { font-size: 19px; font-weight: 800; }
+.ielts-card small { color: var(--muted); font-weight: 600; }
+.ielts-card .bar { margin-top: 6px; }
+.ielts-card .cnt, .iecard .cnt { font-size: 13px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: var(--soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ieseg { align-self: start; }
+.iegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.iegrid.bands { grid-template-columns: 1fr; }
+.iecard { position: relative; background: var(--surface); border-radius: 20px; padding: 16px; display: grid; gap: 6px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
+.iecard .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
+.iecard b { font-size: 17px; font-weight: 800; }
+.iecard small { color: var(--muted); font-weight: 600; font-size: 13px; }
+.iecard .cnt { position: absolute; top: 14px; right: 14px; }
+@media (min-width: 960px) { .iegrid { grid-template-columns: repeat(3, 1fr); } .iegrid.bands { grid-template-columns: repeat(3, 1fr); } }
 .tile { background: var(--surface); border-radius: 20px; padding: 16px; display: grid; gap: 10px; text-align: left; box-shadow: var(--shadow); min-width: 0; }
 .tile b { font-size: 26px; font-weight: 800; }
 .tile small { font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -201,6 +221,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell.clue span.w8 { font-size: clamp(6px, 15cqw, 12px); }
 .cell.clue span.w9 { font-size: clamp(6px, 13.5cqw, 11px); }
 .cell.clue span.w10 { font-size: clamp(5.5px, 12cqw, 10.5px); }
+.cell.clue span.w11 { font-size: clamp(5.5px, 11.5cqw, 10px); overflow-wrap: anywhere; }
+/* a clue square holding two clues: across on top, down below */
+.cell.clue.two { display: flex; flex-direction: column; padding: 0; }
+.cell.clue.two .cp { flex: 1; min-height: 0; display: grid; place-items: center; position: relative; padding: 2% 14% 2% 6%; overflow: hidden; }
+.cell.clue.two .cp + .cp { border-top: 1px solid rgba(255, 255, 255, .35); padding: 2% 6% 12%; }
+.cell.clue.two .cp span { font-size: clamp(5.5px, 13cqw, 10px); line-height: 1; }
+.cell.clue.two .cp::after { content: ""; position: absolute; border: clamp(3px, 7cqw, 6px) solid transparent; }
+.cell.clue.two .cp.A::after { right: 3%; top: 50%; transform: translateY(-50%); border-left-color: var(--sun); border-right-width: 0; }
+.cell.clue.two .cp.D::after { bottom: 3%; left: 50%; transform: translateX(-50%); border-top-color: var(--sun); border-bottom-width: 0; }
+.cell.clue.two::after { display: none; }
+.cell.clue .cp.active { background: var(--strong); color: var(--on-strong); }
+/* 9-column puzzles: slightly tighter gaps */
+.grid.g9 { gap: clamp(2px, .8vw, 6px); }
 .cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
 .cell.clue.A::after { right: 3%; top: 50%; transform: translateY(-50%); border-left-color: var(--sun); border-right-width: 0; }
 .cell.clue.A { padding-right: 16%; }
@@ -719,12 +752,28 @@ html.native input { -webkit-user-select: text; user-select: text; }
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
+    <button class="ielts-card" id="ieltsGo" data-go="ielts">
+      <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5z"/><path d="M7 11.5V16c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5v-4.5M21 9v5"/></svg></div>
+      <div class="tx"><div class="eyebrow">Sınava hazırlık</div><b>IELTS Kelime</b><small id="ieltsSub">6 konu · 3 band</small><div class="bar"><i id="ieltsBar"></i></div></div>
+      <span class="cnt" id="ieltsCount">0 / 36</span>
+    </button>
+  </main>
+
+  <!-- IELTS -->
+  <main class="screen" id="s-ielts" hidden>
+    <div class="back-head">
+      <button class="circle-back" data-go="home" aria-label="Ana sayfa"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="right push"><button class="themebtn" data-theme-toggle aria-label="Koyu temaya geç"><svg class="i-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="i-moon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button><span class="streak"><svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4.5 2-7 2 1.5 2.5 3.5 2.5 5C8 8 9 5 8 0z"/></svg><span class="streakv">0 gün</span></span><button class="avatar" data-go="signup" aria-label="Hesap oluştur"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg></button></div>
+    </div>
+    <div class="lv-head"><h1>IELTS Kelime</h1><p>Nasıl çalışmak istediğini seç: konuya göre ya da band seviyesine göre.</p></div>
+    <div class="seg ieseg" role="radiogroup" aria-label="Çalışma şekli" id="ieMode"><button role="radio" data-m="topic">Konulara göre</button><button role="radio" data-m="band">Band'a göre</button></div>
+    <div class="iegrid" id="ieGrid"></div>
   </main>
 
   <!-- LEVEL -->
   <main class="screen" id="s-level" hidden>
     <div class="back-head">
-      <button class="circle-back" data-go="home" aria-label="Geri"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="circle-back" id="lvBack" data-go="home" aria-label="Geri"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div class="right push"><button class="themebtn" data-theme-toggle aria-label="Koyu temaya geç"><svg class="i-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="i-moon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button><span class="streak"><svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4.5 2-7 2 1.5 2.5 3.5 2.5 5C8 8 9 5 8 0z"/></svg><span class="streakv">0 gün</span></span><button class="avatar" data-go="signup" aria-label="Hesap oluştur"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg></button></div>
     </div>
     <div class="lv-head"><h1 id="lvTitle">A1 · Başlangıç</h1><p id="lvSub">0 / 12 bulmaca</p></div>
@@ -960,6 +1009,8 @@ html.native input { -webkit-user-select: text; user-select: text; }
 
 <script>
 const DATA = /*DATA*/{};
+// C1, C2 and IELTS: long-word puzzles from tools/pack_long.py ({ R, C, words: [{ dir, r, c, answer, clue }] })
+DATA.long = /*LONG*/{};
 // filled in by tools/build.py: build number and build time
 const VERSION = /*VERSION*/{ n: 'geliştirme', date: '' };
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
@@ -976,7 +1027,23 @@ const LEVELS = [
   { k: 'A2', name: 'Temel' },
   { k: 'B1', name: 'Orta', need: ['A2', 6] },
   { k: 'B2', name: 'Orta üstü', need: ['B1', 6] },
+  { k: 'C1', name: 'İleri', need: ['B2', 6] },
+  { k: 'C2', name: 'Uzman', need: ['C1', 6] },
 ];
+const TOPICS = [
+  { k: 'egitim', name: 'Eğitim', icon: 'book' },
+  { k: 'cevre', name: 'Çevre', icon: 'leaf' },
+  { k: 'saglik', name: 'Sağlık', icon: 'heart' },
+  { k: 'teknoloji', name: 'Teknoloji', icon: 'chip' },
+  { k: 'is', name: 'İş ve Ekonomi', icon: 'case' },
+  { k: 'toplum', name: 'Toplum', icon: 'people' },
+];
+const BANDS = [
+  { k: '5-6', name: 'Band 5–6', desc: 'Sık kullanılan akademik kelimeler' },
+  { k: '6-7', name: 'Band 6–7', desc: 'Yazma ve okumada fark yaratanlar' },
+  { k: '7+', name: 'Band 7+', desc: 'İleri düzey, etkileyici kelimeler' },
+];
+const ieltsIds = f => (DATA.long.IELTS || []).map((p, i) => f(p) ? 'IE:' + i : null).filter(Boolean);
 const MONTHS = ['OCA', 'ŞUB', 'MAR', 'NİS', 'MAY', 'HAZ', 'TEM', 'AĞU', 'EYL', 'EKİ', 'KAS', 'ARA'];
 const OFFS = [[1, 1], [1, 5], [5, 1], [5, 5]];
 const KEY = 'cengel-app-v2';
@@ -1002,7 +1069,10 @@ function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch
 /* ---------- helpers ---------- */
 const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-const clue = w => DATA.clues[w] || w;
+// Turkish clue for a word: 3-letter list, then the long puzzles, then what the player learned
+const LONG_CLUE = {};
+for (const set of Object.values(DATA.long)) for (const p of set) for (const w of p.words) LONG_CLUE[w.answer] = LONG_CLUE[w.answer] || w.clue;
+const clue = w => DATA.clues[w] || LONG_CLUE[w] || w;
 function toast(msg) {
   const t = $('toast'); t.textContent = msg; t.hidden = false;
   clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 1900);
@@ -1023,16 +1093,23 @@ function meta(id) {
     return { id, lv: 'D', squares: DATA.levels.daily[n % DATA.levels.daily.length], title: 'Günün bulmacası', sub: `${d.getDate()} ${MONTHS[d.getMonth()]}`, short: 'Günlük' };
   }
   const i = +rest;
+  if (lv === 'IE') {
+    const p = DATA.long.IELTS[i], T = TOPICS.find(t => t.k === p.topic);
+    const nth = ieltsIds(q => q.topic === p.topic).indexOf(id) + 1;
+    return { id, lv: 'IELTS', i, long: p, n: p.words.length, title: `${T.name} ${nth}`, sub: `IELTS · Band ${p.band.replace('-', '–')}`, short: 'IELTS' };
+  }
   const L = LEVELS.find(l => l.k === lv);
-  return { id, lv, i, squares: DATA.levels[lv][i], title: `Bulmaca ${i + 1}`, sub: `Seviye ${lv} · ${L.name}`, short: lv };
+  const long = DATA.long[lv] ? DATA.long[lv][i] : null;
+  return { id, lv, i, squares: long ? null : DATA.levels[lv][i], long, n: long ? long.words.length : 24, title: `Bulmaca ${i + 1}`, sub: `Seviye ${lv} · ${L.name}`, short: lv };
 }
-const solvedIn = lv => DATA.levels[lv].filter((_, i) => S.done[`${lv}:${i}`]).length;
+const levelList = lv => DATA.levels[lv] || DATA.long[lv] || [];
+const solvedIn = lv => levelList(lv).filter((_, i) => S.done[`${lv}:${i}`]).length;
 function unlocked(L) { return !L.need || solvedIn(L.need[0]) >= L.need[1]; }
 function suggest() {
   if (S.cur && S.games[S.cur] && !S.done[S.cur]) return S.cur;
   for (const L of LEVELS) {
     if (!unlocked(L)) continue;
-    const i = DATA.levels[L.k].findIndex((_, j) => !S.done[`${L.k}:${j}`]);
+    const i = levelList(L.k).findIndex((_, j) => !S.done[`${L.k}:${j}`]);
     if (i >= 0) return `${L.k}:${i}`;
   }
   return 'A1:0';
@@ -1050,7 +1127,7 @@ function streakNow() {
 }
 
 /* ---------- routing ---------- */
-const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings', 'signup', 'login', 'quiz'];
+const SCREENS = ['home', 'level', 'game', 'done', 'words', 'stats', 'settings', 'signup', 'login', 'quiz', 'ielts'];
 let prevScreen = 'home';
 let screen = 'home';
 function show(name) {
@@ -1060,13 +1137,14 @@ function show(name) {
   if (screen === 'game' && name !== 'game') leaveGame();
   screen = name;
   SCREENS.forEach(s => $('s-' + s).hidden = s !== name);
-  const tab = { home: 'home', level: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings', signup: 'account', login: 'account', quiz: 'words' }[name];
+  const tab = { home: 'home', level: 'home', ielts: 'home', game: 'play', done: 'play', words: 'words', stats: 'stats', settings: 'settings', signup: 'account', login: 'account', quiz: 'words' }[name];
   document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
   $('bottomnav').hidden = ['game', 'done', 'signup', 'login', 'quiz'].includes(name);
   if (name === 'signup' || name === 'login') resetAuth(name);
   $('dTimerWrap').hidden = $('dPause').hidden = name !== 'game';
   document.querySelectorAll('.streakv').forEach(s => s.textContent = `${streakNow()} gün`);
   if (name === 'home') renderHome();
+  if (name === 'ielts') renderIelts();
   if (name === 'words') renderWords();
   if (name === 'stats') renderStats();
   if (name === 'settings') renderSettings();
@@ -1162,15 +1240,15 @@ function renderHome() {
   $('rEyebrow').textContent = g ? 'Kaldığın yerden' : 'Sıradaki bulmaca';
   $('rTitle').textContent = m.title;
   $('rSub').textContent = `${m.sub}${g ? ' · ' + fmt(g.sec) : ''}`;
-  $('rCount').textContent = `${n}/24`;
-  $('rArc').setAttribute('stroke-dashoffset', 238.8 * (1 - n / 24));
+  $('rCount').textContent = `${n}/${m.n}`;
+  $('rArc').setAttribute('stroke-dashoffset', 238.8 * (1 - n / m.n));
   $('rBtn').textContent = g ? 'Devam et' : 'Başla';
   $('rGo').onclick = () => openGame(id);
   renderWotd();
   $('levels').innerHTML = '';
   for (const L of LEVELS) {
     const b = document.createElement('button');
-    const solved = solvedIn(L.k), total = DATA.levels[L.k].length;
+    const solved = solvedIn(L.k), total = levelList(L.k).length;
     if (unlocked(L)) {
       b.className = 'lvl';
       b.innerHTML = `<div class="top"><span class="code">${L.k}</span><span class="count${solved ? ' started' : ''}">${solved} / ${total}</span></div><div class="name">${L.name}</div><div class="bar"><i style="width:${solved / total * 100}%"></i></div>`;
@@ -1182,31 +1260,87 @@ function renderHome() {
     }
     $('levels').appendChild(b);
   }
+  const ie = ieltsIds(() => true), ieDone = ie.filter(id => S.done[id]).length;
+  $('ieltsSub').textContent = `${TOPICS.length} konu · ${BANDS.length} band · ${ie.length} bulmaca`;
+  $('ieltsCount').textContent = `${ieDone} / ${ie.length}`;
+  $('ieltsBar').style.width = (ie.length ? ieDone / ie.length * 100 : 0) + '%';
 }
 $('howBtn').onclick = () => $('how').hidden = false;
 $('howClose').onclick = () => $('how').hidden = true;
 
-function openLevel(k) {
-  const L = LEVELS.find(l => l.k === k);
-  $('lvTitle').textContent = `${k} · ${L.name}`;
-  $('lvSub').textContent = `${solvedIn(k)} / ${DATA.levels[k].length} bulmaca çözüldü`;
+// a page of puzzle tiles: a level, an IELTS topic or an IELTS band
+let lastGroup = null;
+function openGroup(group) {
+  lastGroup = group;
+  const ids = group.ids;
+  $('lvTitle').textContent = group.title;
+  $('lvSub').textContent = `${ids.filter(id => S.done[id]).length} / ${ids.length} bulmaca çözüldü${group.note ? ' · ' + group.note : ''}`;
+  $('lvBack').dataset.go = group.back || 'home';
   $('tiles').innerHTML = '';
-  DATA.levels[k].forEach((_, i) => {
-    const id = `${k}:${i}`, d = S.done[id], g = S.games[id];
+  ids.forEach((id, k) => {
+    const d = S.done[id], g = S.games[id], m = meta(id);
     const b = document.createElement('button');
     b.className = 'tile' + (d ? ' solved' : g ? ' going' : '');
-    b.innerHTML = `<b>${i + 1}</b><small>${d ? '✓ ' + d.score + ' puan' : g ? g.sw.length + ' / 24' : 'Yeni'}</small>`;
+    b.innerHTML = `<b>${k + 1}</b>${group.tag ? `<span class="ttag">${group.tag(m)}</span>` : ''}<small>${d ? '✓ ' + d.score + ' puan' : g ? g.sw.length + ' / ' + m.n : 'Yeni'}</small>`;
     b.onclick = () => openGame(id);
     $('tiles').appendChild(b);
   });
   show('level');
+}
+const IE_ICONS = {
+  book: '<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9.5 4v16"/>',
+  leaf: '<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/>',
+  heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+  chip: '<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+  case: '<rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3.5 13h17"/>',
+  people: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.5 14.6c2.3.1 4 1.5 4.6 4.4"/>',
+};
+function renderIelts() {
+  const mode = S.opts.ieltsMode || 'topic';
+  $('ieMode').querySelectorAll('[data-m]').forEach(b => b.setAttribute('aria-checked', b.dataset.m === mode));
+  const card = (title, sub, ids, iconPath, onclick) => {
+    const done = ids.filter(id => S.done[id]).length;
+    const b = document.createElement('button');
+    b.className = 'iecard';
+    b.innerHTML = `${iconPath ? `<div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg></div>` : ''}<b></b><small></small><div class="bar"><i style="width:${ids.length ? done / ids.length * 100 : 0}%"></i></div><span class="cnt">${done} / ${ids.length}</span>`;
+    b.querySelector('b').textContent = title; b.querySelector('small').textContent = sub;
+    b.onclick = onclick;
+    return b;
+  };
+  $('ieGrid').innerHTML = '';
+  $('ieGrid').classList.toggle('bands', mode === 'band');
+  if (mode === 'topic') TOPICS.forEach(T => $('ieGrid').appendChild(card(T.name, 'Her band\'dan 2 bulmaca', ieltsIds(p => p.topic === T.k), IE_ICONS[T.icon], () => openTopic(T.k))));
+  else BANDS.forEach(B => $('ieGrid').appendChild(card(B.name, B.desc, ieltsIds(p => p.band === B.k), null, () => openBand(B.k))));
+}
+$('ieMode').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (!b) return; S.opts.ieltsMode = b.dataset.m; persist(); renderIelts(); });
+
+function openLevel(k) {
+  const L = LEVELS.find(l => l.k === k);
+  openGroup({ title: `${k} · ${L.name}`, ids: levelList(k).map((_, i) => `${k}:${i}`), back: 'home' });
+}
+function openTopic(t) {
+  const T = TOPICS.find(x => x.k === t);
+  openGroup({ title: `IELTS · ${T.name}`, ids: ieltsIds(p => p.topic === t), back: 'ielts', tag: m => 'Band ' + m.long.band.replace('-', '–') });
+}
+function openBand(b) {
+  const B = BANDS.find(x => x.k === b);
+  openGroup({ title: `IELTS · ${B.name}`, ids: ieltsIds(p => p.band === b), back: 'ielts', note: B.desc, tag: m => TOPICS.find(t => t.k === m.long.topic).name });
 }
 
 /* ---------- game ---------- */
 let G = null; // { id, meta, words, cells, st, cur, dir, marks }
 let tick = null, paused = false;
 
-function buildPuzzle(squares) {
+function buildPuzzle(m) {
+  if (m.long) {
+    const { R, C } = m.long;
+    const grid = Array.from({ length: R }, () => Array(C).fill(null));
+    const ws = m.long.words.slice().sort((x, y) => (x.dir > y.dir) - (x.dir < y.dir) || x.r - y.r || x.c - y.c);
+    const words = ws.map((w, i) => ({ ...w, i, cells: [...w.answer].map((_, k) => w.dir === 'A' ? [w.r, w.c + k] : [w.r + k, w.c]) }));
+    for (const w of words) w.cells.forEach(([r, c], k) => grid[r][c] = w.answer[k]);
+    return { grid, words, R, C };
+  }
+  const squares = m.squares;
   const grid = Array.from({ length: 8 }, () => Array(8).fill(null));
   const across = [], down = [];
   squares.forEach((s, b) => {
@@ -1216,18 +1350,21 @@ function buildPuzzle(squares) {
     for (let j = 0; j < 3; j++) down.push({ dir: 'D', r: ro, c: co + j, answer: s[j] + s[3 + j] + s[6 + j] });
   });
   const words = [...across, ...down].map((w, i) => ({ ...w, i, clue: clue(w.answer), cells: [0, 1, 2].map(k => w.dir === 'A' ? [w.r, w.c + k] : [w.r + k, w.c]) }));
-  return { grid, words };
+  return { grid, words, R: 8, C: 8 };
 }
 
 function openGame(id) {
   if (screen === 'game') leaveGame();
   const m = meta(id);
-  const { grid, words } = buildPuzzle(m.squares);
-  if (!S.games[id]) S.games[id] = { v: '.'.repeat(64), h: '0'.repeat(64), m: Array(24).fill(0), lw: Array(24).fill(''), hints: 0, sec: 0, score: 0, sw: [], hw: [], hx: [] };
+  const { grid, words, R, C } = buildPuzzle(m);
+  const N = words.length;
+  if (!S.games[id]) S.games[id] = { v: '.'.repeat(R * C), h: '0'.repeat(R * C), m: Array(N).fill(0), lw: Array(N).fill(''), hints: 0, sec: 0, score: 0, sw: [], hw: [], hx: [] };
   if (!id.startsWith('D:')) S.cur = id;
-  G = { id, meta: m, grid, words, st: S.games[id], cur: null, dir: 'A', marks: {} };
+  G = { id, meta: m, grid, words, R, C, N, st: S.games[id], cur: null, dir: 'A', marks: {} };
   // cells
   const gridEl = $('grid'); gridEl.innerHTML = '';
+  gridEl.style.gridTemplateColumns = `repeat(${C}, minmax(0, 1fr))`;
+  gridEl.classList.toggle('g9', C > 8);
   G.cells = grid.map((row, r) => row.map((ch, c) => {
     const el = document.createElement('div');
     const cell = { r, c, el, sol: ch, A: null, D: null };
@@ -1236,15 +1373,29 @@ function openGame(id) {
       el.innerHTML = '<span class="ch"></span><span class="mk"></span>';
       el.addEventListener('pointerdown', e => { e.preventDefault(); tapCell(r, c); });
     } else {
-      const w = words.find(w => (w.dir === 'A' && w.r === r && w.c === c + 1) || (w.dir === 'D' && w.r === r + 1 && w.c === c));
-      if (w) {
+      // a clue square can hold an across clue (word to its right) and a down clue (word below)
+      const here = words.filter(w => (w.dir === 'A' && w.r === r && w.c === c + 1) || (w.dir === 'D' && w.r === r + 1 && w.c === c));
+      const sizeClass = text => { const n = Math.max(...text.split(/[\s()]+/).map(s => s.length)); return n >= 7 ? 'w' + Math.min(n, 11) : ''; };
+      if (here.length === 1) {
+        const w = here[0];
         el.className = 'cell clue ' + w.dir;
         el.innerHTML = '<span></span>'; el.firstChild.textContent = w.clue;
-        const longest = Math.max(...w.clue.split(/[\s()]+/).map(s => s.length));
-        if (longest >= 7) el.firstChild.className = 'w' + Math.min(longest, 10);
+        el.firstChild.className = sizeClass(w.clue);
         el.title = w.clue;
         el.addEventListener('pointerdown', e => { e.preventDefault(); pickWord(w); });
         w.clueEl = el;
+      } else if (here.length === 2) {
+        el.className = 'cell clue two';
+        for (const w of here) {
+          const part = document.createElement('div');
+          part.className = 'cp ' + w.dir;
+          part.innerHTML = '<span></span>'; part.firstChild.textContent = w.clue;
+          part.firstChild.className = sizeClass(w.clue);
+          part.title = w.clue;
+          part.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); pickWord(w); });
+          w.clueEl = part;
+          el.appendChild(part);
+        }
       } else el.className = 'cell blank';
     }
     gridEl.appendChild(el);
@@ -1261,11 +1412,13 @@ function openGame(id) {
     });
   }
   $('gTitle').textContent = $('gTitle2').textContent = m.lv === 'D' ? 'Günün bulmacası' : m.title;
-  document.querySelectorAll('.segbar').forEach(s => s.innerHTML = '<i></i>'.repeat(24));
+  document.querySelectorAll('.segbar').forEach(s => { s.innerHTML = '<i></i>'.repeat(N); s.style.gridTemplateColumns = `repeat(${N}, 1fr)`; });
   paused = false; $('pause').hidden = true;
   show('game');
   if (S.done[id]) { G.finished = true; }
-  pickWord(nextOpenWord(-1) || words[0]);
+  // long-word puzzles open on one of the level's own words, not a short filler
+  const startWord = words.find(w => !wordSolved(w) && (!m.long || w.answer.length > 3));
+  pickWord(startWord || nextOpenWord(-1) || words[0]);
   paint();
   startTimer();
   persist();
@@ -1273,7 +1426,7 @@ function openGame(id) {
 
 function leaveGame() { stopTimer(); persist(); $('pause').hidden = true; }
 
-const idx = (r, c) => r * 8 + c;
+const idx = (r, c) => r * G.C + c;
 const val = (r, c) => { const v = G.st.v[idx(r, c)]; return v === '.' ? '' : v; };
 const hinted = (r, c) => G.st.h[idx(r, c)] === '1';
 const setChar = (str, i, ch) => str.slice(0, i) + ch + str.slice(i + 1);
@@ -1292,8 +1445,8 @@ function pickWord(w) {
   G.cur = G.cells[empty[0]][empty[1]]; G.dir = w.dir; paint();
 }
 function nextOpenWord(from, step = 1) {
-  for (let k = 1; k <= 24; k++) {
-    const w = G.words[(from + k * step + 48) % 24];
+  for (let k = 1; k <= G.N; k++) {
+    const w = G.words[(((from + k * step) % G.N) + G.N) % G.N];
     if (!wordSolved(w)) return w;
   }
   return null;
@@ -1328,9 +1481,9 @@ function paint() {
   $('sMini').innerHTML = w.cells.map(([r, c]) => `<i class="${G.cells[r][c] === G.cur ? 'sel' : wordSolved(w) ? 'ok' : ''}">${val(r, c)}</i>`).join('');
   const n = G.st.sw.length;
   document.querySelectorAll('.segbar').forEach(s => [...s.children].forEach((i, k) => i.classList.toggle('on', k < n)));
-  const sub = `${G.meta.short === 'Günlük' ? G.meta.sub : G.meta.lv} · ${n} / 24 kelime`;
+  const sub = `${G.meta.short === 'Günlük' ? G.meta.sub : G.meta.lv} · ${n} / ${G.N} kelime`;
   $('gSub').textContent = sub;
-  $('gSub2').textContent = `${G.meta.lv === 'D' ? G.meta.sub : G.meta.sub + ' · ' + G.meta.title} · ${n} / 24 kelime`;
+  $('gSub2').textContent = `${G.meta.lv === 'D' ? G.meta.sub : G.meta.sub + ' · ' + G.meta.title} · ${n} / ${G.N} kelime`;
   $('mScore').textContent = $('sScore').textContent = G.st.score;
   $('sHints').textContent = G.st.hints;
   updateTimer();
@@ -1360,12 +1513,12 @@ function evaluate(cell) {
   for (const w of [cell.A, cell.D]) {
     if (!w || wordSolved(w)) continue;
     const got = w.cells.map(([r, c]) => val(r, c)).join('');
-    if (got.length < 3) continue;
+    if (got.length < w.answer.length) continue;
     if (got === w.answer) { solve(w); justSolved = true; }
     else if (got !== G.st.lw[w.i]) { G.st.m[w.i]++; G.st.lw[w.i] = got; }
   }
   if (justSolved) G.justSolved = true;
-  if (G.st.sw.length === 24) finish();
+  if (G.st.sw.length === G.N) finish();
 }
 
 function solve(w) {
@@ -1423,7 +1576,7 @@ function move(dr, dc) {
   const d = dr ? 'D' : 'A';
   if (G.dir !== d && G.cur[d]) { G.dir = d; paint(); return; }
   let r = G.cur.r + dr, c = G.cur.c + dc;
-  while (r >= 0 && c >= 0 && r < 8 && c < 8) {
+  while (r >= 0 && c >= 0 && r < G.R && c < G.C) {
     const cell = G.cells[r][c];
     if (cell.sol) { G.cur = cell; if (!cell[G.dir]) G.dir = G.dir === 'A' ? 'D' : 'A'; paint(); return; }
     r += dr; c += dc;
@@ -1552,7 +1705,7 @@ function finish() {
   if (before.length && st.score > Math.max(...before.map(d => d.score))) recs.push('en yüksek puan');
   if (before.length && st.sec < Math.min(...before.map(d => d.sec))) recs.push('en hızlı bulmaca');
   G.newRecord = recs.length ? `Yeni rekor: ${recs.join(' ve ')}!` : '';
-  S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey() };
+  S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey(), n: G.N };
   act().p++;
   buzz('success');
   bumpStreak(); persist();
@@ -1566,7 +1719,7 @@ function renderDone(all) {
   $('donePts').textContent = d.score;
   $('doneRecord').textContent = G.newRecord || ''; $('doneRecord').hidden = !G.newRecord;
   $('doneTime').textContent = fmt(d.sec);
-  $('doneFirst').textContent = `${d.first} / 24`;
+  $('doneFirst').textContent = `${d.first} / ${d.n || 24}`;
   $('doneHints').textContent = d.hints;
   // words with notes first, so the list shows what needs another look
   const list = G.words.slice().sort((a, b) => (st.hw.includes(b.i) + st.m[b.i]) - (st.hw.includes(a.i) + st.m[a.i]));
@@ -1579,12 +1732,13 @@ function renderDone(all) {
     row.firstChild.textContent = w.clue;
     $('doneWords').appendChild(row);
   });
-  $('doneAll').textContent = all ? 'Daha az göster' : 'Tümü · 24';
+  $('doneAll').textContent = all ? 'Daha az göster' : `Tümü · ${G.N}`;
 }
 $('doneAll').onclick = () => renderDone(!doneAll);
 $('doneNext').onclick = () => {
+  if (lastGroup && lastGroup.ids.includes(G.id)) { const k = lastGroup.ids.indexOf(G.id); if (k + 1 < lastGroup.ids.length) return openGame(lastGroup.ids[k + 1]); }
   const m = G.meta;
-  if (m.lv !== 'D' && m.i + 1 < DATA.levels[m.lv].length) return openGame(`${m.lv}:${m.i + 1}`);
+  if (m.lv !== 'D' && m.lv !== 'IELTS' && m.i + 1 < levelList(m.lv).length) return openGame(`${m.lv}:${m.i + 1}`);
   openGame(suggest());
 };
 
@@ -1795,7 +1949,7 @@ function badgeList() {
   return [
     ['first', 'İlk bulmaca', 'Bir bulmaca bitir', 'flag', 'primary', done.length, 1],
     ['ten', '10 bulmaca', '10 bulmaca bitir', 'grid', 'sky', done.length, 10],
-    ['flawless', 'Hatasız', '24 kelimeyi de ilk denemede bul', 'star', 'sun', done.filter(d => d.first === 24).length, 1],
+    ['flawless', 'Hatasız', 'Bir bulmacanın bütün kelimelerini ilk denemede bul', 'star', 'sun', done.filter(d => d.first === (d.n || 24)).length, 1],
     ['nohint', 'İpucusuz', 'İpucu almadan bir bulmaca bitir', 'bulb', 'mint', done.filter(d => !d.hints).length, 1],
     ['fast', 'Şimşek', 'Bir bulmacayı 5 dakikadan kısa sürede bitir', 'bolt', 'coral', done.filter(d => d.sec < 300).length, 1],
     ['s3', '3 gün seri', '3 gün üst üste oyna', 'flame', 'coral', best, 3],
@@ -1857,7 +2011,7 @@ function renderStats() {
   // records
   const by = (f, pick) => done.length ? pick(...done.map(f)) : null;
   const bestScore = by(d => d.score, Math.max), fastest = by(d => d.sec, Math.min);
-  const recs = [['En yüksek puan', bestScore ?? '—', 'tek bulmacada'], ['En hızlı bulmaca', fastest == null ? '—' : fmt(fastest), 'dakika:saniye'], ['En uzun seri', `${S.streak.best || 0} gün`, 'üst üste oynanan'], ['Hatasız bulmaca', done.filter(d => d.first === 24).length, '24 / 24 ilk denemede']];
+  const recs = [['En yüksek puan', bestScore ?? '—', 'tek bulmacada'], ['En hızlı bulmaca', fastest == null ? '—' : fmt(fastest), 'dakika:saniye'], ['En uzun seri', `${S.streak.best || 0} gün`, 'üst üste oynanan'], ['Hatasız bulmaca', done.filter(d => d.first === 24).length, 'hepsi ilk denemede']];
   $('records').innerHTML = recs.map(([k, v, s]) => `<div class="stat"><small>${k}</small><b>${v}</b><small>${s}</small></div>`).join('');
 
   // badges
@@ -1877,7 +2031,7 @@ function renderStats() {
   $('weakGo').hidden = !weak.length;
   $('weakGo').onclick = () => startQuiz(weak);
 
-  $('lvBars').innerHTML = LEVELS.map(L => { const n = solvedIn(L.k), t = DATA.levels[L.k].length; return `<div><span>${L.k}</span><div class="bar"><i style="width:${n / t * 100}%"></i></div><span>${n}/${t}</span></div>`; }).join('');
+  $('lvBars').innerHTML = LEVELS.map(L => { const n = solvedIn(L.k), t = levelList(L.k).length; return `<div><span>${L.k}</span><div class="bar"><i style="width:${n / t * 100}%"></i></div><span>${n}/${t}</span></div>`; }).join('');
 }
 /* theme: '' follows the device, 'light' / 'dark' is the player's own choice */
 const darkMQ = matchMedia('(prefers-color-scheme: dark)');

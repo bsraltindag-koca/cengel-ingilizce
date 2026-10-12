@@ -18,6 +18,13 @@ for k, ps in d['levels'].items():
             assert all(w in d['clues'] for w in ws), (k, s)
             allw += ws
         assert len(set(allw)) == 24, (k, p)
+# long-word puzzles (C1, C2, IELTS) from tools/pack_long.py, re-checked here
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import longgen
+long_data = json.load(open('data/long.json', encoding='utf-8'))
+for _set in long_data.values():
+    for _p in _set:
+        longgen.check(_p)
 # words of the day: one per line, tab separated, 6 fields
 words = [l.split('\t') for l in open('data/words.tsv', encoding='utf-8').read().strip().split('\n')]
 assert all(len(w) == 6 and all(x.strip() for x in w) for w in words), 'words.tsv: every line needs 6 fields'
@@ -30,7 +37,8 @@ version = {'n': f'1.{n}', 'date': f'{now.day} {months[now.month - 1]} {now.year}
 body = (open('src/app.html', encoding='utf-8').read()
         .replace('/*DATA*/{}', json.dumps(d, ensure_ascii=False, separators=(',', ':')))
         .replace("/*VERSION*/{ n: 'geliştirme', date: '' }", json.dumps(version, ensure_ascii=False))
-        .replace('/*WOTD*/[]', json.dumps(words, ensure_ascii=False, separators=(',', ':'))))
+        .replace('/*WOTD*/[]', json.dumps(words, ensure_ascii=False, separators=(',', ':')))
+        .replace('/*LONG*/{}', json.dumps(long_data, ensure_ascii=False, separators=(',', ':'))))
 import legacy  # fallbacks for older engines (tools/legacy.py)
 body = legacy.apply(body)
 args = [x for x in sys.argv[1:] if not x.startswith('--')]

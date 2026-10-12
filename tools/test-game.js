@@ -3,13 +3,14 @@ window.addEventListener('error', e => __errs.push('onerror: ' + e.message));
 setTimeout(() => {
   const R = {}, errs = __errs;
   const key = k => document.body.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true }));
-  const typeWord = w => { for (const [r, c] of w.cells) { G.cur = G.cells[r][c]; G.dir = w.dir; const s = G.cells[r][c].sol; key(s === 'I' ? 'ı' : s.toLowerCase()); } };
+  const typeWord = w => { for (const [r, c] of w.cells) { if (locked(r, c)) continue; G.cur = G.cells[r][c]; G.dir = w.dir; const s = G.cells[r][c].sol; key(s === 'I' ? 'ı' : s.toLowerCase()); } };
   const fresh = id => { delete S.games[id]; delete S.done[id]; };
   let confettiCalls = 0; const oc = window.confetti; window.confetti = () => { confettiCalls++; };
   const origSetTimeout = window.setTimeout;
   // T1: every puzzle solvable, finishes once with full score
   const ids = [];
-  for (const L of LEVELS) DATA.levels[L.k].forEach((_, i) => ids.push(`${L.k}:${i}`));
+  for (const L of LEVELS) levelList(L.k).forEach((_, i) => ids.push(`${L.k}:${i}`));
+  (DATA.long.IELTS || []).forEach((_, i) => ids.push('IE:' + i));
   const base = new Date('2026-10-01T12:00:00');
   for (let d = 0; d < 30; d++) { const x = new Date(base); x.setDate(x.getDate() + d); ids.push('D:' + dayKey(x)); }
   const bad1 = [];
@@ -18,11 +19,12 @@ setTimeout(() => {
       fresh(id); openGame(id);
       // integrity: 24 clue cells, answers match grid, clues are not empty
       const clueCells = document.querySelectorAll('#grid .cell.clue').length;
-      if (clueCells !== 24) bad1.push(id + ' clueCells=' + clueCells);
+      const clueSlots = document.querySelectorAll('#grid .cell.clue:not(.two), #grid .cell.clue.two .cp').length;
+      if (clueSlots !== G.N) bad1.push(id + ' clueSlots=' + clueSlots + ' words=' + G.N);
       G.words.forEach(w => { if (!w.clue || w.clue === w.answer) bad1.push(id + ' noclue ' + w.answer); });
-      G.words.filter(w => w.dir === 'A').forEach(typeWord);
-      if (!G.finished || G.st.sw.length !== 24) bad1.push(id + ' notFinished sw=' + G.st.sw.length);
-      else if (S.done[id].score !== 24 * 35 + 200) bad1.push(id + ' score=' + S.done[id].score);
+      G.words.forEach(typeWord);
+      if (!G.finished || G.st.sw.length !== G.N) bad1.push(id + ' notFinished sw=' + G.st.sw.length + '/' + G.N);
+      else if (S.done[id].score !== G.N * 35 + 200) bad1.push(id + ' score=' + S.done[id].score);
     } catch (e) { bad1.push(id + ' ERR ' + e.message); }
   }
   R.T1 = { puzzles: ids.length, problems: bad1.slice(0, 10), problemCount: bad1.length };
