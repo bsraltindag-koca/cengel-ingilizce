@@ -11,7 +11,23 @@ def tsv(name):
     return [l.rstrip('\n').split('\t') for l in open(p, encoding='utf-8') if l.strip()]
 
 
+def tr_lower(s):
+    return s.replace('I', 'ı').replace('İ', 'i').lower()
+
+
+def gives_away(w, c):
+    """True when the clue holds the answer itself (FİLM -> "Film", LA -> "La notası"):
+    the word is the same in Turkish and English, so the clue gives the answer away."""
+    words = re.findall(r'[\wçğıöşüâî]+', tr_lower(c))
+    return w.lower() in words or tr_lower(w) in words
+
+
 def load():
+    d = _load()
+    return {k: [x for x in v if not gives_away(x[0], x[1])] for k, v in d.items()}
+
+
+def _load():
     two = [(w, c) for w, c in tsv('vocab-2.tsv')] + [(w, c) for w, c in tsv('fill-2.tsv') if w != 'YE']
     src = open(os.path.join(BASE, 'tools', 'squares.py'), encoding='utf-8').read()
     three, seen = [], set()

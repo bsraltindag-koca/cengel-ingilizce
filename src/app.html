@@ -429,6 +429,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qcard { background: var(--surface); border-radius: 24px; padding: 28px 20px; text-align: center; box-shadow: var(--shadow); display: grid; gap: 8px; }
 .qcard .eyebrow { color: var(--muted); }
 .qcard h2 { font-size: clamp(32px, 9vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+.qnote { display: grid; justify-items: center; gap: 4px; margin-top: 10px; }
+.qnote .tur { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 14%, var(--surface)); color: var(--primary); }
+.qnote .ac { margin: 2px 0 0; font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--ink); }
+.qnote .ex { margin: 0; font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.35; }
+.qnote .ex:empty { display: none; }
 .qopts { display: grid; gap: 10px; }
 .qopt { height: 58px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-size: 19px; display: flex; align-items: center; gap: 12px; padding: 0 18px; text-align: left; border: 2px solid transparent; }
 .qopt kbd { font: 700 12px var(--f-ui); width: 24px; height: 24px; border-radius: 7px; background: var(--soft); color: var(--muted); display: grid; place-items: center; flex: none; }
@@ -965,7 +970,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
     </div>
     <div class="qbar" id="qBar"></div>
     <section id="qAsk">
-      <div class="qcard"><div class="eyebrow">Bu kelimenin İngilizcesi ne?</div><h2 id="qWord">Kedi</h2></div>
+      <div class="qcard"><div class="eyebrow">Bu kelimenin İngilizcesi ne?</div><h2 id="qWord">Kedi</h2><div class="qnote" id="qNote" hidden><span class="tur"></span><p class="ac"></p><p class="ex"></p></div></div>
       <div class="qopts" id="qOpts"></div>
       <div class="qfoot"><p id="qFeedback" aria-live="polite"></p><button class="bigbtn dark" id="qNext" hidden>Devam et</button></div>
     </section>
@@ -1125,8 +1130,8 @@ if (S.opts.haptic === undefined) S.opts.haptic = true;
 // older saves stored learned words as 1; give them the same shape as new ones
 for (const k of Object.keys(S.learned)) if (typeof S.learned[k] !== 'object') S.learned[k] = { at: null, lv: null, hard: false };
 S.review = S.review || {};
-// the puzzles changed to classic arrowwords (v3): old half-played games and solved marks belong to other grids
-const PUZZLE_VER = 3;
+// the puzzle grids changed (v3: classic arrowwords; v4: words spelt the same in Turkish taken out), so old half-played games and solved marks belong to other grids
+const PUZZLE_VER = 4;
 if (S.pv !== PUZZLE_VER) { S.games = {}; S.done = {}; S.cur = null; S.pv = PUZZLE_VER; }
 S.rec = S.rec || {};
 // daily activity: { 'YYYY-MM-DD': { w: words learned, p: puzzles finished } }; older saves are filled in once from what they already have
@@ -2008,6 +2013,10 @@ function renderQuiz() {
   $('qSub').textContent = `${Q.i + 1} / ${Q.items.length}`;
   [...$('qBar').children].forEach((b, k) => b.className = Q.items[k].res || (k === Q.i ? 'cur' : ''));
   $('qWord').textContent = clue(it.w);
+  // which meaning is asked: the same note as the puzzle's "?" (it never holds the English word)
+  const h = DATA.hints[it.w];
+  $('qNote').hidden = !h;
+  if (h) { $('qNote').querySelector('.tur').textContent = h[0]; $('qNote').querySelector('.ac').textContent = h[1]; $('qNote').querySelector('.ex').textContent = h[2] ? 'Örnek: ' + h[2] : ''; }
   $('qOpts').innerHTML = it.opts.map((o, k) => `<button class="qopt" data-o="${o}" lang="en"><kbd>${k + 1}</kbd>${lowerEn(o)}</button>`).join('');
   $('qFeedback').textContent = ''; $('qNext').hidden = true;
 }

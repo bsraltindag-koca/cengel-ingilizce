@@ -20,20 +20,28 @@ for k, ps in d['levels'].items():
         assert len(set(allw)) == 24, (k, p)
 # all puzzles (classic arrowwords) from tools/pack_arrow.py, re-checked here
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import arrowgen
+import arrowgen, dictionary
 long_data = json.load(open('data/arrow.json', encoding='utf-8'))
 for _set in long_data.values():
     for _p in _set:
         arrowgen.check(_p)
+        for _w in _p['words']:
+            assert not dictionary.gives_away(_w['answer'], _w['clue']), ('clue gives the answer away', _w)
         _p.pop('share', None)
-# which-meaning notes for clues: WORD<TAB>tür<TAB>açıklama<TAB>örnek in data/hints-*.tsv; only words that are in a puzzle
+# Turkish clues for every dictionary word, so Tekrar et can still ask words learned from older puzzle sets
+for _v in dictionary._load().values():
+    for _x in _v:
+        if 2 <= len(_x[0]) <= 8 and _x[0].isalpha():
+            d['clues'].setdefault(_x[0], _x[1])
+# which-meaning notes for clues: WORD<TAB>tür<TAB>açıklama<TAB>örnek in data/hints-*.tsv; all of them, since
+# Tekrar et also asks words learned in earlier versions of the puzzles
 import glob
 _answers = {w['answer'] for _set in long_data.values() for _p in _set for w in _p['words']}
 hints = {}
 for _f in sorted(glob.glob('data/hints-*.tsv')):
     for _l in open(_f, encoding='utf-8'):
         _x = _l.rstrip('\n').split('\t')
-        if len(_x) == 4 and _x[0] in _answers:
+        if len(_x) == 4:
             assert not re.search(r'(?<![\wçğıöşüÇĞİÖŞÜ])' + _x[0] + r'(?![\wçğıöşüÇĞİÖŞÜ])', _x[2] + ' ' + _x[3], re.I), ('hint gives the answer away', _x)
             hints[_x[0]] = _x[1:]
 # words of the day: one per line, tab separated, 6 fields
