@@ -32,18 +32,20 @@ setTimeout(() => {
   // T2: finishing with "Kelime aç" adds the bonus once
   try {
     const id = 'A2:0'; fresh(id); openGame(id);
-    const holdA = G.words[0], [hr, hc] = holdA.cells[0];
-    for (const w of G.words) for (const [r, c] of w.cells) { if (r === hr && c === hc) continue; G.cur = G.cells[r][c]; G.dir = w.dir; key(G.cells[r][c].sol); }
-    const before = G.st.sw.length;
+    // hold back one square of an across word, solve everything else, then finish with Kelime aç
+    const holdA = G.words.find(w => w.dir === 'A' && w.cells.length >= 3), [hr, hc] = holdA.cells[0];
+    for (const w of G.words) for (const [r, c] of w.cells) { if ((r === hr && c === hc) || locked(r, c)) continue; G.cur = G.cells[r][c]; G.dir = w.dir; key(G.cells[r][c].sol); }
+    const before = G.st.sw.length, left = G.N - before;
     pickWord(holdA); hintWord();
-    R.T2 = { solvedBefore: before, finished: !!G.finished, score: S.done[id] && S.done[id].score, expected: 22 * 35 + 25 + 35 - 40 + 200, stateScore: G.st.score };
+    // solved earlier: 35 each; the hinted word 25; a crossing word it completes 35; minus 40; time bonus 200
+    R.T2 = { solvedBefore: before, finished: !!G.finished, score: S.done[id] && S.done[id].score, expected: before * 35 + 25 + (left - 1) * 35 - 40 + 200, stateScore: G.st.score };
   } catch (e) { R.T2 = 'ERR ' + e.message; }
 
   // T3: typing on a locked square goes to the next open square
   try {
     const id = 'A1:5'; fresh(id); openGame(id);
-    const d0 = G.words.find(w => w.dir === 'D'); typeWord(d0);
-    const a0 = G.cells[d0.cells[0][0]][d0.cells[0][1]].A;
+    const a0 = G.words.find(w => w.dir === 'A' && w.cells.length >= 3 && G.cells[w.cells[0][0]][w.cells[0][1]].D);
+    const d0 = G.cells[a0.cells[0][0]][a0.cells[0][1]].D; typeWord(d0);
     G.cur = G.cells[a0.cells[0][0]][a0.cells[0][1]]; G.dir = 'A';
     const want = G.cells[a0.cells[1][0]][a0.cells[1][1]].sol;
     key(want);

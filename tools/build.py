@@ -18,13 +18,14 @@ for k, ps in d['levels'].items():
             assert all(w in d['clues'] for w in ws), (k, s)
             allw += ws
         assert len(set(allw)) == 24, (k, p)
-# long-word puzzles (C1, C2, IELTS) from tools/pack_long.py, re-checked here
+# all puzzles (classic arrowwords) from tools/pack_arrow.py, re-checked here
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import longgen
-long_data = json.load(open('data/long.json', encoding='utf-8'))
+import arrowgen
+long_data = json.load(open('data/arrow.json', encoding='utf-8'))
 for _set in long_data.values():
     for _p in _set:
-        longgen.check(_p)
+        arrowgen.check(_p)
+        _p.pop('share', None)
 # words of the day: one per line, tab separated, 6 fields
 words = [l.split('\t') for l in open('data/words.tsv', encoding='utf-8').read().strip().split('\n')]
 assert all(len(w) == 6 and all(x.strip() for x in w) for w in words), 'words.tsv: every line needs 6 fields'

@@ -5,7 +5,7 @@ setTimeout(() => {
     localStorage.clear();
     S.games = {}; S.done = {}; S.learned = {}; S.review = {}; S.activity = {}; S.rec = {}; S.streak = { last: null, count: 0, best: 0 };
     const key = k => document.body.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true }));
-    const solveAll = () => { for (const w of G.words.filter(w => w.dir === 'A')) for (const [r, c] of w.cells) { G.cur = G.cells[r][c]; G.dir = 'A'; key(G.cells[r][c].sol); } };
+    const solveAll = () => { for (const w of G.words) for (const [r, c] of w.cells) { if (locked(r, c)) continue; G.cur = G.cells[r][c]; G.dir = w.dir; key(G.cells[r][c].sol); } };
     window.confetti = () => {};
     openGame('A1:0'); G.st.sec = 400; pickWord(G.words[0]); 'ZZZ'.split('').forEach(key); solveAll();
     R.push('puzzle 1: record msg="' + (G.newRecord || '') + '"');

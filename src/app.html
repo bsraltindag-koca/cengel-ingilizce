@@ -253,6 +253,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell.bad .mk::after { content: "✕"; color: var(--bad); }
 .cell.hint:not(.ok) .mk::after { content: ""; display: block; width: 11cqw; height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: 4cqw; }
 .cell.blank { background: transparent; }
+.cell.void { background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
 
 .g-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: auto; }
 .act { height: 54px; border-radius: 999px; background: var(--surface); font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow); white-space: nowrap; }
@@ -1009,7 +1010,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
 
 <script>
 const DATA = /*DATA*/{};
-// C1, C2 and IELTS: long-word puzzles from tools/pack_long.py ({ R, C, words: [{ dir, r, c, answer, clue }] })
+// every level and IELTS: classic arrowword puzzles from tools/pack_arrow.py ({ R, C, words: [{ dir, r, c, answer, clue }] })
 DATA.long = /*LONG*/{};
 // filled in by tools/build.py: build number and build time
 const VERSION = /*VERSION*/{ n: 'geliştirme', date: '' };
@@ -1055,6 +1056,9 @@ S = Object.assign({ games: {}, done: {}, learned: {}, streak: { last: null, coun
 // older saves stored learned words as 1; give them the same shape as new ones
 for (const k of Object.keys(S.learned)) if (typeof S.learned[k] !== 'object') S.learned[k] = { at: null, lv: null, hard: false };
 S.review = S.review || {};
+// the puzzles changed to classic arrowwords (v3): old half-played games and solved marks belong to other grids
+const PUZZLE_VER = 3;
+if (S.pv !== PUZZLE_VER) { S.games = {}; S.done = {}; S.cur = null; S.pv = PUZZLE_VER; }
 S.rec = S.rec || {};
 // daily activity: { 'YYYY-MM-DD': { w: words learned, p: puzzles finished } }; older saves are filled in once from what they already have
 if (!S.activity) {
@@ -1102,7 +1106,7 @@ function meta(id) {
   const long = DATA.long[lv] ? DATA.long[lv][i] : null;
   return { id, lv, i, squares: long ? null : DATA.levels[lv][i], long, n: long ? long.words.length : 24, title: `Bulmaca ${i + 1}`, sub: `Seviye ${lv} · ${L.name}`, short: lv };
 }
-const levelList = lv => DATA.levels[lv] || DATA.long[lv] || [];
+const levelList = lv => DATA.long[lv] || DATA.levels[lv] || [];
 const solvedIn = lv => levelList(lv).filter((_, i) => S.done[`${lv}:${i}`]).length;
 function unlocked(L) { return !L.need || solvedIn(L.need[0]) >= L.need[1]; }
 function suggest() {
@@ -1396,7 +1400,7 @@ function openGame(id) {
           w.clueEl = part;
           el.appendChild(part);
         }
-      } else el.className = 'cell blank';
+      } else el.className = m.long ? 'cell void' : 'cell blank';
     }
     gridEl.appendChild(el);
     return cell;

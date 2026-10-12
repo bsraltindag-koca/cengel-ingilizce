@@ -10,7 +10,7 @@ setTimeout(() => {
     openGame('A1:0');
     pickWord(G.words[0]); 'ZZZ'.split('').forEach(key);
     pickWord(G.words[1]); hintLetter();
-    for (const w of G.words.filter(w => w.dir === 'A')) for (const [r, c] of w.cells) { G.cur = G.cells[r][c]; G.dir = 'A'; key(G.cells[r][c].sol); }
+    for (const w of G.words) for (const [r, c] of w.cells) { if (locked(r, c)) continue; G.cur = G.cells[r][c]; G.dir = w.dir; key(G.cells[r][c].sol); }
     show('words');
     R.push('after puzzle: ' + $('wCount').textContent + ' | total=' + $('sumAll').textContent + ' week=' + $('sumWeek').textContent + ' due=' + $('sumDue').textContent);
     R.push('chips=' + [...$('wChips').children].map(b => b.textContent).join(', '));

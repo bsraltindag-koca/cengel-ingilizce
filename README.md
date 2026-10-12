@@ -8,17 +8,17 @@ Türkçe ipuçlarının İngilizce karşılıklarını ok yönünde yazdığın 
 - Öğrenilen kelimeler listesi ve istatistikler; ilerleme tarayıcıda saklanır
 - Telefonda ekran klavyesi, masaüstünde fiziksel klavye ve yan panel
 
-Her bulmaca dört adet 3×3 bloktan oluşur; her blok hem yatay hem dikey anlamlı kelimeler verir.
+Her bulmaca klasik bir çengel bulmacadır: 9×9 ızgarada ipucu kareleri araya serpiştirilmiştir, kelimelerin çoğu iki yönde kesişir. Seviyeler A1–C2 (12'şer bulmaca) ve IELTS (6 konu × 3 band, 36 bulmaca).
 
 ## Geliştirme
 
 ```sh
-python3 tools/squares.py   # kelime listesinden tüm 3×3 kelime karelerini bulur -> data/squares.json
-python3 tools/pack.py      # seviyelere ve günlük bulmacalara dağıtır -> data/data.json
-python3 tools/build.py     # src/app.html + veri -> index.html
+python3 tools/pack_arrow.py   # bütün bulmacaları üretir -> data/arrow.json (paralel, ~15 dk)
+python3 tools/fix_weak.py     # seviye kelimesi az kalan bulmacaları yeniden üretir
+python3 tools/build.py        # src/app.html + veri -> index.html
 ```
 
-Kelime listesi ve Türkçe ipuçları `tools/squares.py` içinde.
+Kelime listeleri ve Türkçe ipuçları `data/` klasöründe (`vocab-*.tsv`, `fill-*.tsv`, `words.tsv`); `tools/dictionary.py` bunları seviyelere göre birleştirir.
 
 ## iOS ve Android uygulaması
 
