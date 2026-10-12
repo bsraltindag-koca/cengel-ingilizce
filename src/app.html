@@ -437,6 +437,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qnote .ac { margin: 2px 0 0; font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--ink); }
 .qnote .ex { margin: 0; font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.35; }
 .qnote .ex:empty { display: none; }
+.qnote .exen { margin: 4px 0 0; font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.35; animation: hintIn .2s ease both; }
+.qnote .exen b { color: var(--primary); font-weight: 800; }
 .qopts { display: grid; gap: 10px; }
 .qopt { height: 58px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-size: 19px; display: flex; align-items: center; gap: 12px; padding: 0 18px; text-align: left; border: 2px solid transparent; }
 .qopt kbd { font: 700 12px var(--f-ui); width: 24px; height: 24px; border-radius: 7px; background: var(--soft); color: var(--muted); display: grid; place-items: center; flex: none; }
@@ -974,7 +976,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
     </div>
     <div class="qbar" id="qBar"></div>
     <section id="qAsk">
-      <div class="qcard"><div class="eyebrow">Bu kelimenin İngilizcesi ne?</div><h2 id="qWord">Kedi</h2><div class="qnote" id="qNote" hidden><span class="tur"></span><p class="ac"></p><p class="ex"></p></div></div>
+      <div class="qcard"><div class="eyebrow">Bu kelimenin İngilizcesi ne?</div><h2 id="qWord">Kedi</h2><div class="qnote" id="qNote" hidden><span class="tur"></span><p class="ac"></p><p class="ex"></p><p class="exen" id="qExEn" lang="en" hidden></p></div></div>
       <div class="qopts" id="qOpts"></div>
       <div class="qfoot"><p id="qFeedback" aria-live="polite"></p><button class="bigbtn dark" id="qNext" hidden>Devam et</button></div>
     </section>
@@ -2050,7 +2052,16 @@ function renderQuiz() {
   $('qNote').hidden = !h;
   if (h) { $('qNote').querySelector('.tur').textContent = h[0]; $('qNote').querySelector('.ac').textContent = h[1]; $('qNote').querySelector('.ex').textContent = h[2] ? 'Örnek: ' + h[2] : ''; }
   $('qOpts').innerHTML = it.opts.map((o, k) => `<button class="qopt" data-o="${o}" lang="en"><kbd>${k + 1}</kbd>${lowerEn(o)}</button>`).join('');
-  $('qFeedback').textContent = ''; $('qNext').hidden = true;
+  $('qFeedback').textContent = ''; $('qNext').hidden = true; $('qExEn').hidden = true;
+}
+// after an answer: the English of the Turkish example sentence, with the word in bold
+function showExampleEn(w) {
+  const h = DATA.hints[w], el = $('qExEn');
+  el.hidden = !(h && h[3]);
+  if (el.hidden) return;
+  const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  // the build marks the word's form in the sentence with [[ ]]
+  el.innerHTML = esc(h[3]).replace(/\[\[(.+?)\]\]/, '<b>$1</b>');
 }
 function answer(o) {
   const it = Q.items[Q.i];
@@ -2062,6 +2073,7 @@ function answer(o) {
   persist();
   $('qOpts').querySelectorAll('.qopt').forEach(b => { b.disabled = true; if (b.dataset.o === it.w) b.classList.add('ok'); else if (b.dataset.o === o) b.classList.add('bad'); });
   $('qFeedback').textContent = right ? 'Doğru!' : `Doğrusu: ${lowerEn(it.w)}`;
+  showExampleEn(it.w);
   [...$('qBar').children][Q.i].className = it.res;
   $('qNext').hidden = false;
   $('qNext').textContent = Q.i + 1 < Q.items.length ? 'Devam et' : 'Sonucu gör';

@@ -44,6 +44,41 @@ for _f in sorted(glob.glob('data/hints-*.tsv')):
         if len(_x) == 4:
             assert not re.search(r'(?<![\wçğıöşüÇĞİÖŞÜ])' + _x[0] + r'(?![\wçğıöşüÇĞİÖŞÜ])', _x[2] + ' ' + _x[3], re.I), ('hint gives the answer away', _x)
             hints[_x[0]] = _x[1:]
+def _dist(a, b):
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+IRREGULAR = {'steal': 'stole', 'teach': 'taught', 'pry': 'pries'}  # too far from the word for the spelling match below
+
+
+def mark_word(word, sentence):
+    """Wraps the form of word in the sentence in [[ ]] (tickets, bit, won), so the page can make it bold:
+    the token that starts like the word, or else the closest one by spelling."""
+    toks = list(re.finditer(r"[A-Za-z]+", sentence))
+    w = word.lower()
+    stem = w[:max(2, len(w) - (2 if len(w) > 4 else 1))]
+    # the word itself, then a form that starts with all of it (dig -> digging), then one that starts like it (bite -> bit)
+    pick = (next((t for t in toks if t.group().lower() in (w, IRREGULAR.get(w))), None)
+            or next((t for t in toks if t.group().lower().startswith(w)), None)
+            or next((t for t in toks if len(w) > 3 and t.group().lower().startswith(stem)), None))
+    if not pick:
+        best = min(toks, key=lambda t: (_dist(w, t.group().lower()), -len(t.group())), default=None)
+        if best and _dist(w, best.group().lower()) <= max(2, len(w) // 2) and best.group()[0].lower() == w[0]:
+            pick = best
+    return sentence if not pick else sentence[:pick.start()] + '[[' + pick.group() + ']]' + sentence[pick.end():]
+
+
+# the English of each example sentence (shown in Tekrar et after an answer): WORD<TAB>sentence in data/examples-en.tsv
+for _l in open('data/examples-en.tsv', encoding='utf-8') if os.path.exists('data/examples-en.tsv') else []:
+    _x = _l.rstrip('\n').split('\t')
+    if len(_x) == 2 and _x[0] in hints:
+        hints[_x[0]] = hints[_x[0]][:3] + [mark_word(_x[0], _x[1])]
 # words of the day: one per line, tab separated, 6 fields
 words = [l.split('\t') for l in open('data/words.tsv', encoding='utf-8').read().strip().split('\n')]
 assert all(len(w) == 6 and all(x.strip() for x in w) for w in words), 'words.tsv: every line needs 6 fields'
