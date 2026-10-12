@@ -233,7 +233,17 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .hintbox .ac { margin: 2px 0 0; font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--ink); }
 .hintbox .ex { margin: 0; font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.35; }
 .active-card .hintbox { margin-top: 4px; }
-@media (min-width: 960px) { .g-main > .hintbox { display: none; } }
+@media (min-width: 960px) { .g-main > .hintbox, .hint-shade { display: none !important; } }
+/* phones: the note floats over the grid (the grid keeps its size); the rest of the screen dims */
+@media (max-width: 959px) {
+  .g-main { position: relative; }
+  .banner { position: relative; z-index: 7; }
+  .g-main > .hintbox { position: absolute; left: 0; right: 0; z-index: 7; box-shadow: 0 18px 40px -12px rgba(0, 0, 0, .45); animation: hintIn .16s ease both; }
+  .hint-shade { position: fixed; inset: 0; z-index: 6; background: rgba(8, 10, 24, .55); animation: shadeIn .16s ease both; }
+}
+@keyframes hintIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes shadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .g-main > .hintbox, .hint-shade { animation: none; } }
 .g-main { display: flex; flex-direction: column; gap: 12px; }
 .g-title, .g-side, .g-main .segbar { display: none; }
 
@@ -825,6 +835,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         <div class="mid"><div class="eyebrow" id="bLabel">Yatay · 3 harf</div><div class="clue-row"><span class="clue" id="bClue">…</span><button class="qbtn" data-hint-toggle aria-label="Bu ipucu ne demek?" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 9.2a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.5-2.8 4.3"/><path d="M12 18h.01"/></svg></button></div></div>
         <button id="nextW" aria-label="Sonraki kelime"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
+      <div class="hint-shade" id="hintShade" hidden></div>
       <div class="hintbox" id="hintBox" hidden><div class="ht"><span class="tur"></span></div><p class="ac"></p><p class="ex"></p></div>
       <div class="g-board"><div class="grid" id="grid"></div></div>
     </div>
@@ -1538,7 +1549,12 @@ function renderHint(w) {
     box.querySelector('.ac').textContent = h[1];
     box.querySelector('.ex').textContent = h[2] ? 'Örnek: ' + h[2] : '';
   }
+  // the floating note sits just under the clue bar
+  $('hintShade').hidden = !(hintOpen && h);
+  if (hintOpen && h) { const bn = document.querySelector('.banner'); $('hintBox').style.top = (bn.offsetTop + bn.offsetHeight + 8) + 'px'; }
 }
+function closeHint() { if (!hintOpen) return; hintOpen = false; if (G && G.cur) renderHint(curWord()); }
+$('hintShade').addEventListener('pointerdown', e => { e.preventDefault(); closeHint(); });
 document.querySelectorAll('[data-hint-toggle]').forEach(b => {
   b.addEventListener('pointerdown', e => e.preventDefault());
   b.addEventListener('click', () => { hintOpen = !hintOpen; if (G && G.cur) renderHint(curWord()); });
