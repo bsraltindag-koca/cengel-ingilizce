@@ -136,7 +136,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .wotd .eye .i-off { display: none; }
 .wotd .eye[aria-pressed="true"] .i-open { display: none; }
 .wotd .eye[aria-pressed="true"] .i-off { display: block; }
-.wotd .w-review { justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 800; font-size: 15px; }
+.wotd .w-count { min-width: 40px; text-align: center; font-weight: 800; font-size: 14px; color: var(--amber-ink); font-variant-numeric: tabular-nums; }
+.wotd .chip.err { background: #ffe1dc; color: #b42318; }
+.wotd .w-review { justify-self: stretch; display: flex; align-items: center; justify-content: center; gap: 6px; height: 48px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 800; font-size: 15px; }
 .wotd .w-meaning { display: grid; gap: 4px; border-radius: 16px; background: var(--surface); padding: 14px 16px; }
 .wotd .w-meaning b { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .wotd .w-meaning .en { font-weight: 700; font-size: 16px; color: var(--ink); }
@@ -788,7 +790,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         <span class="eyebrow" id="wTitle">Günün kelimeleri</span>
         <div class="w-nav">
           <button class="w-arrow" id="wPrev" aria-label="Önceki kelime"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-          <div class="w-dots" id="wDots" role="tablist" aria-label="Günün kelimeleri"></div>
+          <div class="w-dots" id="wDots" role="tablist" aria-label="Günün kelimeleri"></div><span class="w-count" id="wCount" hidden></span>
           <button class="w-arrow" id="wNext" aria-label="Sonraki kelime"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
       </div>
@@ -796,7 +798,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         <div class="w-word">
           <div style="min-width:0">
             <h3 id="wWord" lang="en">fridge</h3>
-            <p class="ipa"><span class="p" id="wIpa" lang="en">/frɪdʒ/</span><span class="chip" id="wType">isim</span></p>
+            <p class="ipa"><span class="p" id="wIpa" lang="en">/frɪdʒ/</span><span class="chip" id="wType">isim</span><span class="chip err" id="wErr" hidden></span></p>
           </div>
           <div class="w-actions">
             <button class="say" id="wSay" aria-label="Kelimeyi dinle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
@@ -805,7 +807,7 @@ html.native input { -webkit-user-select: text; user-select: text; }
         </div>
         <div class="w-meaning" id="wMeaning" hidden><b id="wTr">Buzdolabı</b><span class="en" lang="en" id="wEn"></span><span class="tr" id="wTrEx"></span></div>
       </div>
-      <button class="w-review" id="wReview" hidden>Bunları tekrar et<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="w-review" id="wReview" hidden><span id="wReviewTx">Bunları tekrar et</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </section>
     <div class="sec-head"><h2>Seviyeler</h2><button class="link" id="howBtn">Nasıl oynanır?</button></div>
     <div class="levels" id="levels"></div>
@@ -1267,6 +1269,12 @@ function renderWotd(dir) {
   $('wTitle').textContent = review ? 'Tekrar etmen gerekenler' : 'Günün kelimeleri';
   $('wDots').setAttribute('aria-label', $('wTitle').textContent);
   $('wReview').hidden = !review;
+  // review: a plain "1 / 3" counter instead of dots, the mistake count next to the word type, the button says how many words
+  $('wDots').hidden = review; $('wCount').hidden = !review;
+  $('wCount').textContent = `${wIdx + 1} / ${list.length}`;
+  const errs = review ? errCount(word.toUpperCase()) : 0;
+  $('wErr').hidden = !errs; $('wErr').textContent = `${errs} hata`;
+  $('wReviewTx').textContent = list.length > 1 ? `${list.length} kelimeyi tekrar et` : 'Bu kelimeyi tekrar et';
   $('wIpa').hidden = !ipa; $('wType').hidden = !type;
   // the meaning note is Turkish; an example from words.tsv is English
   $('wEn').lang = review && !WOTD.some(x => x[0] === word) ? 'tr' : 'en';
