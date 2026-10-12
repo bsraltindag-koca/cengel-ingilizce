@@ -26,6 +26,16 @@ for _set in long_data.values():
     for _p in _set:
         arrowgen.check(_p)
         _p.pop('share', None)
+# which-meaning notes for clues: WORD<TAB>tür<TAB>açıklama<TAB>örnek in data/hints-*.tsv; only words that are in a puzzle
+import glob
+_answers = {w['answer'] for _set in long_data.values() for _p in _set for w in _p['words']}
+hints = {}
+for _f in sorted(glob.glob('data/hints-*.tsv')):
+    for _l in open(_f, encoding='utf-8'):
+        _x = _l.rstrip('\n').split('\t')
+        if len(_x) == 4 and _x[0] in _answers:
+            assert not re.search(r'(?<![\wçğıöşüÇĞİÖŞÜ])' + _x[0] + r'(?![\wçğıöşüÇĞİÖŞÜ])', _x[2] + ' ' + _x[3], re.I), ('hint gives the answer away', _x)
+            hints[_x[0]] = _x[1:]
 # words of the day: one per line, tab separated, 6 fields
 words = [l.split('\t') for l in open('data/words.tsv', encoding='utf-8').read().strip().split('\n')]
 assert all(len(w) == 6 and all(x.strip() for x in w) for w in words), 'words.tsv: every line needs 6 fields'
@@ -39,7 +49,8 @@ body = (open('src/app.html', encoding='utf-8').read()
         .replace('/*DATA*/{}', json.dumps(d, ensure_ascii=False, separators=(',', ':')))
         .replace("/*VERSION*/{ n: 'geliştirme', date: '' }", json.dumps(version, ensure_ascii=False))
         .replace('/*WOTD*/[]', json.dumps(words, ensure_ascii=False, separators=(',', ':')))
-        .replace('/*LONG*/{}', json.dumps(long_data, ensure_ascii=False, separators=(',', ':'))))
+        .replace('/*LONG*/{}', json.dumps(long_data, ensure_ascii=False, separators=(',', ':')))
+        .replace('/*HINTS*/{}', json.dumps(hints, ensure_ascii=False, separators=(',', ':'))))
 import legacy  # fallbacks for older engines (tools/legacy.py)
 body = legacy.apply(body)
 args = [x for x in sys.argv[1:] if not x.startswith('--')]

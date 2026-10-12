@@ -221,6 +221,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .banner .mid { text-align: center; min-width: 0; }
 .banner .eyebrow { opacity: .75; font-size: 12px; }
 .banner .clue { font-size: 26px; font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
+/* "?" next to the clue: opens a short Turkish note on which meaning is asked */
+.clue-row { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+.active-card .clue-row { justify-content: flex-start; }
+.qbtn { flex: none; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; background: rgba(255, 255, 255, .2); color: #ffffff; }
+.qbtn[aria-expanded="true"] { background: #ffffff; color: #4b3be0; }
+.banner .qbtn { width: 28px; height: 28px; border-radius: 999px; background: rgba(255, 255, 255, .2); }
+.banner .qbtn[aria-expanded="true"] { background: #ffffff; color: #4b3be0; }
+.hintbox { background: var(--surface); border-radius: 16px; padding: 12px 14px; display: grid; gap: 4px; box-shadow: var(--shadow); flex: none; }
+.hintbox .tur { display: inline-block; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 14%, var(--surface)); color: var(--primary); }
+.hintbox .ac { margin: 2px 0 0; font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--ink); }
+.hintbox .ex { margin: 0; font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.35; }
+.active-card .hintbox { margin-top: 4px; }
+@media (min-width: 960px) { .g-main > .hintbox { display: none; } }
 .g-main { display: flex; flex-direction: column; gap: 12px; }
 .g-title, .g-side, .g-main .segbar { display: none; }
 
@@ -809,13 +822,14 @@ html.native input { -webkit-user-select: text; user-select: text; }
       <div class="segbar"></div>
       <div class="banner">
         <button id="prevW" aria-label="Önceki kelime"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-        <div class="mid"><div class="eyebrow" id="bLabel">Yatay · 3 harf</div><div class="clue" id="bClue">…</div></div>
+        <div class="mid"><div class="eyebrow" id="bLabel">Yatay · 3 harf</div><div class="clue-row"><span class="clue" id="bClue">…</span><button class="qbtn" data-hint-toggle aria-label="Bu ipucu ne demek?" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 9.2a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.5-2.8 4.3"/><path d="M12 18h.01"/></svg></button></div></div>
         <button id="nextW" aria-label="Sonraki kelime"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
+      <div class="hintbox" id="hintBox" hidden><div class="ht"><span class="tur"></span></div><p class="ac"></p><p class="ex"></p></div>
       <div class="g-board"><div class="grid" id="grid"></div></div>
     </div>
     <aside class="g-side">
-      <div class="active-card"><div class="eyebrow" id="sLabel">Aktif ipucu · Yatay · 3 harf</div><h2 id="sClue">…</h2><div class="mini" id="sMini"></div></div>
+      <div class="active-card"><div class="eyebrow" id="sLabel">Aktif ipucu · Yatay · 3 harf</div><div class="clue-row"><h2 id="sClue">…</h2><button class="qbtn" data-hint-toggle aria-label="Bu ipucu ne demek?" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 9.2a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.5-2.8 4.3"/><path d="M12 18h.01"/></svg></button></div><div class="mini" id="sMini"></div><div class="hintbox" id="hintBoxSide" hidden><div class="ht"><span class="tur"></span></div><p class="ac"></p><p class="ex"></p></div></div>
       <div class="duo"><div class="stat"><small>Skor</small><b id="sScore">0</b></div><div class="stat teal"><small>İpucu kullanıldı</small><b id="sHints">0</b></div></div>
       <div class="duo"><button class="sbtn" data-act="letter">Harf aç <em>−15</em></button><button class="sbtn" data-act="word">Kelime aç <em>−40</em></button></div>
       <div class="duo"><button class="sbtn dark" data-act="check">Kontrol et</button><button class="sbtn soft" id="sReset">Sıfırla</button></div>
@@ -1026,6 +1040,8 @@ html.native input { -webkit-user-select: text; user-select: text; }
 const DATA = /*DATA*/{};
 // every level and IELTS: classic arrowword puzzles from tools/pack_arrow.py ({ R, C, words: [{ dir, r, c, answer, clue }] })
 DATA.long = /*LONG*/{};
+// which-meaning notes: { WORD: [part of speech, explanation, example] } from data/hints-*.tsv
+DATA.hints = /*HINTS*/{};
 // filled in by tools/build.py: build number and build time
 const VERSION = /*VERSION*/{ n: 'geliştirme', date: '' };
 document.getElementById('verSplash').textContent = `Sürüm ${VERSION.n}`;
@@ -1496,6 +1512,7 @@ function paint() {
   });
   const lab = `${w.dir === 'A' ? 'Yatay' : 'Dikey'} · ${w.answer.length} harf`;
   $('bLabel').textContent = lab; $('bClue').textContent = w.clue;
+  renderHint(w);
   $('sLabel').textContent = 'Aktif ipucu · ' + lab; $('sClue').textContent = w.clue;
   $('sMini').innerHTML = w.cells.map(([r, c]) => `<i class="${G.cells[r][c] === G.cur ? 'sel' : wordSolved(w) ? 'ok' : ''}">${val(r, c)}</i>`).join('');
   const n = G.st.sw.length;
@@ -1507,6 +1524,25 @@ function paint() {
   $('sHints').textContent = G.st.hints;
   updateTimer();
 }
+
+/* "which meaning?" note for the current clue (data/hints-*.tsv); it never shows the English word */
+let hintOpen = false;
+function renderHint(w) {
+  const h = DATA.hints[w.answer];
+  document.querySelectorAll('[data-hint-toggle]').forEach(b => { b.hidden = !h; b.setAttribute('aria-expanded', hintOpen && !!h); });
+  for (const id of ['hintBox', 'hintBoxSide']) {
+    const box = $(id);
+    box.hidden = !(hintOpen && h);
+    if (!h) continue;
+    box.querySelector('.tur').textContent = h[0];
+    box.querySelector('.ac').textContent = h[1];
+    box.querySelector('.ex').textContent = h[2] ? 'Örnek: ' + h[2] : '';
+  }
+}
+document.querySelectorAll('[data-hint-toggle]').forEach(b => {
+  b.addEventListener('pointerdown', e => e.preventDefault());
+  b.addEventListener('click', () => { hintOpen = !hintOpen; if (G && G.cur) renderHint(curWord()); });
+});
 
 function input(ch) {
   if (!G || G.finished || paused) return;
