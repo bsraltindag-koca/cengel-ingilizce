@@ -505,6 +505,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .lvbars span:last-child { text-align: right; color: var(--muted); }
 .setting { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
 .setting:last-child { border-bottom: 0; }
+.set-h { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 6px 4px -6px; }
 .setting b { display: block; font-weight: 800; }
 .setting small { color: var(--muted); font-weight: 600; }
 .switch { width: 52px; height: 32px; border-radius: 99px; background: var(--soft); position: relative; flex: none; transition: background .15s; }
@@ -1010,8 +1011,18 @@ html.native input { -webkit-user-select: text; user-select: text; }
       <div class="who"><span class="avatar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg></span><div><b>Misafir olarak oynuyorsun</b><small>İlerlemen sadece bu cihazda saklanıyor.</small></div></div>
       <div class="btns"><button class="bigbtn dark" data-go="signup">Hesap oluştur</button><button class="bigbtn soft" data-go="login">Giriş yap</button></div>
     </div>
+    <h3 class="set-h">Görünüm</h3>
     <div class="card">
       <div class="setting"><div><b>Görünüm</b><small>Sistem, telefonunun ayarını takip eder.</small></div><div class="seg" role="radiogroup" aria-label="Görünüm" id="themeSeg"><button role="radio" data-t="">Sistem</button><button role="radio" data-t="light">Açık</button><button role="radio" data-t="dark">Koyu</button></div></div>
+    </div>
+    <h3 class="set-h">Ses ve titreşim</h3>
+    <div class="card">
+      <div class="setting"><div><b>Ses efektleri</b><small>Tuşlar, doğru kelime, yanlış harf ve bulmaca bitişi için kısa sesler.</small></div><button class="switch" role="switch" id="optSfx" aria-label="Ses efektleri"></button></div>
+      <div class="setting"><div><b>Titreşim</b><small>Kelime bulununca hafif, yanlış harfte farklı, bitişte başarı titreşimi.</small></div><button class="switch" role="switch" id="optHaptic" aria-label="Titreşim"></button></div>
+      <div class="setting"><div><b>Kelimeleri sesli oku</b><small>Tekrar et testinde doğru cevaptan sonra kelimeyi okur.</small></div><button class="switch" role="switch" id="optSpeak" aria-label="Kelimeleri sesli oku"></button></div>
+    </div>
+    <h3 class="set-h">Oyun</h3>
+    <div class="card">
       <div class="setting"><div><b>Dolu kareleri atla</b><small>Yazarken imleç, harf yazılmış kareleri geçer.</small></div><button class="switch" role="switch" id="optSkip" aria-label="Dolu kareleri atla"></button></div>
       <div class="setting"><div><b>Bitince sonraki kelimeye geç</b><small>Bir kelime doğru tamamlanınca imleç sıradaki boş kelimeye gider.</small></div><button class="switch" role="switch" id="optJump" aria-label="Sonraki kelimeye geç"></button></div>
     </div>
@@ -1100,6 +1111,9 @@ const KEY = 'cengel-app-v2';
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { S = {}; }
 S = Object.assign({ games: {}, done: {}, learned: {}, streak: { last: null, count: 0 }, cur: null, opts: { skip: true, jump: true } }, S);
+// sound effects and vibration are on unless the player turns them off
+if (S.opts.sfx === undefined) S.opts.sfx = true;
+if (S.opts.haptic === undefined) S.opts.haptic = true;
 // older saves stored learned words as 1; give them the same shape as new ones
 for (const k of Object.keys(S.learned)) if (typeof S.learned[k] !== 'object') S.learned[k] = { at: null, lv: null, hard: false };
 S.review = S.review || {};
@@ -1586,6 +1600,7 @@ function input(ch) {
   if (!locked(r, c)) {
     G.st.v = setChar(G.st.v, idx(r, c), ch);
     delete G.marks[idx(r, c)];
+    sfx('key');
     evaluate(G.cur);
   }
   if (!G.finished) advance();
@@ -1610,7 +1625,7 @@ function solve(w) {
   // only the word that was selected when Harf aç / Kelime aç was pressed counts as found with a hint
   const usedHint = (G.st.hx || []).includes(w.i);
   if (usedHint && !G.st.hw.includes(w.i)) G.st.hw.push(w.i);
-  buzz('light');
+  buzz('light'); sfx('ok');
   G.st.score += 25 + (!usedHint && !G.st.m[w.i] ? 10 : 0);
   const prev = typeof S.learned[w.answer] === 'object' ? S.learned[w.answer] : null;
   if (!S.learned[w.answer]) act().w++;
@@ -1680,6 +1695,7 @@ function check() {
   }
   hitWords.forEach(i => { const w = G.words[i]; const got = w.cells.map(([r, c]) => val(r, c)).join(''); if (got !== G.st.lw[i]) { G.st.m[i]++; G.st.lw[i] = got; } });
   toast(wrong ? `${wrong} yanlış harf var.` : blank ? `Yazdıkların doğru. ${blank} boş kare kaldı.` : 'Hepsi doğru!');
+  if (wrong) { sfx('bad'); buzz('error'); } else sfx('hint');
   paint(); persist();
 }
 
@@ -1693,6 +1709,7 @@ function reveal(cells, cost) {
     delete G.marks[idx(r, c)];
   }
   G.st.hints++; G.st.score = Math.max(0, G.st.score - cost);
+  sfx('hint');
   G.st.hx = G.st.hx || [];
   if (!G.st.hx.includes(curWord().i)) G.st.hx.push(curWord().i);
   toast(`−${cost} puan`);
@@ -1791,7 +1808,7 @@ function finish() {
   G.newRecord = recs.length ? `Yeni rekor: ${recs.join(' ve ')}!` : '';
   S.done[G.id] = { score: st.score, sec: st.sec, first, hints: st.hints, at: dayKey(), n: G.N };
   act().p++;
-  buzz('success');
+  buzz('success'); sfx('win');
   bumpStreak(); persist();
   setTimeout(() => { renderDone(false); show('done'); confetti(); }, 450);
 }
@@ -1983,6 +2000,7 @@ function answer(o) {
   $('qNext').hidden = false;
   $('qNext').textContent = Q.i + 1 < Q.items.length ? 'Devam et' : 'Sonucu gör';
   if (right && CAN_SPEAK && !S.opts.quizMute) speak(lowerEn(it.w));
+  if (right) { sfx('ok'); buzz('light'); } else { sfx('bad'); buzz('error'); }
 }
 function nextQuestion() {
   if (Q.i + 1 < Q.items.length) { Q.i++; renderQuiz(); return; }
@@ -2005,7 +2023,7 @@ function renderMute() {
 }
 if (!CAN_SPEAK) $('qMute').hidden = true;
 $('qMute').addEventListener('click', () => {
-  S.opts.quizMute = !S.opts.quizMute; persist(); renderMute();
+  S.opts.quizMute = !S.opts.quizMute; persist(); renderMute(); renderSettings();
   if (S.opts.quizMute) stopSpeech();
   toast(S.opts.quizMute ? 'Ses kapatıldı' : 'Ses açıldı');
 });
@@ -2144,7 +2162,15 @@ new MutationObserver(() => { if (!S.opts.theme) document.documentElement.classLi
 function renderSettings() {
   $('optSkip').setAttribute('aria-checked', !!S.opts.skip);
   $('optJump').setAttribute('aria-checked', !!S.opts.jump);
+  $('optSfx').setAttribute('aria-checked', !!S.opts.sfx);
+  $('optHaptic').setAttribute('aria-checked', !!S.opts.haptic);
+  $('optSpeak').setAttribute('aria-checked', !S.opts.quizMute);
+  $('optSpeak').closest('.setting').hidden = !CAN_SPEAK;
 }
+$('optSfx').onclick = () => { S.opts.sfx = !S.opts.sfx; persist(); renderSettings(); sfx('ok'); };
+$('optHaptic').onclick = () => { S.opts.haptic = !S.opts.haptic; persist(); renderSettings(); buzz('light'); };
+// the same switch as the speaker button on the Tekrar et screen
+$('optSpeak').onclick = () => { S.opts.quizMute = !S.opts.quizMute; persist(); renderSettings(); renderMute(); if (S.opts.quizMute) stopSpeech(); };
 $('optSkip').onclick = () => { S.opts.skip = !S.opts.skip; persist(); renderSettings(); };
 $('optJump').onclick = () => { S.opts.jump = !S.opts.jump; persist(); renderSettings(); };
 armed($('wipe'), 'Tüm ilerlemeyi sil', 'Emin misin? Geri alınamaz', () => {
@@ -2200,9 +2226,40 @@ function nativeTheme(dark) {
   if (PLUG.StatusBar) PLUG.StatusBar.setStyle({ style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
 }
 function buzz(kind) {
-  if (!PLUG.Haptics) return;
-  if (kind === 'success') PLUG.Haptics.notification({ type: 'SUCCESS' }).catch(() => {});
-  else PLUG.Haptics.impact({ style: 'LIGHT' }).catch(() => {});
+  if (!S.opts.haptic) return;
+  if (PLUG.Haptics) {
+    if (kind === 'success') PLUG.Haptics.notification({ type: 'SUCCESS' }).catch(() => {});
+    else if (kind === 'error') PLUG.Haptics.notification({ type: 'ERROR' }).catch(() => {});
+    else PLUG.Haptics.impact({ style: 'LIGHT' }).catch(() => {});
+    return;
+  }
+  // browsers that can vibrate (Android); iPhone Safari cannot
+  if (navigator.vibrate) { try { navigator.vibrate(kind === 'success' ? [20, 60, 30] : kind === 'error' ? [45] : 12); } catch (e) {} }
+}
+
+/* sound effects, made with the Web Audio API (no sound files, works offline) */
+let AC = null;
+function sfx(kind) {
+  if (!S.opts.sfx) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    const t0 = AC.currentTime;
+    const tone = (freq, at, dur, type = 'sine', vol = .12) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = type; o.frequency.value = freq;
+      g.gain.setValueAtTime(0, t0 + at);
+      g.gain.linearRampToValueAtTime(vol, t0 + at + .008);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + at + dur);
+      o.connect(g); g.connect(AC.destination);
+      o.start(t0 + at); o.stop(t0 + at + dur + .02);
+    };
+    if (kind === 'key') tone(1100, 0, .045, 'triangle', .05);
+    else if (kind === 'ok') { tone(660, 0, .12); tone(880, .09, .18); }
+    else if (kind === 'bad') { tone(200, 0, .16, 'square', .05); tone(160, .1, .18, 'square', .05); }
+    else if (kind === 'hint') tone(990, 0, .1, 'triangle', .08);
+    else if (kind === 'win') [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .11, i === 3 ? .45 : .16, 'sine', .13));
+  } catch (e) {}
 }
 if (PLUG.App) {
   // Android back: close what is open, then step back, and only leave the app from the home page
