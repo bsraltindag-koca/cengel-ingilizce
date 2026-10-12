@@ -409,6 +409,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tagc { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
 .tagc.hard { background: color-mix(in srgb, var(--coral) 16%, var(--surface)); color: var(--coral-ink); }
 .tagc.err { background: var(--bad-bg); color: var(--bad); }
+.tagc.clean { background: var(--good-bg); color: var(--good); }
 .wrow .say { width: 38px; height: 38px; border-radius: 999px; background: var(--soft); color: var(--primary); display: grid; place-items: center; flex: none; }
 .wrow .say.on { background: var(--primary); color: var(--on-primary); }
 .wrow .ok { margin-left: auto; font-weight: 800; color: var(--good); letter-spacing: .02em; }
@@ -1947,7 +1948,7 @@ const lowerEn = w => w.toLowerCase();
 const errCount = w => ((S.learned[w] && S.learned[w].miss) || 0) + reviewOf(w).bad;
 function wordRow(w, extra) {
   const row = document.createElement('div'); row.className = 'wrow';
-  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${(screen === 'words' || screen === 'stats') && wSort === 'err' && errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
+  row.innerHTML = `<div class="tx"><span class="en" lang="en"></span><span class="trw"></span></div><div class="tags">${screen === 'words' || screen === 'stats' ? (errCount(w) ? `<span class="tagc err">${errCount(w)} hata</span>` : '<span class="tagc clean">hatasız</span>') : ''}${needsReview(w) ? '<span class="tagc hard">tekrar</span>' : ''}</div>${extra || ''}${CAN_SPEAK ? `<button class="say" aria-label="${lowerEn(w)} kelimesini dinle">${SPK_SVG}</button>` : ''}`;
   row.querySelector('.en').textContent = lowerEn(w);
   row.querySelector('.trw').textContent = clue(w);
   const b = row.querySelector('.say'); if (b) b.addEventListener('click', () => speak(lowerEn(w), b));

@@ -17,7 +17,7 @@ setTimeout(() => {
     R.push('tags=' + [...$('wList').querySelectorAll('.wrow')].map(r => r.querySelector('.en').textContent + ':' + ([...r.querySelectorAll('.tagc.err')].map(t => t.textContent).join('') || '-')).join(' '));
     R.push('selected=' + $('wSort').selectedOptions[0].textContent);
     ($('wSort').value = 'az', $('wSort').dispatchEvent(new Event('change')));
-    R.push('A-Z has no hata tags=' + !$('wList').querySelector('.tagc.err'));
+    R.push('A-Z keeps the counts: ' + [...$('wList').querySelectorAll('.wrow')].map(r => r.querySelector('.en').textContent + ':' + ((r.querySelector('.tagc.err, .tagc.clean') || {}).textContent || 'none')).join(' '));
   } catch (e) { R.push('ERR ' + e.message); }
   const p = document.createElement('pre'); p.id = 'OUT'; p.textContent = R.join('\n'); document.body.appendChild(p);
 }, 300);
