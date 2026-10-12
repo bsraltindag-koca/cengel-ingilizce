@@ -235,7 +235,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell.clue span.w10 { font-size: clamp(5.5px, 12cqw, 10.5px); }
 .cell.clue span.w11 { font-size: clamp(5.5px, 11.5cqw, 10px); overflow-wrap: anywhere; }
 /* a clue square holding two clues: across on top, down below */
-.cell.clue.two { display: flex; flex-direction: column; padding: 0; }
+.cell.clue.two { display: flex; flex-direction: column; align-items: stretch; place-items: stretch; padding: 0; overflow: hidden; }
 .cell.clue.two .cp { flex: 1; min-height: 0; display: grid; place-items: center; position: relative; padding: 2% 14% 2% 6%; overflow: hidden; }
 .cell.clue.two .cp + .cp { border-top: 1px solid rgba(255, 255, 255, .35); padding: 2% 6% 12%; }
 .cell.clue.two .cp span { font-size: clamp(5.5px, 13cqw, 10px); line-height: 1; }
@@ -244,6 +244,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell.clue.two .cp.D::after { bottom: 3%; left: 50%; transform: translateX(-50%); border-top-color: var(--sun); border-bottom-width: 0; }
 .cell.clue.two::after { display: none; }
 .cell.clue .cp.active { background: var(--strong); color: var(--on-strong); }
+/* the highlighted half follows the square's rounded corners; the divider hides next to it */
+.cell.clue.two .cp.active + .cp, .cell.clue.two .cp.active { border-top-color: transparent; }
 /* 9-column puzzles: slightly tighter gaps */
 .grid.g9 { gap: clamp(2px, .8vw, 6px); }
 .cell.clue::after { content: ""; position: absolute; border: clamp(3.5px, 9cqw, 8px) solid transparent; }
