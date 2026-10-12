@@ -22,7 +22,7 @@ setTimeout(() => {
     show('words'); R.push('learned long word clue: ' + Object.keys(S.learned).filter(w => w.length > 3).slice(0, 2).map(w => w.toLowerCase() + '=' + clue(w)).join(', '));
     show('stats'); R.push('stats levels=' + $('lvBars').children.length);
     S.done = {}; for (let i = 0; i < 6; i++) S.done['B2:' + i] = { score: 1, sec: 1, first: 1, hints: 0, n: 24 }; show('home');
-    R.push('C1 unlocked after 6 in B2=' + !$('levels').children[4].classList.contains('locked') + ' C2 locked=' + $('levels').children[5].classList.contains('locked'));
+    R.push('C1 open=' + !$('levels').children[4].classList.contains('locked') + ' C2 open=' + !$('levels').children[5].classList.contains('locked') + ' (testOpen=' + LEVELS.filter(L => L.testOpen).map(L => L.k).join(',') + ')');
   } catch (e) { R.push('ERR ' + e.message + ' @ ' + (e.stack || '').split('\n')[1]); }
   const p = document.createElement('pre'); p.id = 'OUT'; p.textContent = R.join('\n'); document.body.appendChild(p);
 }, 300);

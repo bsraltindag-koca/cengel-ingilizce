@@ -1028,8 +1028,9 @@ const LEVELS = [
   { k: 'A2', name: 'Temel' },
   { k: 'B1', name: 'Orta', need: ['A2', 6] },
   { k: 'B2', name: 'Orta üstü', need: ['B1', 6] },
-  { k: 'C1', name: 'İleri', need: ['B2', 6] },
-  { k: 'C2', name: 'Uzman', need: ['C1', 6] },
+  // TEMPORARY: testOpen opens C1 and C2 for testing. Remove testOpen before release so the need rules apply again.
+  { k: 'C1', name: 'İleri', need: ['B2', 6], testOpen: true },
+  { k: 'C2', name: 'Uzman', need: ['C1', 6], testOpen: true },
 ];
 const TOPICS = [
   { k: 'egitim', name: 'Eğitim', icon: 'book' },
@@ -1108,7 +1109,7 @@ function meta(id) {
 }
 const levelList = lv => DATA.long[lv] || DATA.levels[lv] || [];
 const solvedIn = lv => levelList(lv).filter((_, i) => S.done[`${lv}:${i}`]).length;
-function unlocked(L) { return !L.need || solvedIn(L.need[0]) >= L.need[1]; }
+function unlocked(L) { return !L.need || L.testOpen || solvedIn(L.need[0]) >= L.need[1]; }
 function suggest() {
   if (S.cur && S.games[S.cur] && !S.done[S.cur]) return S.cur;
   for (const L of LEVELS) {
