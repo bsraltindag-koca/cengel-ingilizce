@@ -290,6 +290,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cell .mk { position: absolute; top: 6%; right: 8%; font-size: 20cqw; font-weight: 800; }
 .cell.ok .mk::after { content: "✓"; color: var(--good); }
 .cell.bad .mk::after { content: "✕"; color: var(--bad); }
+/* a word filled in wrong: a short shake and red flash, without showing which letter is wrong */
+.cell.letter.shake { animation: cellShake .42s ease, cellFlash .6s ease; }
+@keyframes cellShake { 20% { transform: translateX(-12%); } 40% { transform: translateX(10%); } 60% { transform: translateX(-7%); } 80% { transform: translateX(4%); } }
+@keyframes cellFlash { 0%, 45% { background: var(--bad-bg); color: var(--bad); } }
+@media (prefers-reduced-motion: reduce) { .cell.letter.shake { animation: cellFlash .6s ease; } }
 .cell.hint:not(.ok) .mk::after { content: ""; display: block; width: 11cqw; height: 11cqw; border-radius: 50%; background: var(--hint); margin-top: 4cqw; }
 .cell.blank { background: transparent; }
 .cell.void { background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
@@ -1614,10 +1619,18 @@ function evaluate(cell) {
     const got = w.cells.map(([r, c]) => val(r, c)).join('');
     if (got.length < w.answer.length) continue;
     if (got === w.answer) { solve(w); justSolved = true; }
-    else if (got !== G.st.lw[w.i]) { G.st.m[w.i]++; G.st.lw[w.i] = got; }
+    else if (got !== G.st.lw[w.i]) { G.st.m[w.i]++; G.st.lw[w.i] = got; wrongWord(w); }
   }
   if (justSolved) G.justSolved = true;
   if (G.st.sw.length === G.N) finish();
+}
+
+// the word is full but wrong: warning sound, vibration and a shake of its squares
+function wrongWord(w) {
+  sfx('bad'); buzz('error');
+  const els = w.cells.map(([r, c]) => G.cells[r][c].el);
+  els.forEach(el => { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); });
+  setTimeout(() => els.forEach(el => el.classList.remove('shake')), 650);
 }
 
 function solve(w) {

@@ -25,3 +25,20 @@ setTimeout(() => {
   } catch (e) { R.push('ERR ' + e.message + ' @ ' + (e.stack || '').split('\n')[1]); }
   const p = document.createElement('pre'); p.id = 'OUT'; p.textContent = R.join('\n'); document.body.appendChild(p);
 }, 300);
+// wrong word: fill a word with wrong letters, expect warning sound + vibration + shake
+setTimeout(() => {
+  const R = [];
+  try {
+    S.opts.sfx = true; S.opts.haptic = true;
+    let tones = 0, vib = 0;
+    const RealAC = window.AudioContext;
+    window.AudioContext = function () { const ac = new RealAC(); const mk = ac.createOscillator.bind(ac); ac.createOscillator = () => { tones++; return mk(); }; return ac; };
+    AC = null; navigator.vibrate = () => { vib++; return true; };
+    const key = k => document.body.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true }));
+    openGame('A1:1'); const w = G.words.find(x => !wordSolved(x));
+    const open = w.cells.filter(([r, c]) => !locked(r, c));
+    open.forEach(([r, c], i) => { G.cur = G.cells[r][c]; G.dir = w.dir; tones = 0; vib = 0; key(G.cells[r][c].sol === 'Q' ? 'Z' : 'Q'); });
+    R.push('last letter of a wrong word: tones=' + tones + ' vib=' + vib + ' shaking=' + w.cells.filter(([r, c]) => G.cells[r][c].el.classList.contains('shake')).length + '/' + w.cells.length + ' badMarks=' + Object.values(G.marks).filter(m => m === 'bad').length);
+  } catch (e) { R.push('ERR ' + e.message); }
+  const p = document.getElementById('OUT'); p.textContent += '\n' + R.join('\n');
+}, 900);
