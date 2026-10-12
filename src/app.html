@@ -1727,7 +1727,7 @@ armed($('pReset'), 'Bulmacayı sıfırla', 'Emin misin? Tekrar dokun', () => { $
   const rows = ['QWERTYUIOP', 'ASDFGHJKL', '>ZXCVBNM<'];
   $('kbd').innerHTML = rows.map(r => `<div class="r">${[...r].map(k =>
     k === '>' ? `<button class="wide dir" data-k="dir" aria-label="Yön değiştir"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12l-3-3M16 7l-3 3M8 13v7M8 20l-3-3M8 20l3-3"/></svg></button>`
-    : k === '<' ? `<button class="wide del" data-k="del" aria-label="Sil"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M9.2 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.2a1 1 0 0 1-.76-.35L3.3 12.65a1 1 0 0 1 0-1.3L8.44 5.35A1 1 0 0 1 9.2 5z"/><path d="M12.6 9.6l4.8 4.8M17.4 9.6l-4.8 4.8"/></svg></button>`
+    : k === '<' ? `<button class="wide del" data-k="del" aria-label="Sil"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M9.2 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.2a1 1 0 0 1-.76-.35L3.3 12.65a1 1 0 0 1 0-1.3L8.44 5.35A1 1 0 0 1 9.2 5z"/><path d="M10.6 9.8l4.4 4.4M15 9.8l-4.4 4.4"/></svg></button>`
     : `<button data-k="${k}">${k}</button>`).join('')}</div>`).join('');
   $('kbd').addEventListener('pointerdown', e => {
     const b = e.target.closest('button'); if (!b) return;
